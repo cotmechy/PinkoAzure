@@ -50,7 +50,12 @@ namespace PinkoAzureService.AzureMessageBus
                                       }
                                   });
             if (null != ex)
-                throw ex; // new PinkoExceptionQueueNotConfigured(queueName);
+            //    throw ex; // new PinkoExceptionQueueNotConfigured(queueName);
+            {
+                var newExce = new PinkoExceptionQueueNotConfigured(queueName);
+                newExce.Data["OriginalException"] = ex;
+                throw newExce;
+            }
 
             // Initialize the connection to Service Bus Queue
             client = PinkoContainer.Resolve<AzureQueueClient>();
@@ -95,11 +100,8 @@ namespace PinkoAzureService.AzureMessageBus
             Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", AzureServerConnectionString);
             _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(AzureServerConnectionString);
 
-            // Set WorkerRole outbound Rx bus
-            _applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
-
             // Set listener for outbound messages 
-            _applicationBusMessageSend
+            PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                 .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
                 .ObserveOn(Scheduler.ThreadPool)
                 .Subscribe(x => GetQueue(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));

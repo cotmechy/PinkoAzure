@@ -90,9 +90,7 @@ namespace PinkoTests.AzureTests
             // Connect to queue
             //server.ConnectToQueue("NonExistingUnitTestQueueName");
 
-            Assert.IsInstanceOfType(
-                TryCatch.RunInTry(() => server.ConnectToQueue("NonExistingUnitTestQueueName")),
-                typeof(PinkoExceptionQueueNotConfigured));
+            Assert.IsInstanceOfType( TryCatch.RunInTry(() => server.ConnectToQueue("NonExistingUnitTestQueueName")), typeof(PinkoExceptionQueueNotConfigured));
 
         }
 

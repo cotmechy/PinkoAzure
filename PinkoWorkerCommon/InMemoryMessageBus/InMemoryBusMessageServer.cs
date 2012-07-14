@@ -60,10 +60,10 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         /// </summary>
         public void Initialize()
         {
-            _applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
+            //_applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
 
-            // Set listener for outbounce messages 
-            _applicationBusMessageSend
+            // Set listener for outboundmessages 
+            PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                 .ObserveOn(Scheduler.ThreadPool)
                 .Do(x => Trace.TraceInformation("(InMemoryBusMessageServer) Sending: {0}", x.Verbose()))
                 .Subscribe(x => GetQueue(x.QueueName).Send(x));
@@ -94,10 +94,10 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         /// </summary>
         public string AzureServerConnectionString { get; set; }
 
-        /// <summary>
-        /// Receive all message vis this Rxmemory bus
-        /// </summary>
-        private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
+        ///// <summary>
+        ///// Receive all message vis this Rxmemory bus
+        ///// </summary>
+        //private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
 
 
         /// <summary>

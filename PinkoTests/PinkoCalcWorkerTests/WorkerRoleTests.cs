@@ -33,6 +33,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var busMessageServer = pinkoContainer.Resolve<IBusMessageServer>();
             var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
+            busMessageServer.Initialize();
 
             //
             // Factor new worker and repalce conaitner with mock.

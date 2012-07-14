@@ -26,8 +26,8 @@ namespace PinkoServices
             KeyValues["Issuer"] = "owner";
             KeyValues["SecretKey"] = "/PANoEiC88Ox17lwbKfL7jmtAK1Xgdk+Z8S51+DtAtc=";
 
-            KeyValues["Issuer"] = "PinkoWorkerRoles";
-            KeyValues["SecretKey"] = "FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=";
+            //KeyValues["Issuer"] = "PinkoWorkerRoles";
+            //KeyValues["SecretKey"] = "FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=";
 
             KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
 
