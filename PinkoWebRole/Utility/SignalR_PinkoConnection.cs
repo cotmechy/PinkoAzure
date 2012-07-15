@@ -14,6 +14,14 @@ namespace PinkoWebRole.Utility
     public class SignalrPinkoConnection : PersistentConnection
     {
         /// <summary>
+        /// Constructor - SignalrPinkoConnection 
+        /// </summary>
+        public SignalrPinkoConnection()
+        {
+            Debug.WriteLine("**** SignalrPinkoConnection()");
+        }
+
+        /// <summary>
         /// OnReceivedAsync
         /// </summary>
         protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)

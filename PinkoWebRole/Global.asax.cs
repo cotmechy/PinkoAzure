@@ -23,7 +23,12 @@ namespace PinkoWebRole
 
         public static void RegisterRoutes(RouteCollection routes)
         {
+            // https://github.com/SignalR/SignalR/wiki/Hubs
+            //routes.MapHubs("~/echo");
+
+            // Streaming SignalR
             routes.MapConnection<SignalrPinkoConnection>("echo", "echo/{*operation}");
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(

@@ -19,5 +19,10 @@ namespace PinkoWebRole.Controllers
         {
             return View();
         }
+
+        public ActionResult PinkoHeartbeat()
+        {
+            return View();
+        }
     }
 }

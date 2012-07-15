@@ -10,7 +10,24 @@ namespace PinkDao
     /// </summary>
     public class PinkoRoleHeartbeat
     {
-        public string ResponderMachine = string.Empty;
-        public DateTime ResponderDateTime = DateTime.Now;
+        /// <summary>
+        /// 
+        /// </summary>
+        private static string _responderMachine = Environment.MachineName;
+        public string ResponderMachine
+        {
+            get { return _responderMachine; }
+            set { _responderMachine = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private DateTime _responderDateTime = DateTime.Now;
+        public DateTime ResponderDateTime
+        {
+            get { return _responderDateTime; }
+            set { _responderDateTime = value; }
+        }
     }
 }
