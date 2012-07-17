@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using PinkDao;
+using PinkoWorkerCommon.Extensions;
 using SignalR.Hubs;
 
 namespace PinkoWebRole.Hubs
@@ -19,7 +20,7 @@ namespace PinkoWebRole.Hubs
         /// </summary>
         public PinkoSingalHub()
         {
-            Debug.WriteLine("**** PinkoSingalHub()");
+            Debug.WriteLine(this.VerboseIdentity());
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace PinkoWebRole.Hubs
         /// </summary>
         public void Subscribe(string instrumentName)
         {
-            Debug.WriteLine("**** Subscribe:instrumentName: {0}", instrumentName);
+            Debug.WriteLine("{0}: Subscribe(): instrumentName: {1}", this.Verbose(), instrumentName);
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace PinkoWebRole.Hubs
         /// </summary>
         public void ClientConnected(string clientId)
         {
-            Debug.WriteLine(string.Format("**** ClientConnected: clientId: {0} - Context.ConnectionId: {1}", clientId, Context.ConnectionId));
+            Debug.WriteLine("{0}: Subscribe(): clientId: {1} - Context.ConnectionId: {2}", this.Verbose(), clientId, Context.ConnectionId);
             NotifyClientPinkoRoleHeartbeat(new PinkoRoleHeartbeat());
         }
 
@@ -44,7 +45,29 @@ namespace PinkoWebRole.Hubs
         /// </summary>
         public void NotifyClientPinkoRoleHeartbeat(PinkoRoleHeartbeat heartbeat)
         {
-            Clients[Context.ConnectionId].addMessage(heartbeat);
+            Debug.WriteLine("{0}: NotifyClientPinkoRoleHeartbeat(): Context.ConnectionId: {1}", this.Verbose(), heartbeat.Verbose());
+            Clients[Context.ConnectionId].OnPinkoRoleHeartbeat(heartbeat);
         }
     }
+
+
+    /// <summary>
+    /// PinkoSingalHubExtensions
+    /// </summary>
+    ///  
+    public static class PinkoSingalHubExtensions
+    {
+        /// <summary>
+        /// PinkoSingalHub
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string Verbose(this PinkoSingalHub obj)
+        {
+            return string.Format("{0} "
+                                            , obj.VerboseIdentity()
+                                            );
+        }
+    }
+
 }

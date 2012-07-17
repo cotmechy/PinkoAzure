@@ -6,11 +6,11 @@ using SignalR;
 
 namespace PinkoWebRole.Hubs
 {
-    /// <summary>
-    /// SignalR hub to perist heartbeat connectivity
-    /// </summary>
-    public class PinkoWebStreamer : PersistentConnection
-    {
+    ///// <summary>
+    ///// SignalR hub to perist heartbeat connectivity
+    ///// </summary>
+    //public class PinkoWebStreamer : PersistentConnection
+    //{
 
-    }
+    //}
 }

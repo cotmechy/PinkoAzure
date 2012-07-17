@@ -30,4 +30,27 @@ namespace PinkDao
             set { _responderDateTime = value; }
         }
     }
+
+
+    /// <summary>
+    /// PinkoRoleHeartbeatExtensions
+    /// </summary>
+    public static class PinkoRoleHeartbeatExtensions
+    {
+
+        /// <summary>
+        /// PinkoRoleHeartbeat
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string Verbose(this PinkoRoleHeartbeat obj)
+        {
+            return string.Format("({2}) PinkoRoleHeartbeat: ResponderMachine: {0} - ResponderDateTime: {1}"
+                                            , obj.ResponderMachine
+                                            , obj.ResponderDateTime
+                                            , obj.GetHashCode()
+                                            );
+        }
+    }
+
 }

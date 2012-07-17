@@ -51,6 +51,7 @@
     <Compile Include="BaseMessageHandlers\MessageHandlerManager.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionAzureDeserializerNotFound.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionQueueNotConfigured.cs" />
+    <Compile Include="Extensions\PinkoExtensions.cs" />
     <Compile Include="InMemoryMessageBus\InMemoryBusMessageQueue.cs" />
     <Compile Include="InMemoryMessageBus\InMemoryBusMessageServer.cs" />
     <Compile Include="Interface\IBusMessageInbound.cs" />

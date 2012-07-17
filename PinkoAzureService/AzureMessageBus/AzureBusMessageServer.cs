@@ -133,10 +133,10 @@ namespace PinkoAzureService.AzureMessageBus
         [Dependency]
         public IPinkoConfiguration PinkoConfiguration { private get; set; }
 
-        /// <summary>
-        /// Receive all message vis this Rxmemory bus
-        /// </summary>
-        private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
+        ///// <summary>
+        ///// Receive all message vis this Rxmemory bus
+        ///// </summary>
+        //private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
 
         /// <summary>
         /// Internal queue cache

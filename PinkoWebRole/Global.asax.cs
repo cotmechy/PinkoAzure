@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using PinkDao;
+using PinkoWebRole.Hubs;
 using PinkoWebRole.Utility;
 using SignalR;
+using SignalR.Hubs;
 
 namespace PinkoWebRole
 {
@@ -39,6 +45,9 @@ namespace PinkoWebRole
 
         }
 
+        /// <summary>
+        /// Application_Start
+        /// </summary>
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -46,7 +55,67 @@ namespace PinkoWebRole
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+
+            // timer
+            _observable = Observable.Interval(TimeSpan.FromMilliseconds(500), Scheduler.ThreadPool);
+
+            _observable
+                .Subscribe(x =>
+                {
+                    //
+                    // http://stackoverflow.com/questions/7549179/signalr-posting-a-message-to-a-hub-via-an-action-method
+                    //
+                    var context = GlobalHost.ConnectionManager.GetHubContext<PinkoSingalHub>();
+
+                    var beat = new PinkoRoleHeartbeat
+                                   {
+                                       ResponderDateTime = DateTime.Now,
+                                       ResponderMachine = "MachineName"
+                                   };
+
+                    context.Clients.addMessage(DateTime.Now);
+                    //context.Clients[group].methodInJavascript("hello world");
+
+                    ////var clients = Hub.GetClients<NewsFeedHub>();
+                    ////clients.MethodOnTheJavascript("Good news!"); //dynamic method called on the client
+
+                    //// Important: .Resolve is an extension method inside SignalR.Infrastructure namespace.
+                    //this.
+                    //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
+                    //var clients = connectionManager.GetClients<MyHub>();
+
+                    //// Broadcast to all clients.
+                    //clients.MethodOnTheJavascript("Good news!");
+
+                    //// Broadcast only to clients in a group.
+                    //clients["someGroupName"].MethodOnTheJavascript("Hello, some group!");
+
+                    //// Broadcast only to a particular client.
+                    //clients["someConnectionId"].MethodOnTheJavascript("Hello, particular client!");
+
+                    //
+                    // http://stackoverflow.com/questions/9942591/iis-background-thread-and-signalr
+                    //
+                    //var connectionManager = RouteTable.Routes[]
+                    //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
+                    //demoClients.TellUsers(msg);
+
+                    //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
+                    //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
+                    //demoClients.TellUsers(msg);
+
+                    //var hub = new PinkoSingalHub();
+                    //hub.NotifyClientPinkoRoleHeartbeat(
+                    //    new PinkoRoleHeartbeat
+                    //    {
+                    //        ResponderDateTime = DateTime.Now,
+                    //        ResponderMachine = "MachineName"
+                    //    });
+
+                });
         }
+
+        private IObservable<long> _observable;
 
     }
 }
