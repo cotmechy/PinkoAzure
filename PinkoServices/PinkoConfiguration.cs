@@ -23,13 +23,13 @@ namespace PinkoServices
             //KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretValue=rgJrSVkS7LkzvzkuVlP+mFMGEPI4QLdQ3rO91lan1aE=";   // /PANoEiC88Ox17lwbKfL7jmtAK1Xgdk+Z8S51+DtAtc=
             //KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=PinkoWorkerRoles;SharedSecretValue=FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=";
 
-            KeyValues["Issuer"] = "owner";
-            KeyValues["SecretKey"] = "/PANoEiC88Ox17lwbKfL7jmtAK1Xgdk+Z8S51+DtAtc=";
+            KeyValues["Issuer"] = "== Get from secure notes ==";
+            KeyValues["SecretKey"] = "== Get from secure notes ==";
 
             //KeyValues["Issuer"] = "PinkoWorkerRoles";
             //KeyValues["SecretKey"] = "FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=";
 
-            KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
+            KeyValues["Microsoft.ServiceBus.ConnectionString"] = "== Get from secure notes ==";
 
             
         }

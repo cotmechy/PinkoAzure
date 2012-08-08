@@ -57,7 +57,7 @@ namespace PinkoWebRole
 
 
             // timer
-            _observable = Observable.Interval(TimeSpan.FromMilliseconds(500), Scheduler.ThreadPool);
+            _observable = Observable.Interval(TimeSpan.FromMilliseconds(150), Scheduler.ThreadPool);
 
             _observable
                 .Subscribe(x =>
@@ -73,7 +73,7 @@ namespace PinkoWebRole
                                        ResponderMachine = "MachineName"
                                    };
 
-                    context.Clients.addMessage(DateTime.Now);
+                    context.Clients.addMessage(beat);
                     //context.Clients[group].methodInJavascript("hello world");
 
                     ////var clients = Hub.GetClients<NewsFeedHub>();

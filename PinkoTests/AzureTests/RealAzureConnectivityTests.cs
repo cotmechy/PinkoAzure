@@ -17,7 +17,7 @@ namespace PinkoTests.AzureTests
     /// <summary>
     /// Summary description for RealAzureConnectivityTests
     /// </summary>
-    [TestClass]
+    //[TestClass]
     public class RealAzureConnectivityTests
     {
         /// <summary>
