@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Pinko : Initial cloud based distributed expression process" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Pinko</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/cotmechy/PinkoAzure">View on GitHub</a>
+
+          <h1 id="project_title">Pinko</h1>
+          <h2 id="project_tagline">Initial cloud based distributed expression process</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/cotmechy/PinkoAzure/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/cotmechy/PinkoAzure/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>Welcome to Pinko</h3>
+
+<p>Pinko is a distributed expression engine targetting Azure Cloud.  The project is written in C# and F# (expression engine). 
+The overall architecture is open source.  The F# expression engine is not open source.  The open source project contains a mock expression engine for sample purposes only. </p>
+
+<p>Pinko is in early stages of development (Aug 2012) and not ccompleted at this point.  You can set up a watch on our project to keep track of our progress.  </p>
+
+<h3>RoadMap</h3>
+
+<p>The goal is to create a processing engine that processes user provided formulas in realtime across multiple Azure worker roles. </p>
+
+<p>Pinko delivers real-time datafeed via <a href="https://github.com/SignalR/SignalR">SignalR</a>. Initial version will include some sample formulas, but as the project grows it will include a full featured HTML5/AJAX front end with Telerik Kendo controls. </p>
+
+<p>Realtime feeds are feed via Azure CDN, and other cloud base components for optimal scalabilty and availability. </p>
+
+<h3>Sample Expression</h3>
+
+<p>Think of Pinko as an Excel formula processor available in the cloud. A couple of sample expressions follow:  </p>
+
+<p><em>=RForm("Symbol", "IBM", "Price.Bid", "Reuters") * 2</em></p>
+
+<p>Pinko monitors the IBM price bid. Every time a new Price.Bid arrives, the formula is recalculated and streamed into the client. </p>
+
+<p><em>=RHist("Symbol", "IBM", "Price.Bid", "Reuters", "Min", 360) - RHist("Symbol", "IBM", "Price.Ask", "Reuters", "Min", 360)</em></p>
+
+<p>RHist() retrieves 360 minutes calculates the Bid/Ask spread. Every time a new tick arrives, the formula is recalculated.</p>
+
+<h3>The Cool Stuff</h3>
+
+<p>So we have just another expression engine, but imagine creating a historical charts on demand with your own formulas, not pre-canned averages or spreads like other systems.  </p>
+
+<p>Pinko allows users to create formulas for trade ideas, color grids, ladders, historical charts, and any other analysis graphics.</p>
+
+<h3>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Pinko maintained by <a href="https://github.com/cotmechy">cotmechy</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
