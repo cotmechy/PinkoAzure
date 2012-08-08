@@ -41,6 +41,9 @@
     <Reference Include="Microsoft.ServiceBus, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="PinkoExpressionCommon">
+      <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionCommon.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\bin\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -61,6 +64,7 @@
     <Compile Include="AzureTests\RealAzureConnectivityTests.cs" />
     <Compile Include="AzureTests\ServiceQueueTests.cs" />
     <Compile Include="PinkoCalcWorkerTests\WorkerRoleTests.cs" />
+    <Compile Include="PinkoExpressionTests.cs" />
     <Compile Include="PinkoPingMessageHandlerTests.cs" />
     <Compile Include="PinkoServiceMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

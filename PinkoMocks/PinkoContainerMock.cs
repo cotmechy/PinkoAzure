@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
+using PinkoExpressionCommon.Interface;
 using PinkoServices;
 using PinkoWorkerCommon.InMemoryMessageBus;
 using PinkoWorkerCommon.Interface;
@@ -19,7 +16,7 @@ namespace PinkoMocks
         {
             var container = new UnityContainer();
 
-            var mockRepo = new MockRepository();
+            //var mockRepo = new MockRepository();
 
             //
             //// Rhino IPinkoConfiguration
@@ -35,6 +32,22 @@ namespace PinkoMocks
             //container.RegisterInstance<ICloudConfigurationManager>(new CloudConfigurationManagerMock());
 
             //container.Resolve<IBusMessageServer>().Initialize();
+
+
+            //
+            // IPinkoMarketEnvironment / IPinkoDataAccessLayer
+            //
+            var marketEnv = MockRepository.GenerateStub<IPinkoMarketEnvironment>();
+            marketEnv.PinkoDataAccessLayer = new PinkoDataAccessLayerMock();
+            container.RegisterInstance<IPinkoMarketEnvironment>(marketEnv);
+
+
+            //
+            // IPinkoExpressionEngine
+            //
+            var expreEng = MockRepository.GenerateMock<IPinkoExpressionEngine>();
+            container.RegisterInstance<IPinkoExpressionEngine>(expreEng);
+
 
             return container;
         }
