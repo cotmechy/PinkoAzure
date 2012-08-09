@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using PinkoWorkerCommon.Extensions;
+using System.Text;
+using PinkoCommon.Extensions;
 using SignalR;
 
-namespace PinkoWebRole.Utility
+namespace PinkoWebRoleCommon.Extensions
 {
-    static public class Extensions
+    /// <summary>
+    /// SignalR IReques  Extension method
+    /// </summary>
+    static public class RequestsExtensions
     {
         /// <summary>
         /// Object Identity

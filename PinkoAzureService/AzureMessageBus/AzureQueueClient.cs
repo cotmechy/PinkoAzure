@@ -7,6 +7,8 @@ using Microsoft.Practices.Unity;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using PinkDao;
+using PinkoCommon.Utility;
+using PinkoWebRoleCommon.HubModels;
 using PinkoWorkerCommon.BaseMessageHandlers;
 using PinkoWorkerCommon.ExceptionTypes;
 using PinkoWorkerCommon.Interface;
@@ -306,7 +308,7 @@ namespace PinkoAzureService.AzureMessageBus
 
             typeDeser[typeof(string).ToString()] = x => x.GetBody<string>();
             typeDeser[typeof(PinkoPingMessage).ToString()] = x => x.GetBody<PinkoPingMessage>();
-            typeDeser[typeof(PinkoRoleHeartbeat).ToString()] = x => x.GetBody<PinkoRoleHeartbeat>();
+            typeDeser[typeof(PinkoRoleHeartbeatHub).ToString()] = x => x.GetBody<PinkoRoleHeartbeatHub>();
 
             return typeDeser;
         }

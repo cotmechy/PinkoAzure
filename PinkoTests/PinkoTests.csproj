@@ -83,6 +83,10 @@
       <Project>{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}</Project>
       <Name>PinkoCalcEngineWorker</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
+      <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
+      <Name>PinkoCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkoMocks\PinkoMocks.csproj">
       <Project>{684F2F70-9FBB-4C31-898F-0AB01CB1E332}</Project>
       <Name>PinkoMocks</Name>

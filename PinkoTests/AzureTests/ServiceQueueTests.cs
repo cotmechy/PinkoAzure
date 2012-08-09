@@ -8,6 +8,7 @@ using Microsoft.ServiceBus.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoAzureService.AzureMessageBus;
+using PinkoCommon.Utility;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
 using PinkoWorkerCommon.ExceptionTypes;

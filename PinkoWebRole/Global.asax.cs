@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using PinkDao;
-using PinkoWebRole.Hubs;
-using PinkoWebRole.Utility;
+using PinkoWebRoleCommon.HubModels;
+using PinkoWebRoleCommon.SignalRHub;
+using PinkoWebRoleCommon.Utility;
 using SignalR;
-using SignalR.Hubs;
 
 namespace PinkoWebRole
 {
@@ -32,8 +28,8 @@ namespace PinkoWebRole
             // https://github.com/SignalR/SignalR/wiki/Hubs
             //routes.MapHubs("~/echo");
 
-            // Streaming SignalR
-            routes.MapConnection<SignalrPinkoConnection>("echo", "echo/{*operation}");
+            //// Streaming SignalR
+            //routes.MapConnection<PinkoSignalRConnection>("echo", "echo/{*operation}");
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
@@ -55,64 +51,69 @@ namespace PinkoWebRole
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+            var machineName = Environment.MachineName;
 
-            // timer
-            _observable = Observable.Interval(TimeSpan.FromMilliseconds(150), Scheduler.ThreadPool);
+            //// timer
+            //_observable = Observable.Interval(TimeSpan.FromMilliseconds(1000), Scheduler.ThreadPool);
 
-            _observable
-                .Subscribe(x =>
-                {
-                    //
-                    // http://stackoverflow.com/questions/7549179/signalr-posting-a-message-to-a-hub-via-an-action-method
-                    //
-                    var context = GlobalHost.ConnectionManager.GetHubContext<PinkoSingalHub>();
+            //_observable
+            //    .Subscribe(x =>
+            //    {
+            //        //
+            //        // http://stackoverflow.com/questions/7549179/signalr-posting-a-message-to-a-hub-via-an-action-method
+            //        //
+            //        var context = GlobalHost.ConnectionManager.GetHubContext<PinkoSingalHub>();
 
-                    var beat = new PinkoRoleHeartbeat
-                                   {
-                                       ResponderDateTime = DateTime.Now,
-                                       ResponderMachine = "MachineName"
-                                   };
+            //        var beat = new PinkoRoleHeartbeatHub
+            //                       {
+            //                           ResponderDateTime = DateTime.Now,
+            //                           ResponderMachine = machineName
+            //                       };
 
-                    context.Clients.addMessage(beat);
-                    //context.Clients[group].methodInJavascript("hello world");
+            //        //context.Clients.addMessage(beat);
+            //        context.Clients.NotifyClientPinkoRoleHeartbeat(beat);
 
-                    ////var clients = Hub.GetClients<NewsFeedHub>();
-                    ////clients.MethodOnTheJavascript("Good news!"); //dynamic method called on the client
 
-                    //// Important: .Resolve is an extension method inside SignalR.Infrastructure namespace.
-                    //this.
-                    //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
-                    //var clients = connectionManager.GetClients<MyHub>();
+            //        //context.Clients.addMessage(beat);
+            //        //context.Clients[group].methodInJavascript("hello world");
 
-                    //// Broadcast to all clients.
-                    //clients.MethodOnTheJavascript("Good news!");
+            //        ////var clients = Hub.GetClients<NewsFeedHub>();
+            //        ////clients.MethodOnTheJavascript("Good news!"); //dynamic method called on the client
 
-                    //// Broadcast only to clients in a group.
-                    //clients["someGroupName"].MethodOnTheJavascript("Hello, some group!");
+            //        //// Important: .Resolve is an extension method inside SignalR.Infrastructure namespace.
+            //        //this.
+            //        //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
+            //        //var clients = connectionManager.GetClients<MyHub>();
 
-                    //// Broadcast only to a particular client.
-                    //clients["someConnectionId"].MethodOnTheJavascript("Hello, particular client!");
+            //        //// Broadcast to all clients.
+            //        //clients.MethodOnTheJavascript("Good news!");
 
-                    //
-                    // http://stackoverflow.com/questions/9942591/iis-background-thread-and-signalr
-                    //
-                    //var connectionManager = RouteTable.Routes[]
-                    //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
-                    //demoClients.TellUsers(msg);
+            //        //// Broadcast only to clients in a group.
+            //        //clients["someGroupName"].MethodOnTheJavascript("Hello, some group!");
 
-                    //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
-                    //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
-                    //demoClients.TellUsers(msg);
+            //        //// Broadcast only to a particular client.
+            //        //clients["someConnectionId"].MethodOnTheJavascript("Hello, particular client!");
 
-                    //var hub = new PinkoSingalHub();
-                    //hub.NotifyClientPinkoRoleHeartbeat(
-                    //    new PinkoRoleHeartbeat
-                    //    {
-                    //        ResponderDateTime = DateTime.Now,
-                    //        ResponderMachine = "MachineName"
-                    //    });
+            //        //
+            //        // http://stackoverflow.com/questions/9942591/iis-background-thread-and-signalr
+            //        //
+            //        //var connectionManager = RouteTable.Routes[]
+            //        //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
+            //        //demoClients.TellUsers(msg);
 
-                });
+            //        //var connectionManager = AspNetHost.DependencyResolver.Resolve<IConnectionManager>();
+            //        //var demoClients = connectionManager.GetClients<MyHubDerivedClass>();
+            //        //demoClients.TellUsers(msg);
+
+            //        //var hub = new PinkoSingalHub();
+            //        //hub.NotifyClientPinkoRoleHeartbeat(
+            //        //    new PinkoRoleHeartbeat
+            //        //    {
+            //        //        ResponderDateTime = DateTime.Now,
+            //        //        ResponderMachine = "MachineName"
+            //        //    });
+
+            //    });
         }
 
         private IObservable<long> _observable;

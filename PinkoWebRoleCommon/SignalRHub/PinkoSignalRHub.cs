@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
+using System.Text;
 using PinkDao;
-using PinkoWorkerCommon.Extensions;
+using PinkoCommon.Extensions;
+using PinkoWebRoleCommon.HubModels;
 using SignalR.Hubs;
 
-namespace PinkoWebRole.Hubs
+namespace PinkoWebRoleCommon.SignalRHub
 {
     /// <summary>
     /// SignalR Hub
@@ -36,19 +37,22 @@ namespace PinkoWebRole.Hubs
         /// </summary>
         public void ClientConnected(string clientId)
         {
-            Debug.WriteLine("{0}: Subscribe(): clientId: {1} - Context.ConnectionId: {2}", this.Verbose(), clientId, Context.ConnectionId);
-            NotifyClientPinkoRoleHeartbeat(new PinkoRoleHeartbeat());
+            Debug.WriteLine("{0}: ClientConnected(): clientId: {1} - Context.ConnectionId: {2}", this.Verbose(),
+                            clientId, Context.ConnectionId);
         }
 
         /// <summary>
         /// Send to client
         /// </summary>
-        public void NotifyClientPinkoRoleHeartbeat(PinkoRoleHeartbeat heartbeat)
+        public void NotifyClientPinkoRoleHeartbeat(string dateTimeStamp, string machineName)
         {
-            Debug.WriteLine("{0}: NotifyClientPinkoRoleHeartbeat(): Context.ConnectionId: {1}", this.Verbose(), heartbeat.Verbose());
-            Clients[Context.ConnectionId].OnPinkoRoleHeartbeat(heartbeat);
+            //Debug.WriteLine("{0}: NotifyClientPinkoRoleHeartbeat(): Context.ConnectionId: {1}", this.Verbose(),
+            //                heartbeat.Verbose());
+            //Clients[Context.ConnectionId].NotifyClientPinkoRoleHeartbeat(heartbeat);
+            ////Clients.NotifyClientPinkoRoleHeartbeat(heartbeat);
         }
     }
+
 
 
     /// <summary>
@@ -64,10 +68,7 @@ namespace PinkoWebRole.Hubs
         /// <returns></returns>
         public static string Verbose(this PinkoSingalHub obj)
         {
-            return string.Format("{0} "
-                                            , obj.VerboseIdentity()
-                                            );
+            return string.Format("{0} ", obj.VerboseIdentity());
         }
     }
-
 }

@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using PinkoCommon.Utility;
 using PinkoWorkerCommon.ExceptionTypes;
 using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;

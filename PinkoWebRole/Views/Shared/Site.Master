@@ -69,10 +69,10 @@
             console.log('PinkoHeartbeata.aspx: huBconnection.pinkoSingalHub...');
             var pinkoHub = huBconnection.pinkoSingalHub;
 
-//            // server calls this methos
-//            pinkoHub.addMessage = function (value) {
-//                console.log('PinkoHeartbeata.aspx: Server called addMessage(' + value + ')');
-//            };
+            // server calls this methos
+            pinkoHub.addMessage = function (value) {
+                console.log('PinkoHeartbeata.aspx: Server called addMessage(' + value + ')');
+            };
 
 
             function connectionReady() {

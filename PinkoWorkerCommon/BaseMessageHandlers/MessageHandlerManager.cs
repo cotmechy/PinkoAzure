@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using PinkDao;
+using PinkoWebRoleCommon.HubModels;
 using PinkoWorkerCommon.Interface;
 
 namespace PinkoWorkerCommon.BaseMessageHandlers
@@ -40,7 +41,7 @@ namespace PinkoWorkerCommon.BaseMessageHandlers
 
             inboundPublisher[typeof(string).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, string>>();
             inboundPublisher[typeof(PinkoPingMessage).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoPingMessage>>();
-            inboundPublisher[typeof(PinkoRoleHeartbeat).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeat>>();
+            inboundPublisher[typeof(PinkoRoleHeartbeatHub).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeatHub>>();
 
             return inboundPublisher;
         }

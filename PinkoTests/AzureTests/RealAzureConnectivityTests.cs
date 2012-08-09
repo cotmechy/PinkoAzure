@@ -23,7 +23,7 @@ namespace PinkoTests.AzureTests
         /// <summary>
         /// Test Connecting to Topic
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void ConnectingTopicTest()
         {
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
@@ -46,7 +46,7 @@ namespace PinkoTests.AzureTests
         /// <summary>
         /// Test Connecting to Queue
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void ConnectingQueueTest()
         {
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
@@ -73,7 +73,7 @@ namespace PinkoTests.AzureTests
         /// <summary>
         /// Connect to Azure Server amd semd message
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void RealAzureMessageLoop()
         {
             var pinkoContainer = PinkoContainerMock.GetMokContainer();

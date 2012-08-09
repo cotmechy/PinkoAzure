@@ -29,7 +29,7 @@ namespace PinkoServices
             //KeyValues["Issuer"] = "PinkoWorkerRoles";
             //KeyValues["SecretKey"] = "FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=";
 
-            KeyValues["Microsoft.ServiceBus.ConnectionString"] = "== Get from secure notes ==";
+            KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
 
             
         }

@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using PinkDao;
 using PinkoServices.Handlers;
 using PinkoServices.IoC;
+using PinkoWebRoleCommon.HubModels;
 using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;
 
@@ -82,8 +83,8 @@ namespace PinkoCalcEngineWorker
 
             // Send heartbeat
             _heartbeatTimeObservable
-                .Subscribe(x => _outboundMessageBus.Publish(PinkoServiceMessageEnvelop.FactorClientMessage(PinkoContainer.Resolve<IPinkoConfiguration>().MessageBusWebRoleToClientsTopic, 
-                                                                                                    new PinkoRoleHeartbeat
+                .Subscribe(x => _outboundMessageBus.Publish(PinkoServiceMessageEnvelop.FactorClientMessage(PinkoContainer.Resolve<IPinkoConfiguration>().MessageBusWebRoleToClientsTopic,
+                                                                                                    new PinkoRoleHeartbeatHub
                                                                                                     {
                                                                                                         ResponderDateTime = DateTime.Now,
                                                                                                         ResponderMachine = PinkoApplication .MachineName

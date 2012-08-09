@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using PinkoWorkerCommon.Extensions;
+using PinkoCommon.Extensions;
+using PinkoWebRoleCommon.Extensions;
 using SignalR;
 
-namespace PinkoWebRole.Utility
+namespace PinkoWebRoleCommon.Utility
 {
     /// <summary>
     /// https://github.com/SignalR/SignalR/wiki/QuickStart-Persistent-Connections
     /// </summary>
-    public class SignalrPinkoConnection : PersistentConnection
+    public class PinkoSignalRConnection : PersistentConnection
     {
         /// <summary>
         /// Constructor - SignalrPinkoConnection 
         /// </summary>
-        public SignalrPinkoConnection()
+        public PinkoSignalRConnection()
         {
             Debug.WriteLine(this.VerboseIdentity());
         }
@@ -40,22 +41,21 @@ namespace PinkoWebRole.Utility
 
 
     /// <summary>
-    /// SignalrPinkoConnectionExtensions
+    /// PinkoSignalRConnectionExtensions
     /// </summary>
-    public static class SignalrPinkoConnectionExtensions
+    public static class PinkoSignalRConnectionExtensions
     {
 
         /// <summary>
-        /// SignalrPinkoConnection
+        /// PinkoSignalRConnection
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string Verbose(this SignalrPinkoConnection obj)
+        public static string Verbose(this PinkoSignalRConnection obj)
         {
             return string.Format("{0} "
                                              , obj.VerboseIdentity()
                                              );
         }
     }
-
 }
