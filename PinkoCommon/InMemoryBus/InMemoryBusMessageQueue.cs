@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.BaseMessageHandlers;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.BaseMessageHandlers;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.InMemoryMessageBus
+namespace PinkoCommon.InMemoryBus
 {
     /// <summary>
     /// In Queue manager. Offline develpment. Simulate Messageing middleware.
@@ -35,7 +39,7 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
 
             // Internal memory message bus 
             _applicationBusMessageResponse = PinkoApplication.GetBus<IBusMessageInbound>();
-            _messageHandlerManager = PinkoContainer.Resolve<MessageHandlerManager>().Initialize();
+            _messageHandlerManager = PinkoContainer.Resolve<IMessageHandlerManager>();
         }
 
         /// <summary>
@@ -82,6 +86,37 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         {
             get { return Interlocked.Read(ref _outboudMessages); }
         }
+
+        /// <summary>
+        /// Add extra handlers
+        /// </summary>
+        /// <returns></returns>
+        public void AddHandler<T>()
+        {
+            _messageHandlerManager.AddHandler<T>();
+        }
+
+        /// <summary>
+        /// get Rx Subscriber for incoming message type
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>()
+        {
+            return _messageHandlerManager.GetSubscriber<T>();
+        }
+
+        /// <summary>
+        /// get Rx Subscriber for incoming message type
+        /// </summary>
+        /// <returns></returns>
+        public object GetIncominglistener<T>()
+        {
+            return _messageHandlerManager.GetSubscriber<T>();
+        }
+
+        /// <summary>
+        /// Outbound message count
+        /// </summary>
         private long _outboudMessages;
 
 
@@ -101,7 +136,7 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         /// <summary>
         /// MessageHandlerManager 
         /// </summary>
-        private MessageHandlerManager _messageHandlerManager;
+        private IMessageHandlerManager _messageHandlerManager;
 
         /// <summary>
         /// Queue Name

@@ -1,7 +1,7 @@
 using System;
 using PinkDao;
-using PinkoWorkerCommon.BaseMessageHandlers;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.BaseMessageHandlers;
+using PinkoCommon.Interface;
 
 namespace PinkoServices.Handlers
 {

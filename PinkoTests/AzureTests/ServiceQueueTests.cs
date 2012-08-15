@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.ServiceBus.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoAzureService.AzureMessageBus;
@@ -12,7 +6,6 @@ using PinkoCommon.Utility;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
 using PinkoWorkerCommon.ExceptionTypes;
-using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;
 
 namespace PinkoTests.AzureTests

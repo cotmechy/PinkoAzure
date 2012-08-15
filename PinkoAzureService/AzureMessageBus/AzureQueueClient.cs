@@ -7,12 +7,9 @@ using Microsoft.Practices.Unity;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using PinkDao;
+using PinkoCommon.Interface;
 using PinkoCommon.Utility;
-using PinkoWebRoleCommon.HubModels;
-using PinkoWorkerCommon.BaseMessageHandlers;
 using PinkoWorkerCommon.ExceptionTypes;
-using PinkoWorkerCommon.Interface;
-using PinkoWorkerCommon.Utility;
 
 namespace PinkoAzureService.AzureMessageBus
 {
@@ -32,7 +29,9 @@ namespace PinkoAzureService.AzureMessageBus
             //IsTopic = AzureMessageClient is TopicClient;
 
             // Internal memory message bus 
-            _messageHandlerManager = PinkoContainer.Resolve<MessageHandlerManager>().Initialize();
+            _messageHandlerManager = PinkoContainer.Resolve<IMessageHandlerManager>();
+            //_messageHandlerManager.AddHandler<PinkoRoleHeartbeatHub>();
+            ////_messageHandlerManager.AddHandler<PinkoRoleHeartbeatHub>();
 
             // Azure msg factory
             var tokenProvider = TokenProvider.CreateSharedSecretTokenProvider(PinkoConfiguration.GetSetting("Issuer"), PinkoConfiguration.GetSetting("SecretKey"));
@@ -82,7 +81,7 @@ namespace PinkoAzureService.AzureMessageBus
             // ruun as long as app is running
             while (_isRunning && !PinkoApplication.ApplicationRunningEvent.WaitOne(0))
             {
-                Exception ex = TryCatch.RunInTry(() =>  
+                var ex = TryCatch.RunInTry(() =>  
                 {
                     // Receive the message
                     BrokeredMessage receivedMessage = null;
@@ -196,6 +195,25 @@ namespace PinkoAzureService.AzureMessageBus
         {
             get { return Interlocked.Read(ref _outboudMessages); }
         }
+
+        /// <summary>
+        /// Add extra handlers
+        /// </summary>
+        /// <returns></returns>
+        public void AddHandler<T>()
+        {
+            _messageHandlerManager.AddHandler<T>();
+        }
+
+        /// <summary>
+        /// get Rx Subscriber for incoming message type
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>()
+        {
+            return _messageHandlerManager.GetSubscriber<T>();
+        }
+
         private long _outboudMessages;
 
         /// <summary>
@@ -219,7 +237,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// MessageHandlerManager 
         /// </summary>
-        private MessageHandlerManager _messageHandlerManager;
+        private IMessageHandlerManager _messageHandlerManager;
 
 
         ///// <summary>
@@ -308,7 +326,7 @@ namespace PinkoAzureService.AzureMessageBus
 
             typeDeser[typeof(string).ToString()] = x => x.GetBody<string>();
             typeDeser[typeof(PinkoPingMessage).ToString()] = x => x.GetBody<PinkoPingMessage>();
-            typeDeser[typeof(PinkoRoleHeartbeatHub).ToString()] = x => x.GetBody<PinkoRoleHeartbeatHub>();
+            typeDeser[typeof(PinkoRoleHeartbeat).ToString()] = x => x.GetBody<PinkoRoleHeartbeat>();
 
             return typeDeser;
         }

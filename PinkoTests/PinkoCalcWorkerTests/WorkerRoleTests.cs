@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
-using PinkoAzureService;
 using PinkoCalcEngineWorker;
+using PinkoCommon;
+using PinkoCommon.InMemoryBus;
+using PinkoCommon.Interface;
 using PinkoMocks;
-using PinkoServices;
-using PinkoWorkerCommon.InMemoryMessageBus;
-using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;
 
 namespace PinkoTests.PinkoCalcWorkerTests
@@ -46,7 +42,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             workerRole.StartHeartBeat();
             pinkoApplication.ApplicationRunningEvent.WaitOne(6000);
 
-            Assert.IsTrue(busMessageServer.GetQueue(pinkoConfiguration.MessageBusWebRoleToClientsTopic).OutboudMessages >= 5);
+            Assert.IsTrue(busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusCalcEngineActionTopic).OutboudMessages >= 5);
         }
 
 
@@ -92,7 +88,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
                              {
                                  ContentType = typeof(PinkoPingMessage).ToString(),
                                  Message = pm,
-                                 QueueName = pinkoContainer.Resolve<IPinkoConfiguration>().MessageBusCrossWebRolesQueue
+                                 QueueName = pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic
                              });
             ev.WaitOne(2000);
 
@@ -101,7 +97,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             Assert.IsInstanceOfType(receiveMessageInbound.Item2, typeof(PinkoPingMessage));
             Assert.IsTrue(receiveMessageInbound.Item2.SenderMachine.Equals("ClientMachine"));
             Assert.IsFalse(string.IsNullOrEmpty(receiveMessageInbound.Item1.ContentType));
-            Assert.IsTrue(receiveMessageInbound.Item1.QueueName == pinkoContainer.Resolve<IPinkoConfiguration>().MessageBusCrossWebRolesQueue);
+            Assert.IsTrue(receiveMessageInbound.Item1.QueueName == pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic);
         }
     }
 }

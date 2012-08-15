@@ -45,6 +45,7 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\bin\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="SignalR, Version=0.5.2.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -64,9 +65,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PinkDao\PinkDao.csproj">
+      <Project>{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}</Project>
+      <Name>PinkDao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
+      <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
+      <Name>PinkoCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkoServices\PinkoServices.csproj">
       <Project>{904DC007-D91D-4E1C-8475-6BB56A3EC78B}</Project>
       <Name>PinkoServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
+      <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>
+      <Name>PinkoWebRoleCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\PinkoWorkerCommon\PinkoWorkerCommon.csproj">
       <Project>{45263391-63FC-4868-9D9E-DF84031361F9}</Project>

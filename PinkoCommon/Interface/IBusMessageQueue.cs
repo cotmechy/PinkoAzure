@@ -1,10 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     /// <summary>
     /// single Queue
@@ -41,6 +40,18 @@ namespace PinkoWorkerCommon.Interface
         /// OutboudMessages 
         /// </summary>
         long OutboudMessages { get; }
+
+        /// <summary>
+        /// Add extra handlers
+        /// </summary>
+        /// <returns></returns>
+        void AddHandler<T>();
+
+        /// <summary>
+        /// get Rx Subscriber for incoming message type
+        /// </summary>
+        /// <returns></returns>
+        IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>();
     }
 
     /// <summary>

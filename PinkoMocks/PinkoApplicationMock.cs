@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.Interface;
-using PinkoWorkerCommon.Utility;
+using PinkoCommon;
+using PinkoCommon.Interface;
 
 namespace PinkoMocks
 {
@@ -46,6 +43,14 @@ namespace PinkoMocks
         /// Run in backgroung 
         /// </summary>
         public void RunInBackground(Action action)
+        {
+            action();
+        }
+
+        /// <summary>
+        /// Run in a Pinko managed worker thread
+        /// </summary>
+        public void RunInWrokerThread(Action action)
         {
             action();
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +6,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using PinkoCommon.Interface;
 using PinkoCommon.Utility;
-using PinkoWorkerCommon.Interface;
 
-namespace PinkoWorkerCommon.Utility
+namespace PinkoCommon
 {
     /// <summary>
     /// Encapsulate Application level functionality
@@ -31,6 +30,15 @@ namespace PinkoWorkerCommon.Utility
         public void RunInBackground(Action action)
         {
             Task.Factory.StartNew(() => TryCatch.RunInTry(action));
+        }
+
+        /// <summary>
+        /// Run in a Pinko managed worker thread
+        /// </summary>
+        public void RunInWrokerThread(Action action)
+        {
+            var workerThread = new Thread(new ThreadStart(action)) {IsBackground = true};
+            workerThread.Start();
         }
 
         /// <summary>
@@ -104,6 +112,5 @@ namespace PinkoWorkerCommon.Utility
         /// </summary>
         [Dependency]
         public IUnityContainer PinkoContainer { get; set; }
-
     }
 }

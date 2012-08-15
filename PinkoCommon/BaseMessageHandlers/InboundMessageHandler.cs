@@ -1,10 +1,13 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Text;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.BaseMessageHandlers
+namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
     /// Handler Ping message response
@@ -12,7 +15,7 @@ namespace PinkoWorkerCommon.BaseMessageHandlers
     public abstract class InboundMessageHandler<T>
     {
         /// <summary>
-        /// Register Handler
+        /// Register Handler with RxMesagebus. 
         /// </summary>
         public InboundMessageHandler<T> Register()
         {
@@ -20,7 +23,7 @@ namespace PinkoWorkerCommon.BaseMessageHandlers
 
             PinkoApplication
                 .GetSubscriber<Tuple<IBusMessageInbound, T>>()
-                .Do(x => Trace.TraceInformation("{0}: {1} - {2}", GetType(), x.Item1.Verbose(), x.Item2.ToString()) )
+                .Do(x => Trace.TraceInformation("{0}: {1} - {2}", GetType(), x.Item1.Verbose(), x.Item2.ToString()))
                 .Subscribe(x => HandlerAction(x.Item1, x.Item2));
 
             ReplyQueue = PinkoApplication.GetBus<IBusMessageOutbound>();

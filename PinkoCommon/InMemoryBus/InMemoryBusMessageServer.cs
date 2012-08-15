@@ -7,9 +7,9 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.InMemoryMessageBus
+namespace PinkoCommon.InMemoryBus
 {
     /// <summary>
     /// In Memory bus. Us ein offline development.
@@ -27,18 +27,21 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         /// <summary>
         /// Connect to single Queue
         /// </summary>
-        public IBusMessageQueue ConnectToQueue(string queueName)
+        private IBusMessageQueue ConnectToQueue(string queueName, string selector)
         {
             // Initialize the connection to Service Bus Queue
             var client = _queues.GetOrAdd(queueName, x =>
-                                                         {
-                                                             Trace.TraceInformation("Creating new InMemoryBusMessageQueue: {0} in {1}...", queueName, AzureServerConnectionString);
+            {
+                Trace.TraceInformation("Creating new InMemoryBusMessageQueue: {0} - Selector: {2} in {1}...", queueName, AzureServerConnectionString, selector);
 
-                                                             var q = PinkoContainer.Resolve<InMemoryBusMessageQueue>();
-                                                             q.QueueName = queueName;
-                                                             q.Initialize(string.Empty);
-                                                             return q;
-                                                         });
+                var q = PinkoContainer.Resolve<InMemoryBusMessageQueue>();
+                q.QueueName = queueName;
+                q.Initialize(string.Empty);
+                return q;
+            });
+
+            //client.AddHandler<PinkoRoleHeartbeatHub>();
+            
             return client;
         }
 
@@ -46,12 +49,12 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
         /// <summary>
         /// Get existing or new queue
         /// </summary>
-        public IBusMessageQueue GetQueue(string queueName)
+        public IBusMessageQueue GetTopic(string queueName, string selector = "")
         {
             //Trace.WriteLine(string.Format("GetQueue: {0} in {1}...", queueName, AzureServerConnectionString));
 
             // Get queue
-            return ConnectToQueue(queueName);
+            return ConnectToQueue(queueName, selector);
         }
 
 
@@ -66,7 +69,7 @@ namespace PinkoWorkerCommon.InMemoryMessageBus
             PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                 .ObserveOn(Scheduler.ThreadPool)
                 .Do(x => Trace.TraceInformation("(InMemoryBusMessageServer) Sending: {0}", x.Verbose()))
-                .Subscribe(x => GetQueue(x.QueueName).Send(x));
+                .Subscribe(x => GetTopic(x.QueueName).Send(x));
         }
 
 

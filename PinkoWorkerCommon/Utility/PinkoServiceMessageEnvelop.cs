@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PinkoCommon.Interface;
 using PinkoWorkerCommon.Interface;
 
 namespace PinkoWorkerCommon.Utility
@@ -21,7 +22,7 @@ namespace PinkoWorkerCommon.Utility
         }
 
         /// <summary>
-        /// Create PinkoServiceMessageEnvelop for sending out from WebRole to Clients
+        /// Create PinkoServiceMessageEnvelop for sending out from WorkerRole to Clients
         /// </summary>
         /// <returns></returns>
         static public PinkoServiceMessageEnvelop FactorClientMessage(string queueName, object message)
@@ -44,6 +45,11 @@ namespace PinkoWorkerCommon.Utility
         /// Message ContentType
         /// </summary>
         public string ContentType { set; get; }
+
+        /// <summary>
+        /// ClientId
+        /// </summary>
+        public string ClientId { set; get; }
 
         /// <summary>
         /// Queue Name

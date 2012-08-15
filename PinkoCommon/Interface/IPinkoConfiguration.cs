@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     /// <summary>
     /// IPinkoConfiguration
@@ -22,14 +22,24 @@ namespace PinkoWorkerCommon.Interface
         IDictionary EnvironmentVariables { get; }
 
         /// <summary>
-        /// Main bus for workers 
+        /// Calc engine send real time data to specific clients. Clinet use selectors.
         /// </summary>
-        string MessageBusCrossWebRolesQueue { get; }
+        string PinkoMessageBusFeedToClientTopic { get; }
 
         /// <summary>
-        /// Topic brodcats to all clients
+        /// Broadcast to all web roles
         /// </summary>
-        string MessageBusWebRoleToClientsTopic { get; }
+        string PinkoMessageBusAllWebRolesTopic { get; }
+
+        /// <summary>
+        /// Broadcast to all Calc Engines
+        /// </summary>
+        string PinkoMessageBusAllWorkerRolesTopic { get; }
+
+        /// <summary>
+        /// Messgaes to specific Calc engine. the calc engine has  selector
+        /// </summary>
+        string PinkoMessageBusCalcEngineActionTopic { get; }
 
         /// <summary>
         /// Queue/Topic configuration

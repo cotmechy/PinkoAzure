@@ -63,10 +63,12 @@
   <ItemGroup>
     <Compile Include="AzureTests\RealAzureConnectivityTests.cs" />
     <Compile Include="AzureTests\ServiceQueueTests.cs" />
+    <Compile Include="BusMessageQueueTests.cs" />
     <Compile Include="PinkoCalcWorkerTests\WorkerRoleTests.cs" />
     <Compile Include="PinkoExpressionTests.cs" />
     <Compile Include="PinkoPingMessageHandlerTests.cs" />
     <Compile Include="PinkoServiceMessageTests.cs" />
+    <Compile Include="PinkoWebRoleTests\WebRoleConnectManagertests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -94,6 +96,10 @@
     <ProjectReference Include="..\PinkoServices\PinkoServices.csproj">
       <Project>{904DC007-D91D-4E1C-8475-6BB56A3EC78B}</Project>
       <Name>PinkoServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
+      <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>
+      <Name>PinkoWebRoleCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\PinkoWorkerCommon\PinkoWorkerCommon.csproj">
       <Project>{45263391-63FC-4868-9D9E-DF84031361F9}</Project>

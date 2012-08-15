@@ -3,22 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
-
-    ///// <summary>
-    ///// Generig
-    ///// </summary>
-    //public interface IRxMemoryBusBase
-    //{
-    //    /// <summary>
-    //    /// Publish message into bus
-    //    /// </summary>
-    //    /// <returns></returns>
-    //    void Publish(object message);
-    //}
-
-
     /// <summary>
     /// In Memory Reactive Extension observable memory bus
     /// </summary>

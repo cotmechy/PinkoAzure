@@ -7,10 +7,9 @@ using System.Reactive.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using PinkoCommon.Interface;
 using PinkoCommon.Utility;
 using PinkoWorkerCommon.ExceptionTypes;
-using PinkoWorkerCommon.Interface;
-using PinkoWorkerCommon.Utility;
 
 namespace PinkoAzureService.AzureMessageBus
 {
@@ -22,21 +21,14 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Connect to single Queuen
         /// </summary>
-        public IBusMessageQueue ConnectToQueue(string queueName)
+        public IBusMessageQueue ConnectToQueue(string queueName, string selector = "")
         {
-            Trace.TraceInformation("Connectting to Queue/Topic: {0} in {1}...", queueName, AzureServerConnectionString);
+            Trace.TraceInformation("Connectting to Queue/Topic: {0} - selector: {2}  in {1}...", queueName, AzureServerConnectionString, selector);
             AzureQueueClient client = null;
 
             // create queue/topic
             var ex = TryCatch.RunInTry(() =>
                                   {
-                                      //Uri uri = ServiceBusEnvironment.CreateServiceUri("sb", "ingham-blog", string.Empty);
-                                      //string name = "owner";
-                                      //string key = "abcdefghijklmopqrstuvwxyz";
-
-                                      //TokenProvider tokenProvider = TokenProvider.CreateSharedSecretTokenProvider(name, key);
-                                      //NamespaceManager namespaceManager = new NamespaceManager(uri, tokenProvider);
-
                                       if (PinkoConfiguration.QueueConfiguration[queueName].Item2 && !_azureNamespaceManager.QueueExists(queueName))
                                       {
                                           var td = new QueueDescription(queueName) { MaxSizeInMegabytes = 5120, DefaultMessageTimeToLive = new TimeSpan(0, 0, 30) };
@@ -45,13 +37,17 @@ namespace PinkoAzureService.AzureMessageBus
 
                                       if (!PinkoConfiguration.QueueConfiguration[queueName].Item2)
                                       {
-                                          var td = new TopicDescription(queueName) { MaxSizeInMegabytes = 5120, DefaultMessageTimeToLive = new TimeSpan(0, 0, 20) };
+                                          var td = new TopicDescription(queueName)
+                                                       {
+                                                           MaxSizeInMegabytes = 5120,
+                                                           DefaultMessageTimeToLive = new TimeSpan(0, 0, 20)
+                                                           // TODO: Add Selector
+                                                       };
                                           if (!_azureNamespaceManager.TopicExists(queueName))
                                               _azureNamespaceManager.CreateTopic(td);
                                       }
                                   });
             if (null != ex)
-            //    throw ex; // new PinkoExceptionQueueNotConfigured(queueName);
             {
                 var newExce = new PinkoExceptionQueueNotConfigured(queueName);
                 newExce.Data["OriginalException"] = ex;
@@ -60,9 +56,6 @@ namespace PinkoAzureService.AzureMessageBus
 
             // Initialize the connection to Service Bus Queue
             client = PinkoContainer.Resolve<AzureQueueClient>();
-            //client.AzureMessageClient = PinkoConfiguration.QueueConfiguration[queueName].Item2
-            //                                ? (MessageClientEntity) QueueClient.CreateFromConnectionString(AzureServerConnectionString, queueName)
-            //                                : (MessageClientEntity) TopicClient.CreateFromConnectionString(AzureServerConnectionString, queueName);
             client.QueueName = queueName;
             client.AzureNamespaceManager = _azureNamespaceManager;
             client.Initialize(AzureServerConnectionString);
@@ -72,12 +65,12 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Get existing or new queue
         /// </summary>
-        public IBusMessageQueue GetQueue(string queueName)
+        public IBusMessageQueue GetTopic(string queueName, string selector = "")
         {
             //Trace.WriteLine(string.Format("GetQueue: {0} in {1}...", queueName, AzureServerConnectionString));
 
             // Get queue
-            return _queues.GetOrAdd(queueName, x => ConnectToQueue(queueName));
+            return _queues.GetOrAdd(queueName, x => ConnectToQueue(queueName, selector));
         }
 
         /// <summary>
@@ -91,13 +84,6 @@ namespace PinkoAzureService.AzureMessageBus
             // Create the queue if it does not exist already
             AzureServerConnectionString = PinkoConfiguration.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
-            //Uri uri = ServiceBusEnvironment.CreateServiceUri("sb", "ingham-blog", string.Empty);
-            //string name = "owner";
-            //string key = "abcdefghijklmopqrstuvwxyz";
-
-            //TokenProvider tokenProvider = TokenProvider.CreateSharedSecretTokenProvider("pinko-app-bus", "S6c6FYYpdWvOLscjmUyJWQDiQd01gxENzm+W/FSjOk4=");
-            //NamespaceManager namespaceManager = new NamespaceManager(uri, tokenProvider);
-
             Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", AzureServerConnectionString);
             _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(AzureServerConnectionString);
 
@@ -105,7 +91,7 @@ namespace PinkoAzureService.AzureMessageBus
             PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                 .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
                 .ObserveOn(Scheduler.ThreadPool)
-                .Subscribe(x => GetQueue(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
+                .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
         }
 
 

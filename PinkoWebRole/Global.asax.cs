@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using PinkDao;
-using PinkoWebRoleCommon.HubModels;
-using PinkoWebRoleCommon.SignalRHub;
-using PinkoWebRoleCommon.Utility;
-using SignalR;
+using PinkoWebRoleCommon.IoC;
 
 namespace PinkoWebRole
 {
@@ -52,6 +46,8 @@ namespace PinkoWebRole
             RegisterRoutes(RouteTable.Routes);
 
             var machineName = Environment.MachineName;
+
+
 
             //// timer
             //_observable = Observable.Interval(TimeSpan.FromMilliseconds(1000), Scheduler.ThreadPool);

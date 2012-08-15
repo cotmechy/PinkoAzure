@@ -7,10 +7,8 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using PinkDao;
+using PinkoCommon.Interface;
 using PinkoServices.Handlers;
-using PinkoServices.IoC;
-using PinkoWebRoleCommon.HubModels;
-using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;
 
 namespace PinkoCalcEngineWorker
@@ -41,14 +39,14 @@ namespace PinkoCalcEngineWorker
                 () => // Start Listening to mesage bus incoming messages - MessageBusWebRoleToClientsTopic
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetQueue(PinkoContainer.Resolve<IPinkoConfiguration>().MessageBusWebRoleToClientsTopic)
+                    .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusCalcEngineActionTopic, _selector) 
                     .Listen()
                 );
 
             // Start Listening to mesage bus incoming messages - MAIN: MessageBusCrossWebRolesQueue
             PinkoContainer
                 .Resolve<IBusMessageServer>()
-                .GetQueue(PinkoContainer.Resolve<IPinkoConfiguration>().MessageBusCrossWebRolesQueue)
+                .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic) 
                 .Listen();
 
             // Return when application stops or queue stops
@@ -65,7 +63,7 @@ namespace PinkoCalcEngineWorker
             // an IoC bootstrapper available.  
             // We manually set the container here and eventually as the starting point for each role.
             //
-            PinkoContainer = ContainerManager.BuildContainer();  // Real Contianer
+            PinkoContainer = PinkoServiceContainer.BuildContainer();  // Real Contianer
             PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
 
             return base.OnStart();
@@ -83,12 +81,16 @@ namespace PinkoCalcEngineWorker
 
             // Send heartbeat
             _heartbeatTimeObservable
-                .Subscribe(x => _outboundMessageBus.Publish(PinkoServiceMessageEnvelop.FactorClientMessage(PinkoContainer.Resolve<IPinkoConfiguration>().MessageBusWebRoleToClientsTopic,
-                                                                                                    new PinkoRoleHeartbeatHub
-                                                                                                    {
-                                                                                                        ResponderDateTime = DateTime.Now,
-                                                                                                        ResponderMachine = PinkoApplication .MachineName
-                                                                                                    })));
+                .Subscribe(
+                    x =>
+                    _outboundMessageBus.Publish(
+                        PinkoServiceMessageEnvelop.FactorClientMessage(
+                            PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWebRolesTopic,  //, -- MessageBusExtensions ToString() AzureWebRoleBase role topic
+                            new PinkoRoleHeartbeat
+                                {
+                                    ResponderDateTime = DateTime.Now,
+                                    ResponderMachine = PinkoApplication.MachineName
+                                })));
         }
 
         /// <summary>
@@ -104,6 +106,12 @@ namespace PinkoCalcEngineWorker
             Thread.Sleep(5000);
             base.OnStop();
         }
+
+
+        /// <summary>
+        /// Unique Selector
+        /// </summary>
+        private string _selector = Guid.NewGuid().ToString();
 
         /// <summary>
         /// Hold hnadlers

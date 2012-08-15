@@ -1,20 +1,22 @@
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Microsoft.Practices.Unity;
 using PinkDao;
-using PinkoWebRoleCommon.HubModels;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.BaseMessageHandlers
+namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
     /// Manager to handler specifc message serialization, mappring, etc
     /// </summary>
-    public class MessageHandlerManager
+    public class MessageHandlerManager : IMessageHandlerManager
     {
         /// <summary>
         /// Initialize
         /// </summary>
-        public MessageHandlerManager Initialize()
+        public IMessageHandlerManager Initialize()
         {
             _cachedBusPublisher = GetTypeBuses();
 
@@ -32,6 +34,24 @@ namespace PinkoWorkerCommon.BaseMessageHandlers
 
 
         /// <summary>
+        /// Add extra handlers
+        /// </summary>
+        /// <returns></returns>
+        public void AddHandler<T>()
+        {
+            _cachedBusPublisher[typeof(T).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, T>>();
+        }
+
+        /// <summary>
+        /// Get Handler
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<Tuple<IBusMessageInbound, T>> GetSubscriber<T>()
+        {
+            return (_cachedBusPublisher[typeof(T).ToString()] as InboundTypedPublisher<IBusMessageInbound, T>).MessageBus.Subscriber;
+        }
+
+        /// <summary>
         /// Pre-cache msg busses
         /// </summary>
         /// <returns></returns>
@@ -41,7 +61,7 @@ namespace PinkoWorkerCommon.BaseMessageHandlers
 
             inboundPublisher[typeof(string).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, string>>();
             inboundPublisher[typeof(PinkoPingMessage).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoPingMessage>>();
-            inboundPublisher[typeof(PinkoRoleHeartbeatHub).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeatHub>>();
+            inboundPublisher[typeof(PinkoRoleHeartbeat).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeat>>();
 
             return inboundPublisher;
         }

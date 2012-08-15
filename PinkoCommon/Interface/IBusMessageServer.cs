@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PinkoWorkerCommon.InMemoryMessageBus;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     /// <summary>
     /// Message Bus
@@ -20,7 +18,7 @@ namespace PinkoWorkerCommon.Interface
         /// <summary>
         /// Connect queue
         /// </summary>
-        IBusMessageQueue GetQueue(string queueName);
+        IBusMessageQueue GetTopic(string queueName, string selector = "");
 
         /// <summary>
         /// Initialize message bus
@@ -54,5 +52,4 @@ namespace PinkoWorkerCommon.Interface
             return string.Format("IBusMessageServer: AzureServerConnectionString: {0}", obj.AzureServerConnectionString);
         }
     }
-
 }

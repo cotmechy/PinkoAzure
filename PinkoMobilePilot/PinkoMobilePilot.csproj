@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.7.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
@@ -189,6 +190,10 @@
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">
       <Project>{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}</Project>
       <Name>PinkDao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
+      <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
+      <Name>PinkoCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
       <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>

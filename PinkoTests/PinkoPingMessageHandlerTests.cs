@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
+using PinkoCommon.Interface;
 using PinkoMocks;
 using PinkoServices.Handlers;
-using PinkoWorkerCommon.Interface;
 using PinkoWorkerCommon.Utility;
-using Rhino.Mocks;
 
 namespace PinkoTests
 {

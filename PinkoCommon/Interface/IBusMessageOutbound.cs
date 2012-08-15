@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     public interface IBusMessageOutbound
     {
@@ -25,7 +25,7 @@ namespace PinkoWorkerCommon.Interface
         /// <summary>
         /// Value pairs
         /// </summary>
-        IDictionary<string, object> PinkoProperties { get;  }
+        IDictionary<string, object> PinkoProperties { get; }
     }
 
 
@@ -50,5 +50,4 @@ namespace PinkoWorkerCommon.Interface
                                                 );
         }
     }
-
 }

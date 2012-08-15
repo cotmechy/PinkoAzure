@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.Interface;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.Utility
+namespace PinkoCommon
 {
     /// <summary>
     /// In Memory Reactive Extension observable memory bus

@@ -1,6 +1,10 @@
-using PinkoWorkerCommon.Interface;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using PinkoCommon.Interface;
 
-namespace PinkoWorkerCommon.BaseMessageHandlers
+namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
     /// Generig

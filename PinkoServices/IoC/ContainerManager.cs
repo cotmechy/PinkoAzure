@@ -1,38 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using Microsoft.Practices.Unity;
-using PinkoAzureService.AzureMessageBus;
-using PinkoWorkerCommon.InMemoryMessageBus;
-using PinkoWorkerCommon.Interface;
-using PinkoWorkerCommon.Utility;
+using PinkoCommon;
+using PinkoCommon.InMemoryBus;
+using PinkoCommon.Interface;
 
 namespace PinkoServices.IoC
 {
-    /// <summary>
-    /// Manags container. Eventually inject properly into callers
-    /// </summary>
-    public class ContainerManager
-    {
-        /// <summary>
-        /// Build 
-        /// </summary>
-        static public IUnityContainer BuildContainer()
-        {
-            var pinkoContainer = new UnityContainer();
+    ///// <summary>
+    ///// Manags container. Eventually inject properly into callers
+    ///// </summary>
+    //public class ContainerManager
+    //{
+    //    /// <summary>
+    //    /// Build 
+    //    /// </summary>
+    //    static public IUnityContainer BuildContainer()
+    //    {
+    //        var pinkoContainer = new UnityContainer();
 
-            pinkoContainer.RegisterInstance<IPinkoConfiguration>(pinkoContainer.Resolve<PinkoConfiguration>());
-            pinkoContainer.RegisterInstance<IPinkoApplication>(pinkoContainer.Resolve<PinkoApplication>());
-            //pinkoContainer.RegisterInstance<ICloudConfigurationManager>(pinkoContainer.Resolve<AzureCloudConfigurationManager>());
+    //        Trace.Listeners.Add(new TraceListenerDebug());
 
-            pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<AzureBusMessageServer>());
-            //pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<InMemoryBusMessageServer>()); // Whe runnign offline
+    //        pinkoContainer.RegisterInstance<IPinkoConfiguration>(pinkoContainer.Resolve<PinkoConfiguration>());
+    //        pinkoContainer.RegisterInstance<IPinkoApplication>(pinkoContainer.Resolve<PinkoApplication>());
+    //        //pinkoContainer.RegisterInstance<ICloudConfigurationManager>(pinkoContainer.Resolve<AzureCloudConfigurationManager>());
 
-            pinkoContainer.Resolve<IBusMessageServer>().Initialize();
+    //        //pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<AzureBusMessageServer>());
+    //        pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<InMemoryBusMessageServer>()); // Whe runnign offline
 
-            return pinkoContainer;
-        }
+    //        pinkoContainer.Resolve<IBusMessageServer>().Initialize();
 
-    }
+    //        return pinkoContainer;
+    //    }
+
+    //}
 }

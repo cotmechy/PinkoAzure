@@ -27,7 +27,7 @@ namespace PinkoTests
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine(marketEnv.PinkoDataAccessLayer);
 
             var complExp = expEngine.ParseAndCompile<double>("{ RForm(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\") } ");
-            var result = expEngine.CalcExp(marketEnv, complExp);
+            var result = expEngine.Invoke(marketEnv, complExp);
 
             Assert.IsTrue(9.5679 == Math.Round(result, 4));
         }
@@ -45,7 +45,7 @@ namespace PinkoTests
 
             // ibm - msft
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) - RHist(\"Symbol\", \"IBM\", \"Price.Ask\", \"Reuters\", \"Hour\", 360); } ");
-            var result = expEngine.CalcExp(marketEnv, complExp);
+            var result = expEngine.Invoke(marketEnv, complExp);
 
             Assert.IsTrue(result.All(x => 0 == x));
         }
@@ -64,7 +64,7 @@ namespace PinkoTests
 
             // ibm - msft
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) - RHist(\"Symbol\", \"MSFT\", \"Price.Ask\", \"Reuters\", \"Hour\", 360); } ");
-            var result = expEngine.CalcExp(marketEnv, complExp);
+            var result = expEngine.Invoke(marketEnv, complExp);
 
             int idx = 0;
             var expectedResult = dal.IbmSeries.Select(x => Math.Round(x - dal.MsftSeries[idx++], 4)).ToList();
@@ -85,21 +85,21 @@ namespace PinkoTests
 
             // ibm
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) } ");
-            var result = expEngine.CalcExp(marketEnv, complExp);
+            var result = expEngine.Invoke(marketEnv, complExp);
             Assert.IsTrue(dal.IbmSeries.SequenceEqual(result));
             Assert.IsFalse(dal.MsftSeries.SequenceEqual(result));
             Assert.IsFalse(dal.InvalidSeries.SequenceEqual(result));
 
             // msft
             complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"MSFT\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) } ");
-            result = expEngine.CalcExp(marketEnv, complExp);
+            result = expEngine.Invoke(marketEnv, complExp);
             Assert.IsFalse(dal.IbmSeries.SequenceEqual(result));
             Assert.IsTrue(dal.MsftSeries.SequenceEqual(result));
             Assert.IsFalse(dal.InvalidSeries.SequenceEqual(result));
 
             // Invalid
             complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"Invalid\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) } ");
-            result = expEngine.CalcExp(marketEnv, complExp);
+            result = expEngine.Invoke(marketEnv, complExp);
             Assert.IsFalse(dal.IbmSeries.SequenceEqual(result));
             Assert.IsFalse(dal.MsftSeries.SequenceEqual(result));
             Assert.IsTrue(dal.InvalidSeries.SequenceEqual(result));

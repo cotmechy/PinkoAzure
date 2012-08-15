@@ -1,8 +1,11 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System.Diagnostics;
+using Microsoft.Practices.Unity;
+using PinkDao;
+using PinkoCommon;
+using PinkoCommon.BaseMessageHandlers;
+using PinkoCommon.InMemoryBus;
+using PinkoCommon.Interface;
 using PinkoExpressionCommon.Interface;
-using PinkoServices;
-using PinkoWorkerCommon.InMemoryMessageBus;
-using PinkoWorkerCommon.Interface;
 using Rhino.Mocks;
 
 namespace PinkoMocks
@@ -16,6 +19,8 @@ namespace PinkoMocks
         {
             var container = new UnityContainer();
 
+            Trace.Listeners.Add(new TraceListenerDebug());
+
             //var mockRepo = new MockRepository();
 
             //
@@ -27,6 +32,9 @@ namespace PinkoMocks
 
             container.RegisterInstance<IPinkoConfiguration>(new PinkoConfiguration());
             container.RegisterInstance<IPinkoApplication>(container.Resolve<PinkoApplicationMock>());
+
+            container.RegisterInstance<IMessageHandlerManager>(container.Resolve<MessageHandlerManager>().Initialize()); // Handle messages
+            
             container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>());
             //container.RegisterInstance<IBusMessageServer>(container.Resolve<BusMessageServerMock>());
             //container.RegisterInstance<ICloudConfigurationManager>(new CloudConfigurationManagerMock());
@@ -39,14 +47,14 @@ namespace PinkoMocks
             //
             var marketEnv = MockRepository.GenerateStub<IPinkoMarketEnvironment>();
             marketEnv.PinkoDataAccessLayer = new PinkoDataAccessLayerMock();
-            container.RegisterInstance<IPinkoMarketEnvironment>(marketEnv);
+            container.RegisterInstance(marketEnv);
 
 
             //
             // IPinkoExpressionEngine
             //
             var expreEng = MockRepository.GenerateMock<IPinkoExpressionEngine>();
-            container.RegisterInstance<IPinkoExpressionEngine>(expreEng);
+            container.RegisterInstance(expreEng);
 
 
             return container;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     /// <summary>
     /// Bus message
@@ -29,6 +29,11 @@ namespace PinkoWorkerCommon.Interface
         /// Message ContentType
         /// </summary>
         string ContentType { get; }
+
+        /// <summary>
+        /// Message ContentType
+        /// </summary>
+        string ClientId { get; }
 
         /// <summary>
         /// Value pairs

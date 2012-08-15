@@ -78,6 +78,10 @@
       <Project>{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}</Project>
       <Name>PinkoAzureService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
+      <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
+      <Name>PinkoCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkoMocks\PinkoMocks.csproj">
       <Project>{684F2F70-9FBB-4C31-898F-0AB01CB1E332}</Project>
       <Name>PinkoMocks</Name>
@@ -85,10 +89,6 @@
     <ProjectReference Include="..\PinkoServices\PinkoServices.csproj">
       <Project>{904DC007-D91D-4E1C-8475-6BB56A3EC78B}</Project>
       <Name>PinkoServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
-      <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>
-      <Name>PinkoWebRoleCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\PinkoWorkerCommon\PinkoWorkerCommon.csproj">
       <Project>{45263391-63FC-4868-9D9E-DF84031361F9}</Project>

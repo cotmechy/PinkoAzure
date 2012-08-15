@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoAzureService.AzureMessageBus;
+using PinkoCommon.Interface;
 using PinkoMocks;
-using PinkoWorkerCommon.Interface;
 using Microsoft.Practices.Unity;
 using PinkoWorkerCommon.Utility;
 
@@ -35,9 +32,9 @@ namespace PinkoTests.AzureTests
             server.Initialize();
 
             // Connect to queue
-            const string queuName = "UnitTestTopicName";
-            pinkoConfiguration.QueueConfiguration[queuName] = new Tuple<string, bool>(queuName, false /* Topic */);
-            var queue = server.ConnectToQueue(queuName);
+            const string queueName = "UnitTestTopicName";
+            pinkoConfiguration.QueueConfiguration[queueName] = new Tuple<string, bool>(queueName, false /* Topic */);
+            var queue = server.ConnectToQueue(queueName);
 
             queue.Close();
             server.Deinitialize();

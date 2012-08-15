@@ -35,7 +35,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="SignalR, Version=0.5.2.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -46,28 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseMessageHandlers\IInBoundTypedPublisherBase.cs" />
-    <Compile Include="BaseMessageHandlers\InboundMessageHandler.cs" />
-    <Compile Include="BaseMessageHandlers\InboundTypedPublisher.cs" />
-    <Compile Include="BaseMessageHandlers\MessageHandlerManager.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionAzureDeserializerNotFound.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionQueueNotConfigured.cs" />
     <Compile Include="Extensions\PinkoExtensions.cs" />
-    <Compile Include="InMemoryMessageBus\InMemoryBusMessageQueue.cs" />
-    <Compile Include="InMemoryMessageBus\InMemoryBusMessageServer.cs" />
-    <Compile Include="Interface\IBusMessageInbound.cs" />
-    <Compile Include="Interface\IBusMessageOutbound.cs" />
-    <Compile Include="Interface\IBusMessageServer.cs" />
-    <Compile Include="Interface\IBusMessageQueue.cs" />
     <Compile Include="Interface\ICloudConfigurationManager.cs" />
-    <Compile Include="Interface\IPinkoApplication.cs" />
-    <Compile Include="Interface\IPinkoConfiguration.cs" />
-    <Compile Include="Interface\IRxMemoryBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\MemoryBus.cs" />
-    <Compile Include="Utility\PinkoApplication.cs" />
+    <Compile Include="Utility\PinkoServiceContainer.cs" />
     <Compile Include="Utility\PinkoServiceMessageEnvelop.cs" />
-    <Compile Include="Utility\TryCatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">

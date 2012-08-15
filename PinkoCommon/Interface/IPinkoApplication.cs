@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace PinkoWorkerCommon.Interface
+namespace PinkoCommon.Interface
 {
     /// <summary>
     /// Application level services for threading, etc ...
@@ -25,12 +24,17 @@ namespace PinkoWorkerCommon.Interface
         /// <summary>
         /// Machine Name
         /// </summary>
-        string MachineName { get;  }
+        string MachineName { get; }
 
         /// <summary>
         /// Run in backgroung 
         /// </summary>
         void RunInBackground(Action action);
+
+        /// <summary>
+        /// Run in a Pinko managed worker thread
+        /// </summary>
+        void RunInWrokerThread(Action action);
 
         /// <summary>
         /// Run in background (Task)
