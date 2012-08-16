@@ -39,8 +39,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="PinkoExpressionCommon">
+    <Reference Include="PinkoExpressionCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="PinkoExpressionEngine">
+      <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionEngine.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\bin\Rhino.Mocks.dll</HintPath>
@@ -62,6 +66,9 @@
     <Compile Include="PinkoApplicationMock.cs" />
     <Compile Include="PinkoContainerMock.cs" />
     <Compile Include="PinkoDataAccessLayerMock.cs" />
+    <Compile Include="PinkoExpressionEngineMock.cs" />
+    <Compile Include="PinkoMarketEnvironmentMock.cs" />
+    <Compile Include="PinkoMarketEnvManagerMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

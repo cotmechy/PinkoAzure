@@ -26,8 +26,24 @@ namespace PinkoCommon.Interface
         /// Value pairs
         /// </summary>
         IDictionary<string, object> PinkoProperties { get; }
-    }
 
+        /// <summary>
+        /// Error code. Non 0 is an error
+        /// </summary>
+        int ErrorCode { get; set; }
+
+        /// <summary>
+        /// Error Description. User frindly. 
+        /// </summary>
+        string ErrorDescription { get; set; }
+
+        /// <summary>
+        /// Full technical error
+        /// </summary>
+        string ErrorSystem { get; set; }
+
+
+    }
 
     /// <summary>
     /// BusMessageOutboundExtensions

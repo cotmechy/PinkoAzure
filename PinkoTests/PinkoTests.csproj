@@ -44,6 +44,9 @@
     <Reference Include="PinkoExpressionCommon">
       <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionCommon.dll</HintPath>
     </Reference>
+    <Reference Include="PinkoExpressionEngine">
+      <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionEngine.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\bin\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -64,6 +67,7 @@
     <Compile Include="AzureTests\RealAzureConnectivityTests.cs" />
     <Compile Include="AzureTests\ServiceQueueTests.cs" />
     <Compile Include="BusMessageQueueTests.cs" />
+    <Compile Include="HandleCalculateExpressionTests.cs" />
     <Compile Include="PinkoCalcWorkerTests\WorkerRoleTests.cs" />
     <Compile Include="PinkoExpressionTests.cs" />
     <Compile Include="PinkoPingMessageHandlerTests.cs" />

@@ -5,7 +5,7 @@ using PinkoCommon;
 using PinkoCommon.BaseMessageHandlers;
 using PinkoCommon.InMemoryBus;
 using PinkoCommon.Interface;
-using PinkoExpressionCommon.Interface;
+using PinkoExpressionCommon;
 using Rhino.Mocks;
 
 namespace PinkoMocks
@@ -32,8 +32,11 @@ namespace PinkoMocks
 
             container.RegisterInstance<IPinkoConfiguration>(new PinkoConfiguration());
             container.RegisterInstance<IPinkoApplication>(container.Resolve<PinkoApplicationMock>());
-
+            container.RegisterInstance<IPinkoExpressionEngine>(new PinkoExpressionEngineMock());
             container.RegisterInstance<IMessageHandlerManager>(container.Resolve<MessageHandlerManager>().Initialize()); // Handle messages
+
+            container.RegisterInstance<IPinkoMarketEnvironment>(new PinkoMarketEnvironmentMock());
+            container.RegisterInstance<IPinkoMarketEnvManager>(new PinkoMarketEnvManagerMock() { PinkoMarketEnv = container.Resolve<IPinkoMarketEnvironment>() });
             
             container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>());
             //container.RegisterInstance<IBusMessageServer>(container.Resolve<BusMessageServerMock>());
@@ -42,19 +45,13 @@ namespace PinkoMocks
             //container.Resolve<IBusMessageServer>().Initialize();
 
 
-            //
-            // IPinkoMarketEnvironment / IPinkoDataAccessLayer
-            //
-            var marketEnv = MockRepository.GenerateStub<IPinkoMarketEnvironment>();
-            marketEnv.PinkoDataAccessLayer = new PinkoDataAccessLayerMock();
-            container.RegisterInstance(marketEnv);
+            ////
+            //// IPinkoMarketEnvironment / IPinkoDataAccessLayer
+            ////
+            //var marketEnv = MockRepository.GenerateStub<IPinkoMarketEnvironment>();
+            //marketEnv.PinkoDataAccessLayer = new PinkoDataAccessLayerMock();
+            //container.RegisterInstance(marketEnv);
 
-
-            //
-            // IPinkoExpressionEngine
-            //
-            var expreEng = MockRepository.GenerateMock<IPinkoExpressionEngine>();
-            container.RegisterInstance(expreEng);
 
 
             return container;

@@ -42,7 +42,8 @@ namespace PinkoTests.PinkoCalcWorkerTests
             workerRole.StartHeartBeat();
             pinkoApplication.ApplicationRunningEvent.WaitOne(6000);
 
-            Assert.IsTrue(busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusCalcEngineActionTopic).OutboudMessages >= 5);
+            var outboudMessages = busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusAllWebRolesTopic).OutboudMessages;
+            Assert.IsTrue(outboudMessages >= 5);
         }
 
 

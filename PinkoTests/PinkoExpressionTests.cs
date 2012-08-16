@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkoExpressionCommon;
-using PinkoExpressionCommon.Interface;
+using PinkoExpressionEngine;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
 
@@ -17,6 +15,28 @@ namespace PinkoTests
     public class PinkoExpressionTests
     {
         /// <summary>
+        /// Run same formula with 2 diff data access layers
+        /// </summary>
+        [TestMethod]
+        public void TestDataLayerChange()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+            var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
+
+            var complExp = expEngine.ParseAndCompile<double>("{ RForm(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\") } ");
+
+            var result = expEngine.Invoke(marketEnv, complExp);
+            Assert.IsTrue(9.5679 == Math.Round(result, 4));
+
+            // Change IPinkoDataAccessLayer value 
+            dal.IbmPrice = 3.99;
+            result = expEngine.Invoke(marketEnv, complExp);
+            Assert.IsTrue(3.99 == Math.Round(result, 4));
+        }
+
+        /// <summary>
         /// Basic double expression
         /// </summary>
         [TestMethod]
@@ -24,7 +44,7 @@ namespace PinkoTests
         {
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
-            var expEngine = PinkoExpressionEngineFactory.GetNewEngine(marketEnv.PinkoDataAccessLayer);
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
 
             var complExp = expEngine.ParseAndCompile<double>("{ RForm(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\") } ");
             var result = expEngine.Invoke(marketEnv, complExp);
@@ -41,7 +61,7 @@ namespace PinkoTests
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
-            var expEngine = PinkoExpressionEngineFactory.GetNewEngine(marketEnv.PinkoDataAccessLayer);
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
 
             // ibm - msft
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) - RHist(\"Symbol\", \"IBM\", \"Price.Ask\", \"Reuters\", \"Hour\", 360); } ");
@@ -60,7 +80,7 @@ namespace PinkoTests
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
-            var expEngine = PinkoExpressionEngineFactory.GetNewEngine(marketEnv.PinkoDataAccessLayer);
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
 
             // ibm - msft
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) - RHist(\"Symbol\", \"MSFT\", \"Price.Ask\", \"Reuters\", \"Hour\", 360); } ");
@@ -81,7 +101,7 @@ namespace PinkoTests
             var pinkoContainer = PinkoContainerMock.GetMokContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
-            var expEngine = PinkoExpressionEngineFactory.GetNewEngine(marketEnv.PinkoDataAccessLayer);
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
 
             // ibm
             var complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"IBM\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) } ");

@@ -42,6 +42,12 @@ namespace PinkoCommon.BaseMessageHandlers
         public IRxMemoryBus<IBusMessageOutbound> ReplyQueue;
 
         /// <summary>
+        /// IUnityContainer
+        /// </summary>
+        [Dependency]
+        public IUnityContainer PinkoContainer { get; set; }
+
+        /// <summary>
         /// IPinkoApplication
         /// </summary>
         [Dependency]

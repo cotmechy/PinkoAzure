@@ -34,7 +34,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        void RunInWrokerThread(Action action);
+        void RunInWorkerThread(Action action);
 
         /// <summary>
         /// Run in background (Task)

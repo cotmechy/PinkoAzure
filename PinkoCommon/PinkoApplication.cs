@@ -35,7 +35,7 @@ namespace PinkoCommon
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        public void RunInWrokerThread(Action action)
+        public void RunInWorkerThread(Action action)
         {
             var workerThread = new Thread(new ThreadStart(action)) {IsBackground = true};
             workerThread.Start();

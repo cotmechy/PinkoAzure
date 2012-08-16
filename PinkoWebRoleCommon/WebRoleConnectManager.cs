@@ -21,7 +21,7 @@ namespace PinkoWebRoleCommon
             // Start listening to incoming topics
             PinkoContainer
                 .Resolve<IPinkoApplication>()
-                .RunInWrokerThread(
+                .RunInWorkerThread(
                     () => // All Worker roles
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
@@ -31,7 +31,7 @@ namespace PinkoWebRoleCommon
 
             PinkoContainer
                 .Resolve<IPinkoApplication>()
-                .RunInWrokerThread(
+                .RunInWorkerThread(
                     () => // Selected
                     PinkoContainer
                         .Resolve<IBusMessageServer>()

@@ -50,7 +50,7 @@ namespace PinkoMocks
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        public void RunInWrokerThread(Action action)
+        public void RunInWorkerThread(Action action)
         {
             action();
         }

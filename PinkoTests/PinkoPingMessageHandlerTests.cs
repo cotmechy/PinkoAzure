@@ -25,7 +25,7 @@ namespace PinkoTests
             var pme = new PinkoServiceMessageEnvelop() {Message = pm, QueueName = "QueueNameResponse"};
             IBusMessageOutbound outboundMsg = null;
 
-            // Listen for outbound messages
+            // Listen for outbound messages to monitor outbouns queue
             pinkoApplication
                 .GetSubscriber<IBusMessageOutbound>()
                 .Subscribe(x => outboundMsg = x);

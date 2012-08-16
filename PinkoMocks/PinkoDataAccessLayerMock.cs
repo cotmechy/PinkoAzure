@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PinkoExpressionCommon.Interface;
+﻿using PinkoExpressionCommon;
 
 namespace PinkoMocks
 {
     public class PinkoDataAccessLayerMock : IPinkoDataAccessLayer
     {
+        public double IbmPrice = 9.56789; 
+
         // -------------------
         // RForm("Symbol", "IBM", "Price.Bid", "Reuters")
         public double RForm(string s, string n, string t, string p)
@@ -15,7 +13,7 @@ namespace PinkoMocks
             switch (n)
             {
                 case "IBM":
-                    return 9.56789;
+                    return IbmPrice;
                 case "MSFT":
                     return 8.98765;
                 case "C":

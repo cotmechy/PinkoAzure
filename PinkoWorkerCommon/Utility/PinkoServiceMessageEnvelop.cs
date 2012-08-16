@@ -65,5 +65,20 @@ namespace PinkoWorkerCommon.Utility
         /// Value pairs
         /// </summary>
         public IDictionary<string, object> PinkoProperties { get; set; }
+
+        /// <summary>
+        /// Error code. Non 0 is an error
+        /// </summary>
+        public int ErrorCode { get; set; }
+
+        /// <summary>
+        /// Error Description. User frindly. 
+        /// </summary>
+        public string ErrorDescription { get; set; }
+
+        /// <summary>
+        /// Full technical error
+        /// </summary>
+        public string ErrorSystem { get; set; }
     }
 }

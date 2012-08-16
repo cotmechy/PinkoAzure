@@ -31,6 +31,7 @@ namespace PinkoTests
             Tuple<IBusMessageInbound, string> msg = null;
             incomingTopic.GetIncomingSubscriber<string>().Subscribe(x => msg = x);
 
+            // Simulate incoming topic message
             incomingTopic.Send(new PinkoServiceMessageEnvelop()
                                    {
                                        Message = "SringIncomingMessageTest",
@@ -39,7 +40,6 @@ namespace PinkoTests
 
             Assert.IsNotNull(msg);
             Assert.IsTrue(msg.Item2.Equals("SringIncomingMessageTest"));
-            //incomingTopic.Send();
         }
     }
 }

@@ -45,6 +45,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\ref\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
     </Reference>
+    <Reference Include="PinkoExpressionCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SignalR">
       <HintPath>..\PinkoWebRole\bin\SignalR.dll</HintPath>
     </Reference>
@@ -60,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureWebRoleBase.cs" />
+    <Compile Include="Handlers\HandleCalculateExpression.cs" />
+    <Compile Include="Handlers\HandlerSubscribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkerRole.cs" />
   </ItemGroup>

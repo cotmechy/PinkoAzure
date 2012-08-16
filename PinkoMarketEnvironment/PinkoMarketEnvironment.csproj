@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}</ProjectGuid>
+    <ProjectGuid>{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PinkDao</RootNamespace>
-    <AssemblyName>PinkDao</AssemblyName>
+    <RootNamespace>PinkoMarketEnvironment</RootNamespace>
+    <AssemblyName>PinkoMarketEnvironment</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,11 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PinkoCalcSubsAction.cs" />
-    <Compile Include="PinkoCalculateExpressionDao.cs" />
-    <Compile Include="PinkoDataFeedIdentifier.cs" />
-    <Compile Include="PinkoPingMessage.cs" />
-    <Compile Include="PinkoRoleHeartbeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

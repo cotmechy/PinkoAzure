@@ -25,17 +25,15 @@ namespace PinkoCalcEngineWorker
         public override void Run()
         {
             // Register base handlers
-            _handlers.AddRange(new object[]
+            _autoHandlers.AddRange(new object[]
             {
-                PinkoContainer.Resolve<HandlerStringMessage>().Register(),
                 PinkoContainer.Resolve<HandlerPinkoPingMessage>().Register(),
-                PinkoContainer.Resolve<HandlerPinkoRoleHeartbeat>().Register()
             });
 
             // start hearbeats
             StartHeartBeat();
 
-            PinkoApplication.RunInBackground(
+            PinkoApplication.RunInWorkerThread(
                 () => // Start Listening to mesage bus incoming messages - MessageBusWebRoleToClientsTopic
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
@@ -111,12 +109,12 @@ namespace PinkoCalcEngineWorker
         /// <summary>
         /// Unique Selector
         /// </summary>
-        private string _selector = Guid.NewGuid().ToString();
+        private readonly string _selector = Guid.NewGuid().ToString();
 
         /// <summary>
         /// Hold hnadlers
         /// </summary>
-        readonly List<object> _handlers = new List<object>();
+        readonly List<object> _autoHandlers = new List<object>();
 
         /// <summary>
         /// Time sequence

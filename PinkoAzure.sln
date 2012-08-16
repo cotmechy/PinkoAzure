@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoWebRoleCommon", "Pinko
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoCommon", "PinkoCommon\PinkoCommon.csproj", "{1E504762-93C7-4AB4-A45F-64FD6F826724}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoMarketEnvironment", "PinkoMarketEnvironment\PinkoMarketEnvironment.csproj", "{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PinkoAzure.vsmdi
@@ -100,6 +102,10 @@ Global
 		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +120,6 @@ Global
 		{904DC007-D91D-4E1C-8475-6BB56A3EC78B} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
 		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
 		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
 	EndGlobalSection
 EndGlobal
