@@ -25,7 +25,7 @@ namespace PinkoCalcEngineWorker
         public override void Run()
         {
             // Register base handlers
-            _autoHandlers.AddRange(new object[]
+            MessageHandlers.AddRange(new object[]
             {
                 PinkoContainer.Resolve<HandlerPinkoPingMessage>().Register(),
             });
@@ -83,7 +83,7 @@ namespace PinkoCalcEngineWorker
                     x =>
                     _outboundMessageBus.Publish(
                         PinkoServiceMessageEnvelop.FactorClientMessage(
-                            PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWebRolesTopic,  //, -- MessageBusExtensions ToString() AzureWebRoleBase role topic
+                            PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWebRolesTopic,  
                             new PinkoRoleHeartbeat
                                 {
                                     ResponderDateTime = DateTime.Now,
@@ -114,7 +114,7 @@ namespace PinkoCalcEngineWorker
         /// <summary>
         /// Hold hnadlers
         /// </summary>
-        readonly List<object> _autoHandlers = new List<object>();
+        protected readonly List<object> MessageHandlers = new List<object>();
 
         /// <summary>
         /// Time sequence

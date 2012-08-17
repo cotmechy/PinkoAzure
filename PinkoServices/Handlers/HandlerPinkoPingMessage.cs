@@ -13,7 +13,7 @@ namespace PinkoServices.Handlers
         /// <summary>
         /// Handle message
         /// </summary>
-        public override void HandlerAction(IBusMessageInbound msg, PinkoPingMessage typedMsg)
+        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoPingMessage typedMsg)
         {
             typedMsg.ResponderMachine = PinkoApplication.MachineName;
             typedMsg.ResponderDateTime = DateTime.Now;
@@ -21,7 +21,7 @@ namespace PinkoServices.Handlers
             msg.Message = typedMsg;
 
             // Respond to ping message
-            ReplyQueue.Publish((IBusMessageOutbound) msg);
+            return (IBusMessageOutbound) msg;
         }
     }
 }

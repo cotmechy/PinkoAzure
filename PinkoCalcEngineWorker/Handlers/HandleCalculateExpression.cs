@@ -14,20 +14,20 @@ namespace PinkoCalcEngineWorker.Handlers
     /// </summary>
     public class HandleCalculateExpression : InboundMessageHandler<PinkoCalculateExpressionDao>
     {
-        /// <summary>
-        /// Handle adhoc request
-        /// </summary>
-        public override void HandlerAction(IBusMessageInbound msg, PinkoCalculateExpressionDao expression)
-        {
-            // Send reply to user
-            ReplyQueue.Publish(ProcessRequest(msg, expression));
-        }
+        ///// <summary>
+        ///// Handle adhoc request
+        ///// </summary>
+        //public override void HandlerAction(IBusMessageInbound msg, PinkoCalculateExpressionDao expression)
+        //{
+        //    // Send reply to user
+        //    ReplyQueue.Publish(ProcessRequest(msg, expression));
+        //}
 
 
         /// <summary>
         /// Handle adhoc request
         /// </summary>
-        public IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoCalculateExpressionDao expression)
+        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoCalculateExpressionDao expression)
         {
             var outMsg = (IBusMessageOutbound)msg;
             var marketEnv = PinkoMarketEnvManager.GetMarketEnv(expression.MaketEnvId);
@@ -55,9 +55,10 @@ namespace PinkoCalcEngineWorker.Handlers
 
                     default:
                         {
-                            expression.ResultValue = "#ERROR";
+                            expression.ResultValue = PinkoMessagesText.Error;
                             outMsg.ErrorCode = PinkoErrorCode.FormulaTypeNotSupported;
-                            outMsg.ErrorDescription = "Only double and Historical series supported.";
+                            outMsg.ErrorDescription = PinkoMessagesText.FormulasSupported;
+                            outMsg.ErrorSystem = PinkoMessagesText.FormulasSupported;
                         }
                         break;
                 }
@@ -69,6 +70,7 @@ namespace PinkoCalcEngineWorker.Handlers
                 outMsg.ErrorCode = PinkoErrorCode.UnexpectedException;
                 outMsg.ErrorDescription = ex.Message;
                 outMsg.ErrorSystem = ex.ToString();
+                expression.ResultValue = PinkoMessagesText.Error;
             }
 
             return outMsg;

@@ -30,10 +30,10 @@ namespace PinkoCommon.Interface
         /// </summary>
         string ContentType { get; }
 
-        /// <summary>
-        /// Message ContentType
-        /// </summary>
-        string ClientId { get; }
+        ///// <summary>
+        ///// Message ContentType
+        ///// </summary>
+        //string ClientId { get; }
 
         /// <summary>
         /// Value pairs

@@ -46,10 +46,20 @@ namespace PinkoWorkerCommon.Utility
         /// </summary>
         public string ContentType { set; get; }
 
-        /// <summary>
-        /// ClientId
-        /// </summary>
-        public string ClientId { set; get; }
+        ///// <summary>
+        ///// ClientId
+        ///// </summary>
+        //public string ClientId { set; get; }
+
+        ///// <summary>
+        ///// RoutingId
+        ///// </summary>
+        //public string RoutingId { set; get; }
+
+        ///// <summary>
+        ///// WorkerRoleId
+        ///// </summary>
+        //public string WorkerRoleId { set; get; }
 
         /// <summary>
         /// Queue Name

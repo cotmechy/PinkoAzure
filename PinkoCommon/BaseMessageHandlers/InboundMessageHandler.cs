@@ -32,9 +32,28 @@ namespace PinkoCommon.BaseMessageHandlers
         }
 
         /// <summary>
+        /// Handle adhoc request
+        /// </summary>
+        public void HandlerAction(IBusMessageInbound msg, T expression)
+        {
+            var response = ProcessRequest(msg, expression);
+
+            response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = _handlerId;
+            response.PinkoProperties[PinkoMessagePropTag.SenderName] = PinkoApplication.MachineName;
+
+            // Send reply to user
+            ReplyQueue.Publish(response);
+        }
+
+        /// <summary>
+        /// HandlerId
+        /// </summary>
+        private readonly string _handlerId = Guid.NewGuid().ToString();
+
+        /// <summary>
         /// Set handler 
         /// </summary>
-        public abstract void HandlerAction(IBusMessageInbound msg, T type);
+        public abstract IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, T type);
 
         /// <summary>
         /// REply queue publisher

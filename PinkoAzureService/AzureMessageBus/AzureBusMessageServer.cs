@@ -78,20 +78,23 @@ namespace PinkoAzureService.AzureMessageBus
         /// </summary>
         public void Initialize()
         {
-            // Set the maximum number of concurrent connections 
-            ServicePointManager.DefaultConnectionLimit = 12;
+            TryCatch.RunInTryThrow(() =>
+                {
+                    // Set the maximum number of concurrent connections 
+                    ServicePointManager.DefaultConnectionLimit = 12;
 
-            // Create the queue if it does not exist already
-            AzureServerConnectionString = PinkoConfiguration.GetSetting("Microsoft.ServiceBus.ConnectionString");
+                    // Create the queue if it does not exist already
+                    AzureServerConnectionString = PinkoConfiguration.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
-            Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", AzureServerConnectionString);
-            _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(AzureServerConnectionString);
+                    Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", AzureServerConnectionString);
+                    _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(AzureServerConnectionString);
 
-            // Set listener for outbound messages 
-            PinkoApplication.GetSubscriber<IBusMessageOutbound>()
-                .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
-                .ObserveOn(Scheduler.ThreadPool)
-                .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
+                    // Set listener for outbound messages 
+                    PinkoApplication.GetSubscriber<IBusMessageOutbound>()
+                        .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
+                        .ObserveOn(Scheduler.ThreadPool)
+                        .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
+                });
         }
 
 
@@ -119,11 +122,6 @@ namespace PinkoAzureService.AzureMessageBus
         /// </summary>
         [Dependency]
         public IPinkoConfiguration PinkoConfiguration { private get; set; }
-
-        ///// <summary>
-        ///// Receive all message vis this Rxmemory bus
-        ///// </summary>
-        //private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
 
         /// <summary>
         /// Internal queue cache

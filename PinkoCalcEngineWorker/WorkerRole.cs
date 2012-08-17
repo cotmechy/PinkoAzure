@@ -1,5 +1,5 @@
-﻿using PinkoAzureService;
-using PinkoServices;
+﻿using PinkoCalcEngineWorker.Handlers;
+using Microsoft.Practices.Unity;
 
 namespace PinkoCalcEngineWorker
 {
@@ -17,6 +17,7 @@ namespace PinkoCalcEngineWorker
             var rtn = base.OnStart();
 
             // Register message type to process
+            MessageHandlers.Add(PinkoContainer.Resolve<HandleCalculateExpression>().Register());
 
             return rtn;
         }

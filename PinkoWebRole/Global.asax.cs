@@ -112,7 +112,7 @@ namespace PinkoWebRole
             //    });
         }
 
-        private IObservable<long> _observable;
+        //private IObservable<long> _observable;
 
     }
 }

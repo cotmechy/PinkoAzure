@@ -239,37 +239,10 @@ namespace PinkoAzureService.AzureMessageBus
         /// </summary>
         private IMessageHandlerManager _messageHandlerManager;
 
-
-        ///// <summary>
-        ///// QueueClient is thread-safe. Recommended that you cache 
-        ///// </summary>
-        //private MessageClientEntity AzureMessageClient
-        //{
-        //    get { return _azureMessageClient; }
-        //    set 
-        //    { 
-        //        _azureMessageClient = value;
-        //        _topicClient = _azureMessageClient as TopicClient;
-        //        _queueClient = _azureMessageClient as QueueClient;
-        //    }
-        //}
-        //private MessageClientEntity _azureMessageClient;
-
-        ///// <summary>
-        ///// Pre-Cast 
-        ///// </summary>
-        //private QueueClient _queueClient;
-        //private TopicClient _topicClient;
-
         /// <summary>
         /// Queue Name
         /// </summary>
         public string QueueName { get; set; }
-
-        ///// <summary>
-        ///// Queue Name
-        ///// </summary>
-        //public bool IsTopic { get; set; }
 
         /// <summary>
         /// Set signal when ready to stop lis
@@ -290,11 +263,6 @@ namespace PinkoAzureService.AzureMessageBus
         /// MessageSender
         /// </summary>
         private MessageSender _msgSender;
-
-        ///// <summary>
-        ///// Message receiver
-        ///// </summary>
-        //private MessageReceiver _msgReceiver;
     }
 
 
@@ -324,9 +292,10 @@ namespace PinkoAzureService.AzureMessageBus
         {
             var typeDeser = new Dictionary<string, Func<BrokeredMessage, object>>();
 
-            typeDeser[typeof(string).ToString()] = x => x.GetBody<string>();
+            //typeDeser[typeof(string).ToString()] = x => x.GetBody<string>();
             typeDeser[typeof(PinkoPingMessage).ToString()] = x => x.GetBody<PinkoPingMessage>();
             typeDeser[typeof(PinkoRoleHeartbeat).ToString()] = x => x.GetBody<PinkoRoleHeartbeat>();
+            typeDeser[typeof(PinkoCalculateExpressionDao).ToString()] = x => x.GetBody<PinkoCalculateExpressionDao>();
 
             return typeDeser;
         }
