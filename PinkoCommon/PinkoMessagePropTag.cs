@@ -9,7 +9,9 @@ namespace PinkoCommon
     {
         public const string SenderName = "sendername";
         public const string ClientId = "clientid";
-        public const string RoutingId = "routingid";
+        public const string WebRoleId = "webroleid";
         public const string MessageHandlerId = "messageHandlerid";
+        public const string MachineName = "machinename";
+        public const string DateTimeStamp = "datetimestamp";
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="PinkoErrorCode.cs" />
     <Compile Include="PinkoMessagePropTag.cs" />
     <Compile Include="PinkoMessagesText.cs" />
+    <Compile Include="PinkoServiceMessageEnvelop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceListenerDebug.cs" />
     <Compile Include="Utility\TryCatch.cs" />

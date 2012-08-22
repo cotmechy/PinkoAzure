@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
@@ -26,7 +27,7 @@ namespace PinkoTests
             var messageBus = pinkoContainer.Resolve<IBusMessageServer>();
             var config = pinkoContainer.Resolve<IPinkoConfiguration>();
 
-            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusAllWebRolesTopic);
+            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToWebAllRolesTopic);
 
             Tuple<IBusMessageInbound, string> msg = null;
             incomingTopic.GetIncomingSubscriber<string>().Subscribe(x => msg = x);
@@ -34,8 +35,7 @@ namespace PinkoTests
             // Simulate incoming topic message
             incomingTopic.Send(new PinkoServiceMessageEnvelop()
                                    {
-                                       Message = "SringIncomingMessageTest",
-                                       ContentType = typeof (string).ToString()
+                                       Message = "SringIncomingMessageTest"
                                    });
 
             Assert.IsNotNull(msg);

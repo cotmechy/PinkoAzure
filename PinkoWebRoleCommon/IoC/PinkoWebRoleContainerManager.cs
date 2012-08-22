@@ -14,7 +14,7 @@ namespace PinkoWebRoleCommon.IoC
         /// <summary>
         /// Build 
         /// </summary>
-        static public IUnityContainer BuildContainer()
+        static private IUnityContainer BuildContainer()
         {
             var pinkoContainer = CommonContainerManager.BuildContainer();
 

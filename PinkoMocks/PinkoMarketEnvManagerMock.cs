@@ -1,4 +1,5 @@
-﻿using PinkoCommon.Interface;
+﻿using Microsoft.Practices.Unity;
+using PinkoCommon.Interface;
 using PinkoExpressionCommon;
 
 namespace PinkoMocks
@@ -22,6 +23,7 @@ namespace PinkoMocks
             return PinkoMarketEnv;
         }
 
+        [Dependency]
         public IPinkoMarketEnvironment PinkoMarketEnv { get; set; }
     }
 }

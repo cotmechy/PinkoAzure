@@ -1,10 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoWebRole", "PinkoWebRole\PinkoWebRole.csproj", "{118BC8D2-B34B-409B-9E3D-50A681C93E29}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoWebRole.Tests", "PinkoWebRole.Tests\PinkoWebRole.Tests.csproj", "{1FB816FA-FF28-492A-8CD9-A7C83FB36999}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2A4275E1-8043-490E-A9EA-B839028D6568}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoTests", "PinkoTests\PinkoTests.csproj", "{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}"
@@ -50,14 +46,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{118BC8D2-B34B-409B-9E3D-50A681C93E29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{118BC8D2-B34B-409B-9E3D-50A681C93E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{118BC8D2-B34B-409B-9E3D-50A681C93E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{118BC8D2-B34B-409B-9E3D-50A681C93E29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FB816FA-FF28-492A-8CD9-A7C83FB36999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FB816FA-FF28-492A-8CD9-A7C83FB36999}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FB816FA-FF28-492A-8CD9-A7C83FB36999}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FB816FA-FF28-492A-8CD9-A7C83FB36999}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Release|Any CPU.ActiveCfg = Release|Any CPU

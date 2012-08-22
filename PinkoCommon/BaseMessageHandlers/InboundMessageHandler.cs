@@ -34,9 +34,11 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <summary>
         /// Handle adhoc request
         /// </summary>
-        public void HandlerAction(IBusMessageInbound msg, T expression)
+        private void HandlerAction(IBusMessageInbound msg, T expression)
         {
             var response = ProcessRequest(msg, expression);
+
+            if (response == null) return;
 
             response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = _handlerId;
             response.PinkoProperties[PinkoMessagePropTag.SenderName] = PinkoApplication.MachineName;
@@ -58,7 +60,7 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <summary>
         /// REply queue publisher
         /// </summary>
-        public IRxMemoryBus<IBusMessageOutbound> ReplyQueue;
+        protected IRxMemoryBus<IBusMessageOutbound> ReplyQueue;
 
         /// <summary>
         /// IUnityContainer

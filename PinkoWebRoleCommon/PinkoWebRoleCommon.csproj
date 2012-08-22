@@ -53,10 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\IPinkoApplicationExtension.cs" />
     <Compile Include="Extensions\RequestsExtensions.cs" />
-    <Compile Include="HubModels\PinkoRoleHeartbeatHub.cs" />
     <Compile Include="Interface\IWebRoleConnectManager.cs" />
     <Compile Include="IoC\PinkoWebRoleContainerManager.cs" />
+    <Compile Include="MessageHandlers\HandlerWebRolePinkoRoleHeartbeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalRHub\PinkoSignalRHub.cs" />
     <Compile Include="Utility\PinkoSignalRConnection.cs" />

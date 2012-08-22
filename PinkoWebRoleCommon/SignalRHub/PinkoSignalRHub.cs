@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using PinkDao;
 using PinkoCommon.Extensions;
-using PinkoWebRoleCommon.HubModels;
+//using PinkoWebRoleCommon.HubModels;
 using SignalR.Hubs;
 
 namespace PinkoWebRoleCommon.SignalRHub
@@ -42,9 +42,9 @@ namespace PinkoWebRoleCommon.SignalRHub
         }
 
         /// <summary>
-        /// Send to client
+        /// Send to client - SignalR will stub this methon in the browser
         /// </summary>
-        public void NotifyClientPinkoRoleHeartbeat(string dateTimeStamp, string machineName)
+        public void NotifyClientPinkoRoleHeartbeat(string dateTimeStamp, string machineName, string signalRId)
         {
             //Debug.WriteLine("{0}: NotifyClientPinkoRoleHeartbeat(): Context.ConnectionId: {1}", this.Verbose(),
             //                heartbeat.Verbose());

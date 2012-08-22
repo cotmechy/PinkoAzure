@@ -25,7 +25,7 @@ namespace PinkoCommon
         }
 
         /// <summary>
-        /// Run in backgroung 
+        /// Run in background treahPool/Task
         /// </summary>
         public void RunInBackground(Action action)
         {

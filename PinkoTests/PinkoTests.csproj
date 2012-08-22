@@ -71,8 +71,9 @@
     <Compile Include="PinkoCalcWorkerTests\WorkerRoleTests.cs" />
     <Compile Include="PinkoExpressionTests.cs" />
     <Compile Include="PinkoPingMessageHandlerTests.cs" />
+    <Compile Include="PinkoServiceMessageEnvelopTests.cs" />
     <Compile Include="PinkoServiceMessageTests.cs" />
-    <Compile Include="PinkoWebRoleTests\WebRoleConnectManagertests.cs" />
+    <Compile Include="PinkoWebRoleTests\WebRoleConnectManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

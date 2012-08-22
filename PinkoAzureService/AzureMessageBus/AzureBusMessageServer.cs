@@ -29,12 +29,14 @@ namespace PinkoAzureService.AzureMessageBus
             // create queue/topic
             var ex = TryCatch.RunInTry(() =>
                                   {
+                                      // Create Queue
                                       if (PinkoConfiguration.QueueConfiguration[queueName].Item2 && !_azureNamespaceManager.QueueExists(queueName))
                                       {
                                           var td = new QueueDescription(queueName) { MaxSizeInMegabytes = 5120, DefaultMessageTimeToLive = new TimeSpan(0, 0, 30) };
                                           _azureNamespaceManager.CreateQueue(td);
                                       }
 
+                                      // Create Topic
                                       if (!PinkoConfiguration.QueueConfiguration[queueName].Item2)
                                       {
                                           var td = new TopicDescription(queueName)
@@ -43,6 +45,7 @@ namespace PinkoAzureService.AzureMessageBus
                                                            DefaultMessageTimeToLive = new TimeSpan(0, 0, 20)
                                                            // TODO: Add Selector
                                                        };
+
                                           if (!_azureNamespaceManager.TopicExists(queueName))
                                               _azureNamespaceManager.CreateTopic(td);
                                       }
@@ -76,7 +79,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Initialize message bus
         /// </summary>
-        public void Initialize()
+        public IBusMessageServer Initialize()
         {
             TryCatch.RunInTryThrow(() =>
                 {
@@ -95,6 +98,8 @@ namespace PinkoAzureService.AzureMessageBus
                         .ObserveOn(Scheduler.ThreadPool)
                         .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
                 });
+
+            return this;
         }
 
 

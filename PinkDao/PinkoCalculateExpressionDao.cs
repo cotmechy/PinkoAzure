@@ -10,7 +10,7 @@ namespace PinkDao
     /// </summary>
     public class PinkoCalculateExpressionDao
     {
-        public PinkoDataFeedIdentifier Identifier = new PinkoDataFeedIdentifier();
+        //public PinkoDataFeedIdentifier Identifier = new PinkoDataFeedIdentifier();
         public string ExpressionFormula = string.Empty;
         public object ResultValue;
         public int ResultType;    // 0 = double, 1 = double[]

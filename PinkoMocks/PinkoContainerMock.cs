@@ -36,9 +36,9 @@ namespace PinkoMocks
             container.RegisterInstance<IMessageHandlerManager>(container.Resolve<MessageHandlerManager>().Initialize()); // Handle messages
 
             container.RegisterInstance<IPinkoMarketEnvironment>(new PinkoMarketEnvironmentMock());
-            container.RegisterInstance<IPinkoMarketEnvManager>(new PinkoMarketEnvManagerMock() { PinkoMarketEnv = container.Resolve<IPinkoMarketEnvironment>() });
+            container.RegisterInstance<IPinkoMarketEnvManager>(container.Resolve<PinkoMarketEnvManagerMock>());
             
-            container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>());
+            container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>().Initialize());
             //container.RegisterInstance<IBusMessageServer>(container.Resolve<BusMessageServerMock>());
             //container.RegisterInstance<ICloudConfigurationManager>(new CloudConfigurationManagerMock());
 

@@ -61,7 +61,7 @@ namespace PinkoCommon.InMemoryBus
         /// <summary>
         /// Initialize message bus
         /// </summary>
-        public void Initialize()
+        public IBusMessageServer Initialize()
         {
             //_applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
 
@@ -70,6 +70,8 @@ namespace PinkoCommon.InMemoryBus
                 .ObserveOn(Scheduler.ThreadPool)
                 .Do(x => Trace.TraceInformation("(InMemoryBusMessageServer) Sending: {0}", x.Verbose()))
                 .Subscribe(x => GetTopic(x.QueueName).Send(x));
+
+            return this;
         }
 
 

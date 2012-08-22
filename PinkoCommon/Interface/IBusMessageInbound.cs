@@ -30,36 +30,37 @@ namespace PinkoCommon.Interface
         /// </summary>
         string ContentType { get; }
 
-        ///// <summary>
-        ///// Message ContentType
-        ///// </summary>
-        //string ClientId { get; }
-
         /// <summary>
         /// Value pairs
         /// </summary>
         IDictionary<string, object> PinkoProperties { get; }
-    }
 
-
-    /// <summary>
-    /// BusMessageInboundExtensions
-    /// </summary>
-    public static class BusMessageInboundExtensions
-    {
         /// <summary>
-        /// IBusMessageInbound
+        /// Verbose debug string
         /// </summary>
-        /// <param name="obj"></param>
         /// <returns></returns>
-        public static string Verbose(this IBusMessageInbound obj)
-        {
-            return string.Format("PinkoServiceMessage: IBusMessageInbound: QueueName: {0} - Message: {1} - ReplyTo: {2} - Props: {3}"
-                                 , obj.QueueName
-                                 , obj.Message
-                                 , obj.ReplyTo
-                                 , string.Join(" | ", obj.PinkoProperties.Select(x => string.Format("{0} = {1}", x.Key, x.Value)))
-                );
-        }
+        string Verbose();
     }
+
+
+    ///// <summary>
+    ///// BusMessageInboundExtensions
+    ///// </summary>
+    //public static class BusMessageInboundExtensions
+    //{
+    //    /// <summary>
+    //    /// IBusMessageInbound
+    //    /// </summary>
+    //    /// <param name="obj"></param>
+    //    /// <returns></returns>
+    //    public static string Verbose(this IBusMessageInbound obj)
+    //    {
+    //        return string.Format("PinkoServiceMessage: IBusMessageInbound: QueueName: {0} - Message: {1} - ReplyTo: {2} - Props: {3}"
+    //                             , obj.QueueName
+    //                             , obj.Message
+    //                             , obj.ReplyTo
+    //                             , string.Join(" | ", obj.PinkoProperties.Select(x => string.Format("{0} = {1}", x.Key, x.Value)))
+    //            );
+    //    }
+    //}
 }

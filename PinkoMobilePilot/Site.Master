@@ -33,35 +33,14 @@
     <script type="text/javascript">
         $(function () {
 
-            //            //
-            //            // Streaming from server
-            //            //
-            //            console.log('PinkoHeartbeata.aspx: var connection = $.connection(/echo)...');
-            //            var connection = $.connection('/echo');
-
-            //            connection.logging = true;
-
-            //            connection.received(function (data) {
-            //                $('#messages').append('<li>' + data + '</li>');
-            //            });
-
-            //            console.log('PinkoHeartbeata.aspx: connection.start()...');
-            //            connection.start();
-
-            //            $("#broadcast").click(function () {
-            //                connection.send('test');
-            //            });
-
-
             //
             // SignalR client Object
             // https://github.com/SignalR/SignalR/wiki/SignalR-JS-Client-Hubs
             //
 
-
             console.log('PinkoHeartbeata.aspx: var huBconnection = $.connection...');
             var huBconnection = $.connection;
-
+            
             huBconnection.hub.logging = true;
 
             console.log('PinkoHeartbeata.aspx: hub.error...');
@@ -80,14 +59,16 @@
 
 
             // pinkoHub
-            pinkoHub.notifyClientPinkoRoleHeartbeat = function (datetimeStamp, machineName) {
+            pinkoHub.notifyClientPinkoRoleHeartbeat = function (datetimeStamp, machineName, signalRId) {
                 //console.log('notifyClientPinkoRoleHeartbeat: Server called: datetimeStamp: ' + datetimeStamp + ' - machineName: ' + machineName);
                 $('#ctrlTimeStamp').text(datetimeStamp);
                 $('#ctrlServerName').text(machineName);
+                $('ctrlSignalRconnectionId').text(signalRId);
             };
 
             function connectionReady() {
                 console.log("PinkoHeartbeata.aspx: Done calling first hub serverside-function");
+                //$('#ctrlSingalRId').text(huBconnection.connectionState.connected.toString());
             };
 
             console.log('PinkoHeartbeata.aspx: huBconnection.hub.start()...');
@@ -143,11 +124,15 @@
     <div class="footer">
         <label>Web Role HearBeat: </label>
         &nbsp;
+        <label id="ctrlSingalRId">time stamp</label>
         &nbsp;
         <label id="ctrlTimeStamp">time stamp</label>
         &nbsp;
         &nbsp;
         <label id="ctrlServerName"></label>
+        &nbsp;
+        &nbsp;
+        <label id="ctrlSignalRconnectionId"></label>
         
     </div>
     </form>

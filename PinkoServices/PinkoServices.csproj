@@ -54,9 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\HandlerPinkoPingMessage.cs" />
-    <Compile Include="Handlers\HandlerPinkoRoleHeartbeat.cs" />
-    <Compile Include="Handlers\HandlerStringMessage.cs" />
-    <Compile Include="IoC\ContainerManager.cs" />
     <Compile Include="PinkoConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,7 +83,9 @@
       <Name>PinkoWorkerCommon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="IoC\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -42,7 +42,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             workerRole.StartHeartBeat();
             pinkoApplication.ApplicationRunningEvent.WaitOne(6000);
 
-            var outboudMessages = busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusAllWebRolesTopic).OutboudMessages;
+            var outboudMessages = busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusToWebAllRolesTopic).OutboudMessages;
             Assert.IsTrue(outboudMessages >= 5);
         }
 
@@ -87,9 +87,9 @@ namespace PinkoTests.PinkoCalcWorkerTests
                 .GetBus<IBusMessageOutbound>()
                 .Publish(new PinkoServiceMessageEnvelop()
                              {
-                                 ContentType = typeof(PinkoPingMessage).ToString(),
+                                 //ContentType = typeof(PinkoPingMessage).ToString(),
                                  Message = pm,
-                                 QueueName = pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic
+                                 QueueName = pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWorkerAllRolesTopic
                              });
             ev.WaitOne(2000);
 
@@ -98,7 +98,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             Assert.IsInstanceOfType(receiveMessageInbound.Item2, typeof(PinkoPingMessage));
             Assert.IsTrue(receiveMessageInbound.Item2.SenderMachine.Equals("ClientMachine"));
             Assert.IsFalse(string.IsNullOrEmpty(receiveMessageInbound.Item1.ContentType));
-            Assert.IsTrue(receiveMessageInbound.Item1.QueueName == pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic);
+            Assert.IsTrue(receiveMessageInbound.Item1.QueueName == pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWorkerAllRolesTopic);
         }
     }
 }

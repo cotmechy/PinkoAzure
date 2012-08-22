@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
 using PinkoServices.Handlers;
@@ -25,7 +26,7 @@ namespace PinkoTests
             var pme = new PinkoServiceMessageEnvelop() {Message = pm, QueueName = "QueueNameResponse"};
             IBusMessageOutbound outboundMsg = null;
 
-            // Listen for outbound messages to monitor outbouns queue
+            // Listen for outbound traffic
             pinkoApplication
                 .GetSubscriber<IBusMessageOutbound>()
                 .Subscribe(x => outboundMsg = x);

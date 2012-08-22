@@ -14,16 +14,6 @@ namespace PinkoCalcEngineWorker.Handlers
     /// </summary>
     public class HandleCalculateExpression : InboundMessageHandler<PinkoCalculateExpressionDao>
     {
-        ///// <summary>
-        ///// Handle adhoc request
-        ///// </summary>
-        //public override void HandlerAction(IBusMessageInbound msg, PinkoCalculateExpressionDao expression)
-        //{
-        //    // Send reply to user
-        //    ReplyQueue.Publish(ProcessRequest(msg, expression));
-        //}
-
-
         /// <summary>
         /// Handle adhoc request
         /// </summary>

@@ -20,7 +20,7 @@ namespace PinkoWebRoleCommon.Utility
         /// </summary>
         public PinkoSignalRConnection()
         {
-            Debug.WriteLine(this.VerboseIdentity());
+            Trace.TraceInformation(this.VerboseIdentity());
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace PinkoWebRoleCommon.Utility
         /// </summary>
         protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
         {
-            Debug.WriteLine("{2}: OnReceivedAsync(): ConnectionId: {0}, Data: {1} - SignalR Name: {3}"
+            Trace.TraceInformation("{2}: OnReceivedAsync(): ConnectionId: {0}, Data: {1} - SignalR Name: {3}"
                                                 , connectionId
                                                 , data
                                                 , this.VerboseIdentity()

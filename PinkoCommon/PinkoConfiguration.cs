@@ -15,8 +15,8 @@ namespace PinkoCommon
         public PinkoConfiguration()
         {
             QueueConfiguration = new Dictionary<string, Tuple<string, bool>>();
-            QueueConfiguration[PinkoMessageBusAllWorkerRolesTopic] = new Tuple<string, bool>(PinkoMessageBusAllWorkerRolesTopic, true);
-            QueueConfiguration[PinkoMessageBusCalcEngineActionTopic] = new Tuple<string, bool>(PinkoMessageBusCalcEngineActionTopic, false);
+            QueueConfiguration[PinkoMessageBusToWorkerAllRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllRolesTopic, true);
+            QueueConfiguration[PinkoMessageBusToWorkerCalcEngineActionTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineActionTopic, true);
 
             // Set bus connection screen
 
@@ -37,7 +37,7 @@ namespace PinkoCommon
         /// <summary>
         /// Calc engine send real time data to specific clients. Clinet use selectors.
         /// </summary>
-        public string PinkoMessageBusFeedToClientTopic
+        public string PinkoMessageBusToWebFeedToClientTopic
         {
             get { return "PinkoMessageBusFeedToClientTopic"; }
         }
@@ -45,7 +45,7 @@ namespace PinkoCommon
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        public string PinkoMessageBusAllWebRolesTopic
+        public string PinkoMessageBusToWebAllRolesTopic
         {
             get { return "PinkoMessageBusAllWebRolesTopic";  }
         }
@@ -67,7 +67,7 @@ namespace PinkoCommon
         public Dictionary<string, Tuple<string, bool>> QueueConfiguration { get; set; }
 
         /// <summary>
-        /// Message queue interval check 
+        /// Message queue interval check 5
         /// </summary>
         public int MessageQueueCheckIntervalMs
         {
@@ -77,17 +77,17 @@ namespace PinkoCommon
         /// <summary>
         /// Main bus for workers 
         /// </summary>
-        public string PinkoMessageBusAllWorkerRolesTopic
+        public string PinkoMessageBusToWorkerAllRolesTopic
         {
-            get { return "PinkoMessageBusCrossWebRolesQueue"; }
+            get { return "PinkoMessageBusToWorkerAllRolesTopic"; }
         }
 
         /// <summary>
-        /// Topic brodcats to all clients
+        /// To worker role with calcengineId selector
         /// </summary>
-        public string PinkoMessageBusCalcEngineActionTopic
+        public string PinkoMessageBusToWorkerCalcEngineActionTopic
         {
-            get { return "PinkoMessageBusWebRoleToClientsTopic"; }
+            get { return "PinkoMessageBusToWorkerCalcEngineActionTopic"; }
         }
 
         /// <summary>

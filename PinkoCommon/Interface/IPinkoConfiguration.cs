@@ -24,22 +24,22 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Calc engine send real time data to specific clients. Clinet use selectors.
         /// </summary>
-        string PinkoMessageBusFeedToClientTopic { get; }
+        string PinkoMessageBusToWebFeedToClientTopic { get; }
 
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        string PinkoMessageBusAllWebRolesTopic { get; }
+        string PinkoMessageBusToWebAllRolesTopic { get; }
 
         /// <summary>
         /// Broadcast to all Calc Engines
         /// </summary>
-        string PinkoMessageBusAllWorkerRolesTopic { get; }
+        string PinkoMessageBusToWorkerAllRolesTopic { get; }
 
         /// <summary>
         /// Messgaes to specific Calc engine. the calc engine has  selector
         /// </summary>
-        string PinkoMessageBusCalcEngineActionTopic { get; }
+        string PinkoMessageBusToWorkerCalcEngineActionTopic { get; }
 
         /// <summary>
         /// Queue/Topic configuration

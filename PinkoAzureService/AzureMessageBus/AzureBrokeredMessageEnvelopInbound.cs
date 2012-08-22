@@ -1,5 +1,7 @@
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.ServiceBus.Messaging;
+using PinkoCommon;
+using PinkoCommon.Interface;
 using PinkoWorkerCommon.Utility;
 
 namespace PinkoAzureService.AzureMessageBus
@@ -9,13 +11,13 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Constructor - AzureBrokeredMessage 
         /// </summary>
-        public AzureBrokeredMessageEnvelopInbound(BrokeredMessage azureMsg)
+        public AzureBrokeredMessageEnvelopInbound(IPinkoApplication pinkoApplication, BrokeredMessage azureMsg)
+            : base(pinkoApplication)
         {
             _message = azureMsg;
 
-            Message = AzureQueueClientExtensions.GetBody(_message);
+            Message = _message.GetBody();
             ReplyTo = string.IsNullOrEmpty(_message.ReplyTo) ? string.Empty : _message.ReplyTo;
-            ContentType = string.IsNullOrEmpty(_message.ContentType) ? string.Empty : _message.ContentType;
 
             azureMsg.Properties.ForEach(x => PinkoProperties[x.Key] = x.Value.ToString());
         }
@@ -23,6 +25,6 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Original Azure broker message
         /// </summary>
-        private BrokeredMessage _message;
+        private readonly BrokeredMessage _message;
     }
 }

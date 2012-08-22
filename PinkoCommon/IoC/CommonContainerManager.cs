@@ -27,9 +27,9 @@ namespace PinkoCommon.IoC
             pinkoContainer.RegisterInstance<IMessageHandlerManager>(pinkoContainer.Resolve<MessageHandlerManager>().Initialize()); // Handle messages
 
             //pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<AzureBusMessageServer>());
-            pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<InMemoryBusMessageServer>()); // when running offline
+            pinkoContainer.RegisterInstance<IBusMessageServer>(pinkoContainer.Resolve<InMemoryBusMessageServer>().Initialize()); // when running offline
 
-            pinkoContainer.Resolve<IBusMessageServer>().Initialize();
+            //pinkoContainer.Resolve<IBusMessageServer>().Initialize();
 
             return pinkoContainer;
         }

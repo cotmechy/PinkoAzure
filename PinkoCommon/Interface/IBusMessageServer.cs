@@ -23,7 +23,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Initialize message bus
         /// </summary>
-        void Initialize();
+        IBusMessageServer Initialize();
 
         /// <summary>
         /// Deinitialize message bus

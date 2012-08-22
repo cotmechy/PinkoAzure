@@ -29,7 +29,7 @@ namespace PinkoAzureService.AzureMessageBus
             //IsTopic = AzureMessageClient is TopicClient;
 
             // Internal memory message bus 
-            _messageHandlerManager = PinkoContainer.Resolve<IMessageHandlerManager>();
+            //_messageHandlerManager = PinkoContainer.Resolve<IMessageHandlerManager>();
             //_messageHandlerManager.AddHandler<PinkoRoleHeartbeatHub>();
             ////_messageHandlerManager.AddHandler<PinkoRoleHeartbeatHub>();
 
@@ -37,6 +37,7 @@ namespace PinkoAzureService.AzureMessageBus
             var tokenProvider = TokenProvider.CreateSharedSecretTokenProvider(PinkoConfiguration.GetSetting("Issuer"), PinkoConfiguration.GetSetting("SecretKey"));
 
             _messageFactory = MessagingFactory.Create(AzureNamespaceManager.Address, tokenProvider);
+            //AzureNamespaceManager.
 
             _msgSender = _messageFactory.CreateMessageSender(QueueName);
 
@@ -76,6 +77,8 @@ namespace PinkoAzureService.AzureMessageBus
             var msgReceiver = _messageFactory.CreateMessageReceiver(QueueName);
             _isRunning = true;
 
+            //msgReceiver
+
             Trace.TraceInformation("Starting Listening to {0}", QueueName);
 
             // ruun as long as app is running
@@ -98,7 +101,7 @@ namespace PinkoAzureService.AzureMessageBus
                         Trace.TraceInformation("Recevied: {0}: {1}", QueueName, receivedMessage.Verbose());
 
                         // Send to listeners
-                        _messageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(receivedMessage)
+                        MessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
                                                                    {
                                                                        QueueName = QueueName
                                                                    });
@@ -202,7 +205,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <returns></returns>
         public void AddHandler<T>()
         {
-            _messageHandlerManager.AddHandler<T>();
+            MessageHandlerManager.AddHandler<T>();
         }
 
         /// <summary>
@@ -211,7 +214,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <returns></returns>
         public IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>()
         {
-            return _messageHandlerManager.GetSubscriber<T>();
+            return MessageHandlerManager.GetSubscriber<T>();
         }
 
         private long _outboudMessages;
@@ -237,7 +240,8 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// MessageHandlerManager 
         /// </summary>
-        private IMessageHandlerManager _messageHandlerManager;
+        [Dependency]
+        public IMessageHandlerManager MessageHandlerManager { private get; set; }
 
         /// <summary>
         /// Queue Name

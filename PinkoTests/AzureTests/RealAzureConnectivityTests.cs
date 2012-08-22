@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoAzureService.AzureMessageBus;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
 using Microsoft.Practices.Unity;

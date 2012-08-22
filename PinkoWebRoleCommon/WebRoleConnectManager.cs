@@ -25,7 +25,7 @@ namespace PinkoWebRoleCommon
                     () => // All Worker roles
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
-                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWebRolesTopic)
+                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebAllRolesTopic)
                         .Listen()
                 );
 
@@ -35,7 +35,7 @@ namespace PinkoWebRoleCommon
                     () => // Selected
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
-                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusFeedToClientTopic, Guid.NewGuid().ToString())
+                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebFeedToClientTopic, Guid.NewGuid().ToString())
                         .Listen()
                 );
 
@@ -48,17 +48,5 @@ namespace PinkoWebRoleCommon
         /// </summary>
         [Dependency]
         public IUnityContainer PinkoContainer { get; set; }
-
-        ///// <summary>
-        ///// IPinkoApplication
-        ///// </summary>
-        //[Dependency]
-        //public IPinkoApplication PinkoApplication { get; set; }
-
-        ///// <summary>
-        ///// IPinkoConfiguration
-        ///// </summary>
-        //[Dependency]
-        //public IPinkoConfiguration PinkoConfiguration { private get; set; }
     }
 }

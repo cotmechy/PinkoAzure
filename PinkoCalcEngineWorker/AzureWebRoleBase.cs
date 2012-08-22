@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using PinkDao;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoServices.Handlers;
 using PinkoWorkerCommon.Utility;
@@ -37,14 +38,14 @@ namespace PinkoCalcEngineWorker
                 () => // Start Listening to mesage bus incoming messages - MessageBusWebRoleToClientsTopic
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusCalcEngineActionTopic, _selector) 
+                    .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineActionTopic, _selector) 
                     .Listen()
                 );
 
             // Start Listening to mesage bus incoming messages - MAIN: MessageBusCrossWebRolesQueue
             PinkoContainer
                 .Resolve<IBusMessageServer>()
-                .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWorkerRolesTopic) 
+                .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerAllRolesTopic) 
                 .Listen();
 
             // Return when application stops or queue stops
@@ -73,22 +74,18 @@ namespace PinkoCalcEngineWorker
         public void StartHeartBeat()
         {
             // Set role heartbeat
-            _heartbeatTimeObservable = Observable.Interval(TimeSpan.FromSeconds(PinkoContainer.Resolve<IPinkoConfiguration>().HeartbeatIntervalSec), Scheduler.ThreadPool);
+            _heartbeatTimeObservable = Observable.Interval(TimeSpan.FromSeconds(PinkoConfiguration.HeartbeatIntervalSec), Scheduler.ThreadPool);
 
             _outboundMessageBus = PinkoApplication.GetBus<IBusMessageOutbound>();
 
             // Send heartbeat
             _heartbeatTimeObservable
-                .Subscribe(
-                    x =>
-                    _outboundMessageBus.Publish(
-                        PinkoServiceMessageEnvelop.FactorClientMessage(
-                            PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusAllWebRolesTopic,  
-                            new PinkoRoleHeartbeat
-                                {
-                                    ResponderDateTime = DateTime.Now,
-                                    ResponderMachine = PinkoApplication.MachineName
-                                })));
+                .Subscribe(x => _outboundMessageBus.Publish(
+                    new PinkoServiceMessageEnvelop(PinkoApplication)
+                        {
+                            QueueName = PinkoConfiguration.PinkoMessageBusToWebAllRolesTopic,
+                            Message = new PinkoRoleHeartbeat()
+                        }));
         }
 
         /// <summary>

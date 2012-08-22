@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoAzureService.AzureMessageBus;
+using PinkoCommon;
+using PinkoCommon.Interface;
 using PinkoCommon.Utility;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
@@ -29,8 +31,8 @@ namespace PinkoTests.AzureTests
             Assert.IsInstanceOfType(
                 TryCatch.RunInTry( () => client.Send(new PinkoServiceMessageEnvelop()
                                 {
-                                    Message = new SerializableTestType(),
-                                    ContentType = typeof (SerializableTestType).ToString()
+                                    Message = new SerializableTestType()
+                                    //, ContentType = typeof (SerializableTestType).ToString()
                                 })),
                 typeof(PinkoExceptionAzureDeserializerNotFound));
         }
@@ -42,14 +44,19 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void BrokeredMessageSerialization()
         {
-            var pm = new PinkoPingMessage {SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine"};
+            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pm = new PinkoPingMessage { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" };
             var bm = AzureQueueClient.FactorNewOutboundMessage(new PinkoServiceMessageEnvelop() {Message = pm});
 
             // check for proepr deserialization
-            var abm = new AzureBrokeredMessageEnvelopInbound(bm);
+            var abm = new AzureBrokeredMessageEnvelopInbound(pinkoContainer.Resolve<IPinkoApplication>(), bm);
             Assert.IsNotNull(abm.Message);
             Assert.IsTrue(abm.Message.GetType() == typeof(PinkoPingMessage));
             Assert.IsTrue(bm.ContentType.Equals(typeof(PinkoPingMessage).ToString()));
+
+            Assert.IsTrue(abm.PinkoProperties.ContainsKey(PinkoMessagePropTag.MachineName));
+            Assert.IsTrue(abm.PinkoProperties.ContainsKey(PinkoMessagePropTag.SenderName));
+
         }
 
         /// <summary>
@@ -58,11 +65,12 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void BrokeredMessageSerializationError()
         {
+            var pinkoContainer = PinkoContainerMock.GetMokContainer();
             var pm = new SerializableTestType { ClientMachine = "ClientMachine", ServerMachine = "ServerMachine" };
             var bm = AzureQueueClient.FactorNewOutboundMessage(new PinkoServiceMessageEnvelop() { Message = pm });
 
             // check for proepr deserialization
-            var abm = new AzureBrokeredMessageEnvelopInbound(bm);
+            var abm = new AzureBrokeredMessageEnvelopInbound(pinkoContainer.Resolve<IPinkoApplication>(), bm);
             Assert.IsNull(abm.Message);
             Assert.IsTrue(bm.ContentType.Equals(typeof(SerializableTestType).ToString()));
         }
@@ -80,9 +88,6 @@ namespace PinkoTests.AzureTests
             // Connect to service
             var server = pinkoContainer.Resolve<AzureBusMessageServer>();
             server.Initialize();
-
-            // Connect to queue
-            //server.ConnectToQueue("NonExistingUnitTestQueueName");
 
             Assert.IsInstanceOfType( TryCatch.RunInTry(() => server.ConnectToQueue("NonExistingUnitTestQueueName")), typeof(PinkoExceptionQueueNotConfigured));
 
