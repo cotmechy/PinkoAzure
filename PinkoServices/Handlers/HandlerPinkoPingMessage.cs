@@ -5,23 +5,23 @@ using PinkoCommon.Interface;
 
 namespace PinkoServices.Handlers
 {
-    /// <summary>
-    /// Handler Ping message response
-    /// </summary>
-    public class HandlerPinkoPingMessage : InboundMessageHandler<PinkoPingMessage>
-    {
-        /// <summary>
-        /// Handle message
-        /// </summary>
-        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoPingMessage typedMsg)
-        {
-            typedMsg.ResponderMachine = PinkoApplication.MachineName;
-            typedMsg.ResponderDateTime = DateTime.Now;
+    ///// <summary>
+    ///// Handler Ping message response
+    ///// </summary>
+    //public class HandlerPinkoPingMessage : InboundMessageHandler<PinkoPingMessage>
+    //{
+    //    /// <summary>
+    //    /// Handle message
+    //    /// </summary>
+    //    public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoPingMessage typedMsg)
+    //    {
+    //        typedMsg.ResponderMachine = PinkoApplication.MachineName;
+    //        typedMsg.ResponderDateTime = DateTime.Now;
 
-            msg.Message = typedMsg;
+    //        msg.Message = typedMsg;
 
-            // Respond to ping message
-            return (IBusMessageOutbound) msg;
-        }
-    }
+    //        // Respond to ping message
+    //        return (IBusMessageOutbound) msg;
+    //    }
+    //}
 }

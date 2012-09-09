@@ -24,7 +24,7 @@ namespace PinkoTests.AzureTests
         //[TestMethod]
         public void ConnectingTopicTest()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
 
             // Connect to service
@@ -47,7 +47,7 @@ namespace PinkoTests.AzureTests
         //[TestMethod]
         public void ConnectingQueueTest()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
 
             // Connect to service
@@ -74,7 +74,7 @@ namespace PinkoTests.AzureTests
         //[TestMethod]
         public void RealAzureMessageLoop()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
             var ev = new ManualResetEvent(false);

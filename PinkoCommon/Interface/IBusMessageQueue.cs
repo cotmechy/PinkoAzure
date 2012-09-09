@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace PinkoCommon.Interface
 {
@@ -41,11 +42,11 @@ namespace PinkoCommon.Interface
         /// </summary>
         long OutboudMessages { get; }
 
-        /// <summary>
-        /// Add extra handlers
-        /// </summary>
-        /// <returns></returns>
-        void AddHandler<T>();
+        ///// <summary>
+        ///// Add extra handlers
+        ///// </summary>
+        ///// <returns></returns>
+        //void AddBusTypeHandler<T>();
 
         /// <summary>
         /// get Rx Subscriber for incoming message type

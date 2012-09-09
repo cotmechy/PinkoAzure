@@ -31,8 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +47,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntitytFormulaExpression.cs">
+      <DependentUpon>PinkoEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\DaoExtensions.cs" />
     <Compile Include="PinkoCalcSubsAction.cs" />
-    <Compile Include="PinkoCalculateExpressionDao.cs" />
+    <Compile Include="PinkoCalculateExpression.cs" />
     <Compile Include="PinkoDataFeedIdentifier.cs" />
+    <Compile Include="PinkoEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PinkoEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PinkoEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PinkoEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PinkoEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PinkoEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PinkoFormula.cs">
+      <DependentUpon>PinkoEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PinkoFormulaDictionary.cs">
+      <DependentUpon>PinkoEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="PinkoPingMessage.cs" />
     <Compile Include="PinkoRoleHeartbeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="PinkoEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PinkoEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="PinkoEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PinkoEntities.edmx</DependentUpon>
+      <LastGenOutput>PinkoEntities.Context.cs</LastGenOutput>
+    </None>
+    <None Include="PinkoEntities.edmx.diagram">
+      <DependentUpon>PinkoEntities.edmx</DependentUpon>
+    </None>
+    <None Include="PinkoEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PinkoEntities.edmx</DependentUpon>
+      <LastGenOutput>PinkoEntities.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

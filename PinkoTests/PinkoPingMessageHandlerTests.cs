@@ -5,8 +5,7 @@ using PinkDao;
 using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
-using PinkoServices.Handlers;
-using PinkoWorkerCommon.Utility;
+using PinkoWorkerCommon.Handler;
 
 namespace PinkoTests
 {
@@ -19,9 +18,9 @@ namespace PinkoTests
         [TestMethod]
         public void TestPinkoPingMessageHandler()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
-            var pinkoPingMessageHandler = pinkoContainer.Resolve<HandlerPinkoPingMessage>().Register();
+            var pinkoPingMessageHandler = pinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register();
             var pm = new PinkoPingMessage { SenderMachine = "UnitTestClientMachine" };
             var pme = new PinkoServiceMessageEnvelop() {Message = pm, QueueName = "QueueNameResponse"};
             IBusMessageOutbound outboundMsg = null;

@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PinkoExpressionCommon">
+      <HintPath>..\_WorkerBin\PinkoExpressionCommon.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PinkoMarketEnvManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
+      <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
+      <Name>PinkoCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PinkoMocks\PinkoMocks.csproj">
+      <Project>{684f2f70-9fbb-4c31-898f-0ab01cb1e332}</Project>
+      <Name>PinkoMocks</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

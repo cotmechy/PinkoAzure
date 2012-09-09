@@ -15,12 +15,29 @@ namespace PinkoTests
     public class PinkoExpressionTests
     {
         /// <summary>
+        /// test constants
+        /// </summary>
+        [TestMethod]
+        public void TestBasicConst()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+            var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
+
+            var complExp = expEngine.ParseAndCompile<double>(" { 3.1 } ");
+
+            var result = expEngine.Invoke<double>(marketEnv, complExp);
+            Assert.IsTrue(3.1 == Math.Round(result, 4));
+        }
+
+        /// <summary>
         /// Run same formula with 2 diff data access layers
         /// </summary>
         [TestMethod]
         public void TestDataLayerChange()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
@@ -42,7 +59,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestBasicDoubleExpression()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
 
@@ -53,12 +70,12 @@ namespace PinkoTests
         }
 
         /// <summary>
-        /// Basic Caclulate hitory spread for same instrument
+        /// Basic Calculate history spread for same instrument
         /// </summary>
         [TestMethod]
         public void TestGetHistorySpreadZero()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
@@ -77,7 +94,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestGetHistorySpread()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
@@ -98,7 +115,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestGetHistory()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
             var dal = marketEnv.PinkoDataAccessLayer as PinkoDataAccessLayerMock;
             var expEngine = PinkoExpressionEngineFactory.GetNewEngine();

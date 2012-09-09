@@ -1,13 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
-using PinkoCalcEngineWorker.Handlers;
 using PinkoCommon;
-using PinkoCommon.Interface;
 using PinkoExpressionCommon;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
-using PinkoWorkerCommon.Utility;
+using PinkoWorkerCommon.Handler;
 
 namespace PinkoTests
 {
@@ -23,18 +21,18 @@ namespace PinkoTests
         [TestMethod]
         public void TestBadType()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
-            var handler = pinkoContainer.Resolve<HandleCalculateExpression>().Register() as HandleCalculateExpression;
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var handler = pinkoContainer.Resolve<BusListenerCalculateExpression>().Register() as BusListenerCalculateExpression;
 
-            var msgObj = new PinkoCalculateExpressionDao
+            var msgObj = new PinkoCalculateExpression
             {
                 ResultType = -99,
                 ExpressionFormula = "ExpressionFormula",
                 MaketEnvId = PinkoMarketEnvironmentMock.MockMarketEnvId,
-                ResultValue = double.MinValue
+                //ResultValue = double.MinValue
             };
 
-            // Listen for outbound messages to monitor outbouns queue
+            // Listen for outbound messages to monitor outbound queue
             var outboundMsg = handler.ProcessRequest(new PinkoServiceMessageEnvelop() { Message = msgObj }, msgObj);
 
             Assert.IsTrue(outboundMsg.ErrorCode == PinkoErrorCode.FormulaTypeNotSupported);
@@ -48,23 +46,26 @@ namespace PinkoTests
         [TestMethod]
         public void TestSubscribeRequest()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
-            var handler = pinkoContainer.Resolve<HandleCalculateExpression>().Register() as HandleCalculateExpression;
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var handler = pinkoContainer.Resolve<BusListenerCalculateExpression>().Register() as BusListenerCalculateExpression;
 
-            var msgObj = new PinkoCalculateExpressionDao
+             var msgObj = new PinkoCalculateExpression
                              {
                                  ResultType = PinkoCalculateExpressionDaoExtensions.ResultDouble,
                                  ExpressionFormula = "ExpressionFormula",
                                  MaketEnvId = PinkoMarketEnvironmentMock.MockMarketEnvId,
-                                 ResultValue = double.MinValue
+                                 //ResultValue = double.MinValue
                              };
 
             // Test formula
             var outboundMsg = handler.ProcessRequest(new PinkoServiceMessageEnvelop() { Message = msgObj }, msgObj);
 
             Assert.IsTrue(outboundMsg.ErrorCode == PinkoErrorCode.Success);
-            Assert.IsInstanceOfType(msgObj.ResultValue, typeof(double));
-            Assert.IsTrue(((double)msgObj.ResultValue) == 0.0);
+            var resultMsg = (PinkoCalculateExpressionResult) outboundMsg.Message;
+
+            Assert.IsTrue(resultMsg.ResultType == PinkoCalculateExpressionDaoExtensions.ResultDouble);
+            Assert.IsInstanceOfType(resultMsg.ResultValue, typeof(double));
+            Assert.IsTrue((double)resultMsg.ResultValue == 0.0);
         }
 
         /// <summary>
@@ -73,16 +74,16 @@ namespace PinkoTests
         [TestMethod]
         public void TestSubscribeException()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
-            var handler = pinkoContainer.Resolve<HandleCalculateExpression>().Register() as HandleCalculateExpression;
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var handler = pinkoContainer.Resolve<BusListenerCalculateExpression>().Register() as BusListenerCalculateExpression;
             var expEngine = pinkoContainer.Resolve<IPinkoExpressionEngine>() as PinkoExpressionEngineMock;
 
-            var msgObj = new PinkoCalculateExpressionDao
+            var msgObj = new PinkoCalculateExpression
                              {
                                  ResultType = PinkoCalculateExpressionDaoExtensions.ResultDouble,
                                  ExpressionFormula = "ExpressionFormula",
                                  MaketEnvId = PinkoMarketEnvironmentMock.MockMarketEnvId,
-                                 ResultValue = double.MinValue
+                                 //ResultValue = double.MinValue
                              };
 
             // Test formula - should exption
@@ -91,9 +92,10 @@ namespace PinkoTests
                                               throw new Exception("MockException");
                                           };
             var outboundMsg = handler.ProcessRequest(new PinkoServiceMessageEnvelop() { Message = msgObj }, msgObj);
+            var resultMsg = (PinkoCalculateExpressionResult)outboundMsg.Message;
 
             Assert.IsTrue(outboundMsg.ErrorCode == PinkoErrorCode.UnexpectedException);
-            Assert.IsTrue(((string)msgObj.ResultValue) == PinkoMessagesText.Error);
+            Assert.IsTrue((string) resultMsg.ResultValue == PinkoMessagesText.Error);
         }
 
     }

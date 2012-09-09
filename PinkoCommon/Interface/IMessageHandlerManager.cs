@@ -22,10 +22,10 @@ namespace PinkoCommon.Interface
         void SendToHandler(IBusMessageInbound busMessageInbound);
 
         /// <summary>
-        /// Add extra handlers
+        /// Add message type so they can be routed to RxBus
         /// </summary>
         /// <returns></returns>
-        void AddHandler<T>();
+        void AddBusTypeHandler<T>();
 
         /// <summary>
         /// Get Handler

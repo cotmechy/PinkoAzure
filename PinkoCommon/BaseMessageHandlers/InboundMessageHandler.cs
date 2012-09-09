@@ -15,7 +15,7 @@ namespace PinkoCommon.BaseMessageHandlers
     public abstract class InboundMessageHandler<T>
     {
         /// <summary>
-        /// Register Handler with RxMesagebus. 
+        /// Register Handler with RxMesagebus. Subscribe for incoming messages to process in the Rx Bus 
         /// </summary>
         public InboundMessageHandler<T> Register()
         {
@@ -36,12 +36,17 @@ namespace PinkoCommon.BaseMessageHandlers
         /// </summary>
         private void HandlerAction(IBusMessageInbound msg, T expression)
         {
+            //Trace.TraceInformation("HandlerAction: {0}", expression.);
+
             var response = ProcessRequest(msg, expression);
 
+            // No response required
             if (response == null) return;
 
             response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = _handlerId;
             response.PinkoProperties[PinkoMessagePropTag.SenderName] = PinkoApplication.MachineName;
+
+            response.QueueName = response.ReplyTo;
 
             // Send reply to user
             ReplyQueue.Publish(response);

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,9 +36,9 @@ namespace PinkoCommon
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        public void RunInWorkerThread(Action action)
+        public void RunInWorkerThread(string name, Action action)
         {
-            var workerThread = new Thread(new ThreadStart(action)) {IsBackground = true};
+            var workerThread = new Thread(new ThreadStart(action)) {IsBackground = true, Name = name};
             workerThread.Start();
         }
 
@@ -82,6 +83,15 @@ namespace PinkoCommon
         }
 
         /// <summary>
+        /// Get thread pool schedules. Set to same thread in unit test.
+        /// </summary>
+        public IScheduler ThreadPoolScheduler
+        {
+            get { return Scheduler.CurrentThread; }
+            //get { return Scheduler.ThreadPool; }
+        }
+
+        /// <summary>
         /// MachineName
         /// </summary>
         public string MachineName
@@ -90,7 +100,7 @@ namespace PinkoCommon
         }
 
         /// <summary>
-        /// Environamnet User Name
+        /// Environment User Name
         /// </summary>
         public string UserName
         {

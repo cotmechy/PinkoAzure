@@ -32,7 +32,7 @@ namespace PinkoCommon
         }
 
         /// <summary>
-        /// Serializable message 
+        /// Serialize message 
         /// </summary>
         public object Message
         {
@@ -69,7 +69,7 @@ namespace PinkoCommon
         /// <summary>
         /// Value pairs
         /// </summary>
-        public IDictionary<string, object> PinkoProperties { get; private set; }
+        public IDictionary<string, object> PinkoProperties { get; set; }
 
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace PinkoCommon
         public int ErrorCode { get; set; }
 
         /// <summary>
-        /// Error Description. User frindly. 
+        /// Error Description. User friendly. 
         /// </summary>
         public string ErrorDescription { get; set; }
 

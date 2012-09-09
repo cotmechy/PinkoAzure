@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Reactive.Concurrency;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using PinkoCommon;
 using PinkoCommon.Interface;
@@ -24,7 +26,7 @@ namespace PinkoMocks
         public ManualResetEvent ApplicationRunningEvent { get; private set; }
 
         /// <summary>
-        /// Environamnet User Name
+        /// Environment User Name
         /// </summary>
         public string UserName
         {
@@ -40,7 +42,7 @@ namespace PinkoMocks
         }
 
         /// <summary>
-        /// Run in backgroung 
+        /// Run in background 
         /// </summary>
         public void RunInBackground(Action action)
         {
@@ -50,8 +52,9 @@ namespace PinkoMocks
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        public void RunInWorkerThread(Action action)
+        public void RunInWorkerThread(string name, Action action)
         {
+            //Task.Factory.StartNew(action);
             action();
         }
 
@@ -88,6 +91,11 @@ namespace PinkoMocks
             return bus as IRxMemoryBus<T>;
         }
 
+        public IScheduler ThreadPoolScheduler
+        {
+            get { return Scheduler.CurrentThread; }
+        }
+
         /// <summary>
         /// Get in memory - subscriber
         /// </summary>
@@ -97,6 +105,10 @@ namespace PinkoMocks
         {
             return GetBus<T>().Subscriber;
         }
+
+        /// <summary>
+        /// Get thread pool schedules. Set to same thread in unit test.
+        /// </summary>
         readonly ConcurrentDictionary<Type, object> _concurrentDictionary = new ConcurrentDictionary<Type, object>();
 
         /// <summary>

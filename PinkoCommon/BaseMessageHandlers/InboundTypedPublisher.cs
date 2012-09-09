@@ -7,12 +7,12 @@ using PinkoCommon.Interface;
 namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
-    /// Inbouned typed publisher
+    /// Inbounded typed publisher
     /// </summary>
     public class InboundTypedPublisher<T1, T2> : IInBoundTypedPublisherBase
     {
         /// <summary>
-        /// Constructor - InboundTypedPublisher - pubshes messages into RxBus
+        /// Constructor - InboundTypedPublisher - pushes messages into RxBus
         /// </summary>
         public InboundTypedPublisher(IPinkoApplication pinkoApplication)
         {
@@ -26,7 +26,7 @@ namespace PinkoCommon.BaseMessageHandlers
         public void Publish(IBusMessageInbound busMessageInbound)
         {
             MessageBus.Publish(new Tuple<T1, T2>((T1)busMessageInbound, (T2)busMessageInbound.Message));
-        }
+        }       
 
         /// <summary>
         /// Message bus for this message type

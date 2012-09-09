@@ -32,10 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="PinkoExpressionCommon">
       <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -75,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">
-      <Project>{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}</Project>
+      <Project>{62f59f46-0e80-46cd-88cb-82edb6db90c5}</Project>
       <Name>PinkDao</Name>
     </ProjectReference>
   </ItemGroup>

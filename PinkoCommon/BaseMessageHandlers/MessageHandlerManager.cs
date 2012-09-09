@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
@@ -9,7 +10,7 @@ using PinkoCommon.Interface;
 namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
-    /// Manager to handler specifc message serialization, mappring, etc
+    /// Manager to handler specific message serialization, mapping, etc
     /// </summary>
     public class MessageHandlerManager : IMessageHandlerManager
     {
@@ -29,7 +30,13 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <param name="busMessageInbound"></param>
         public void SendToHandler(IBusMessageInbound busMessageInbound)
         {
-            _cachedBusPublisher[busMessageInbound.ContentType].Publish(busMessageInbound);
+            Trace.TraceInformation("(MessageHandlerManager) Receiving: {0}", busMessageInbound.Verbose());
+
+            IInBoundTypedPublisherBase typePublisher = null;
+            if (_cachedBusPublisher.TryGetValue(busMessageInbound.ContentType, out typePublisher))
+                typePublisher.Publish(busMessageInbound);
+            else
+                Trace.TraceInformation("Unexpected Message Type.Cannot Process message: {0}", busMessageInbound.Verbose());
         }
 
 
@@ -37,7 +44,7 @@ namespace PinkoCommon.BaseMessageHandlers
         /// Add extra handlers
         /// </summary>
         /// <returns></returns>
-        public void AddHandler<T>()
+        public void AddBusTypeHandler<T>()
         {
             _cachedBusPublisher[typeof(T).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, T>>();
         }
@@ -48,11 +55,11 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <returns></returns>
         public IObservable<Tuple<IBusMessageInbound, T>> GetSubscriber<T>()
         {
-            return (_cachedBusPublisher[typeof(T).ToString()] as InboundTypedPublisher<IBusMessageInbound, T>).MessageBus.Subscriber;
+            return ((InboundTypedPublisher<IBusMessageInbound, T>) _cachedBusPublisher[typeof(T).ToString()]).MessageBus.Subscriber;
         }
 
         /// <summary>
-        /// Pre-cache msg busses
+        /// Pre-cache message busses
         /// </summary>
         /// <returns></returns>
         private Dictionary<string, IInBoundTypedPublisherBase> GetTypeBuses()
@@ -62,7 +69,8 @@ namespace PinkoCommon.BaseMessageHandlers
             inboundPublisher[typeof(string).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, string>>();
             inboundPublisher[typeof(PinkoPingMessage).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoPingMessage>>();
             inboundPublisher[typeof(PinkoRoleHeartbeat).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeat>>();
-            inboundPublisher[typeof(PinkoCalcSubsAction).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalcSubsAction>>();
+            inboundPublisher[typeof(PinkoCalculateExpression).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalculateExpression>>();
+            inboundPublisher[typeof(PinkoCalculateExpressionResult).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalculateExpressionResult>>();
 
             return inboundPublisher;
         }

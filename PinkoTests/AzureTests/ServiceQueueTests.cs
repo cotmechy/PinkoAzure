@@ -24,7 +24,7 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void AzureQueueClientMissingSerilalizer()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
 
             var client = pinkoContainer.Resolve<AzureQueueClient>();
 
@@ -44,7 +44,7 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void BrokeredMessageSerialization()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pm = new PinkoPingMessage { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" };
             var bm = AzureQueueClient.FactorNewOutboundMessage(new PinkoServiceMessageEnvelop() {Message = pm});
 
@@ -65,7 +65,7 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void BrokeredMessageSerializationError()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pm = new SerializableTestType { ClientMachine = "ClientMachine", ServerMachine = "ServerMachine" };
             var bm = AzureQueueClient.FactorNewOutboundMessage(new PinkoServiceMessageEnvelop() { Message = pm });
 
@@ -83,7 +83,7 @@ namespace PinkoTests.AzureTests
         [TestMethod]
         public void RealAzureNotFound()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
 
             // Connect to service
             var server = pinkoContainer.Resolve<AzureBusMessageServer>();

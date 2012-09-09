@@ -77,11 +77,9 @@ namespace PinkoAzureService.AzureMessageBus
             var msgReceiver = _messageFactory.CreateMessageReceiver(QueueName);
             _isRunning = true;
 
-            //msgReceiver
-
             Trace.TraceInformation("Starting Listening to {0}", QueueName);
 
-            // ruun as long as app is running
+            // run as long as app is running
             while (_isRunning && !PinkoApplication.ApplicationRunningEvent.WaitOne(0))
             {
                 var ex = TryCatch.RunInTry(() =>  
@@ -98,7 +96,7 @@ namespace PinkoAzureService.AzureMessageBus
                     if (receivedMessage != null)
                     {
                         // Process the message
-                        Trace.TraceInformation("Recevied: {0}: {1}", QueueName, receivedMessage.Verbose());
+                        Trace.TraceInformation("Received: {0}: {1}", QueueName, receivedMessage.Verbose());
 
                         // Send to listeners
                         MessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
@@ -178,7 +176,7 @@ namespace PinkoAzureService.AzureMessageBus
         }
 
         /// <summary>
-        /// Get new outbaound message
+        /// Get new outbound message
         /// </summary>
         /// <returns></returns>
         static public BrokeredMessage FactorNewOutboundMessage(IBusMessageOutbound msg)
@@ -203,9 +201,9 @@ namespace PinkoAzureService.AzureMessageBus
         /// Add extra handlers
         /// </summary>
         /// <returns></returns>
-        public void AddHandler<T>()
+        public void AddBusTypeHandler<T>()
         {
-            MessageHandlerManager.AddHandler<T>();
+            MessageHandlerManager.AddBusTypeHandler<T>();
         }
 
         /// <summary>
@@ -299,7 +297,9 @@ namespace PinkoAzureService.AzureMessageBus
             //typeDeser[typeof(string).ToString()] = x => x.GetBody<string>();
             typeDeser[typeof(PinkoPingMessage).ToString()] = x => x.GetBody<PinkoPingMessage>();
             typeDeser[typeof(PinkoRoleHeartbeat).ToString()] = x => x.GetBody<PinkoRoleHeartbeat>();
-            typeDeser[typeof(PinkoCalculateExpressionDao).ToString()] = x => x.GetBody<PinkoCalculateExpressionDao>();
+            typeDeser[typeof(PinkoCalculateExpression).ToString()] = x => x.GetBody<PinkoCalculateExpression>();
+            typeDeser[typeof(PinkoCalculateExpressionResult).ToString()] = x => x.GetBody<PinkoCalculateExpressionResult>();
+            
 
             return typeDeser;
         }

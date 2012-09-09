@@ -95,7 +95,7 @@ namespace PinkoAzureService.AzureMessageBus
                     // Set listener for outbound messages 
                     PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                         .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
-                        .ObserveOn(Scheduler.ThreadPool)
+                        .ObserveOn(PinkoApplication.ThreadPoolScheduler)
                         .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
                 });
 

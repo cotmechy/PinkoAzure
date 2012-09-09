@@ -35,7 +35,7 @@ namespace PinkoCommon
         }
 
         /// <summary>
-        /// Calc engine send real time data to specific clients. Clinet use selectors.
+        /// Calc engine send real time data to specific clients. Client use selectors.
         /// </summary>
         public string PinkoMessageBusToWebFeedToClientTopic
         {

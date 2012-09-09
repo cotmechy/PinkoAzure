@@ -1,0 +1,113 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2A4275E1-8043-490E-A9EA-B839028D6568}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoTests", "PinkoTests\PinkoTests.csproj", "{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B49123A3-9878-448E-BC96-A5AA3C507B08}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		PinkoAzure.vsd = PinkoAzure.vsd
+		PinkoAzure.vsmdi = PinkoAzure.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkerRoles", "WorkerRoles", "{742A3419-9F87-4E51-B958-3BA1C66C17F7}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "PinkoCalcEngineWorkerRole", "PinkoCalcEngineWorkerRole\PinkoCalcEngineWorkerRole.ccproj", "{D985E257-A42B-4B6D-A39A-567993FA95F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoCalcEngineWorker", "PinkoCalcEngineWorker\PinkoCalcEngineWorker.csproj", "{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoWorkerCommon", "PinkoWorkerCommon\PinkoWorkerCommon.csproj", "{45263391-63FC-4868-9D9E-DF84031361F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoServices", "PinkoServices\PinkoServices.csproj", "{904DC007-D91D-4E1C-8475-6BB56A3EC78B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoMocks", "PinkoMocks\PinkoMocks.csproj", "{684F2F70-9FBB-4C31-898F-0AB01CB1E332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkDao", "PinkDao\PinkDao.csproj", "{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoAzureService", "PinkoAzureService\PinkoAzureService.csproj", "{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoMobilePilot", "PinkoMobilePilot\PinkoMobilePilot.csproj", "{E2BA43CB-08F3-4E83-8BC2-239EAEE1C5D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoWebRoleCommon", "PinkoWebRoleCommon\PinkoWebRoleCommon.csproj", "{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoCommon", "PinkoCommon\PinkoCommon.csproj", "{1E504762-93C7-4AB4-A45F-64FD6F826724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkoMarketEnvironment", "PinkoMarketEnvironment\PinkoMarketEnvironment.csproj", "{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = PinkoAzure.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D985E257-A42B-4B6D-A39A-567993FA95F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D985E257-A42B-4B6D-A39A-567993FA95F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D985E257-A42B-4B6D-A39A-567993FA95F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D985E257-A42B-4B6D-A39A-567993FA95F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7CCEEF-82E8-4811-AE53-968DF1046C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45263391-63FC-4868-9D9E-DF84031361F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45263391-63FC-4868-9D9E-DF84031361F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45263391-63FC-4868-9D9E-DF84031361F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45263391-63FC-4868-9D9E-DF84031361F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{904DC007-D91D-4E1C-8475-6BB56A3EC78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{904DC007-D91D-4E1C-8475-6BB56A3EC78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{904DC007-D91D-4E1C-8475-6BB56A3EC78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{904DC007-D91D-4E1C-8475-6BB56A3EC78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{684F2F70-9FBB-4C31-898F-0AB01CB1E332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{684F2F70-9FBB-4C31-898F-0AB01CB1E332}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{684F2F70-9FBB-4C31-898F-0AB01CB1E332}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{684F2F70-9FBB-4C31-898F-0AB01CB1E332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2BA43CB-08F3-4E83-8BC2-239EAEE1C5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2BA43CB-08F3-4E83-8BC2-239EAEE1C5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2BA43CB-08F3-4E83-8BC2-239EAEE1C5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2BA43CB-08F3-4E83-8BC2-239EAEE1C5D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E504762-93C7-4AB4-A45F-64FD6F826724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B25B0BC3-6FC0-402C-BB5A-BAB7D13A8230} = {2A4275E1-8043-490E-A9EA-B839028D6568}
+		{B49123A3-9878-448E-BC96-A5AA3C507B08} = {2A4275E1-8043-490E-A9EA-B839028D6568}
+		{684F2F70-9FBB-4C31-898F-0AB01CB1E332} = {2A4275E1-8043-490E-A9EA-B839028D6568}
+		{D985E257-A42B-4B6D-A39A-567993FA95F2} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{0E7CCEEF-82E8-4811-AE53-968DF1046C6F} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{45263391-63FC-4868-9D9E-DF84031361F9} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{904DC007-D91D-4E1C-8475-6BB56A3EC78B} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{62F59F46-0E80-46CD-88CB-82EDB6DB90C5} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{4C8788BF-46D5-433D-B4CD-973E60DDD3CC} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+		{DF8D4781-F5E1-4A65-ACB4-CEDAD5DE5537} = {742A3419-9F87-4E51-B958-3BA1C66C17F7}
+	EndGlobalSection
+EndGlobal

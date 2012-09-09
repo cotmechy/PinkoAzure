@@ -20,7 +20,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestFactorWebEnvelop()
         {
-            var pinkoContainer = PinkoContainerMock.GetMokContainer();
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
 
             var envelop = pinkoApplication.FactorWebEnvelop("clientId", "webRoleId");

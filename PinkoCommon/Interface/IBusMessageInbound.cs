@@ -36,6 +36,21 @@ namespace PinkoCommon.Interface
         IDictionary<string, object> PinkoProperties { get; }
 
         /// <summary>
+        /// Error code. Non 0 is an error
+        /// </summary>
+        int ErrorCode { get; set; }
+
+        /// <summary>
+        /// Error Description. User friendly. 
+        /// </summary>
+        string ErrorDescription { get; set; }
+
+        /// <summary>
+        /// Full technical error
+        /// </summary>
+        string ErrorSystem { get; set; }
+
+        /// <summary>
         /// Verbose debug string
         /// </summary>
         /// <returns></returns>

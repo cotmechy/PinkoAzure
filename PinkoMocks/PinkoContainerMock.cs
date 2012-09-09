@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics;
 using Microsoft.Practices.Unity;
-using PinkDao;
 using PinkoCommon;
 using PinkoCommon.BaseMessageHandlers;
-using PinkoCommon.InMemoryBus;
 using PinkoCommon.Interface;
 using PinkoExpressionCommon;
-using Rhino.Mocks;
+using PinkoWebRoleCommon.Interface;
 
 namespace PinkoMocks
 {
@@ -15,7 +13,7 @@ namespace PinkoMocks
     /// </summary>
     public class PinkoContainerMock
     {
-        public static IUnityContainer GetMokContainer()
+        public static IUnityContainer GetMockContainer(bool regsiterBusManager = true)
         {
             var container = new UnityContainer();
 
@@ -37,8 +35,15 @@ namespace PinkoMocks
 
             container.RegisterInstance<IPinkoMarketEnvironment>(new PinkoMarketEnvironmentMock());
             container.RegisterInstance<IPinkoMarketEnvManager>(container.Resolve<PinkoMarketEnvManagerMock>());
-            
-            container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>().Initialize());
+
+            if (regsiterBusManager)
+            {
+                container.RegisterInstance<IBusMessageServer>(container.Resolve<BusMessageServerMock>().Initialize());
+                //container.RegisterInstance<IBusMessageServer>(container.Resolve<MsMqBusMessageServer>().Initialize());
+                //container.RegisterInstance<IBusMessageServer>(container.Resolve<InMemoryBusMessageServer>().Initialize());
+            }
+            container.RegisterInstance<IWebRoleConnectManager>(new WebRoleConnectManagerMock());
+
             //container.RegisterInstance<IBusMessageServer>(container.Resolve<BusMessageServerMock>());
             //container.RegisterInstance<ICloudConfigurationManager>(new CloudConfigurationManagerMock());
 
@@ -52,6 +57,7 @@ namespace PinkoMocks
             //marketEnv.PinkoDataAccessLayer = new PinkoDataAccessLayerMock();
             //container.RegisterInstance(marketEnv);
 
+            container.RegisterInstance<IRxMemoryBus<IBusMessageOutbound>>(container.Resolve<IPinkoApplication>().GetBus<IBusMessageOutbound>());
 
 
             return container;

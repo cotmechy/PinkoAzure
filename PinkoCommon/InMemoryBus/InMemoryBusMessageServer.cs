@@ -1,118 +1,116 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
-using PinkoCommon.Interface;
+﻿//using System;
+//using System.Collections.Concurrent;
+//using System.Diagnostics;
+//using System.Reactive.Concurrency;
+//using System.Reactive.Linq;
+//using Microsoft.Practices.Unity;
+//using PinkoCommon.Interface;
 
-namespace PinkoCommon.InMemoryBus
-{
-    /// <summary>
-    /// In Memory bus. Us ein offline development.
-    /// </summary>
-    public class InMemoryBusMessageServer : IBusMessageServer
-    {
-        /// <summary>
-        /// Constructor - InMemoryBusMessageServer 
-        /// </summary>
-        public InMemoryBusMessageServer()
-        {
-            AzureServerConnectionString = "InMemoryBusMessageServer";
-        }
+//namespace PinkoCommon.InMemoryBus
+//{
+//    /// <summary>
+//    /// In Memory bus. Use in offline development.
+//    /// </summary>
+//    public class InMemoryBusMessageServer : IBusMessageServer
+//    {
+//        /// <summary>
+//        /// Constructor - InMemoryBusMessageServer 
+//        /// </summary>
+//        public InMemoryBusMessageServer()
+//        {
+//            AzureServerConnectionString = "InMemoryBusMessageServer";
 
-        /// <summary>
-        /// Connect to single Queue
-        /// </summary>
-        private IBusMessageQueue ConnectToQueue(string queueName, string selector)
-        {
-            // Initialize the connection to Service Bus Queue
-            var client = _queues.GetOrAdd(queueName, x =>
-            {
-                Trace.TraceInformation("Creating new InMemoryBusMessageQueue: {0} - Selector: {2} in {1}...", queueName, AzureServerConnectionString, selector);
+//        }
 
-                var q = PinkoContainer.Resolve<InMemoryBusMessageQueue>();
-                q.QueueName = queueName;
-                q.Initialize(string.Empty);
-                return q;
-            });
+//        /// <summary>
+//        /// Connect to single Queue
+//        /// </summary>
+//        private IBusMessageQueue ConnectToQueue(string queueName, string selector)
+//        {
+//            // Initialize the connection to Service Bus Queue
+//            var client = _queues.GetOrAdd(queueName, x =>
+//            {
+//                Trace.TraceInformation("Creating new InMemoryBusMessageQueue: {0} - Selector: {2} in {1}...", queueName, AzureServerConnectionString, selector);
 
-            //client.AddHandler<PinkoRoleHeartbeatHub>();
+//                var q = PinkoContainer.Resolve<InMemoryBusMessageQueue>();
+//                q.QueueName = queueName;
+//                q.Initialize(string.Empty);
+//                return q;
+//            });
+
+//            //client.AddHandler<PinkoRoleHeartbeatHub>();
             
-            return client;
-        }
+//            return client;
+//        }
 
 
-        /// <summary>
-        /// Get existing or new queue
-        /// </summary>
-        public IBusMessageQueue GetTopic(string queueName, string selector = "")
-        {
-            //Trace.WriteLine(string.Format("GetQueue: {0} in {1}...", queueName, AzureServerConnectionString));
+//        /// <summary>
+//        /// Get existing or new queue
+//        /// </summary>
+//        public IBusMessageQueue GetTopic(string queueName, string selector = "")
+//        {
+//            //Trace.WriteLine(string.Format("GetQueue: {0} in {1}...", queueName, AzureServerConnectionString));
 
-            // Get queue
-            return ConnectToQueue(queueName, selector);
-        }
-
-
-        /// <summary>
-        /// Initialize message bus
-        /// </summary>
-        public IBusMessageServer Initialize()
-        {
-            //_applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
-
-            // Set listener for outboundmessages 
-            PinkoApplication.GetSubscriber<IBusMessageOutbound>()
-                .ObserveOn(Scheduler.ThreadPool)
-                .Do(x => Trace.TraceInformation("(InMemoryBusMessageServer) Sending: {0}", x.Verbose()))
-                .Subscribe(x => GetTopic(x.QueueName).Send(x));
-
-            return this;
-        }
+//            // Get queue
+//            return ConnectToQueue(queueName, selector);
+//        }
 
 
-        /// <summary>
-        /// Deinitialize message bus
-        /// </summary>
-        public void Deinitialize()
-        {
-        }
+//        /// <summary>
+//        /// Initialize message bus
+//        /// </summary>
+//        public IBusMessageServer Initialize()
+//        {
+//            //_applicationBusMessageSend = PinkoApplication.GetSubscriber<IBusMessageOutbound>();
 
-        /// <summary>
-        /// IUnityContainer
-        /// </summary>
-        [Dependency]
-        public IUnityContainer PinkoContainer { get; set; }
+//            // Set listener for outbound messages 
+//            PinkoApplication.GetSubscriber<IBusMessageOutbound>()
+//                .ObserveOn(PinkoApplication.ThreadPoolScheduler)
+//                .Do(x => Trace.TraceInformation("(InMemoryBusMessageServer) Sending: {0}", x.Verbose()))
+//                .Subscribe(x => GetTopic(x.QueueName).Send(x));
 
-        /// <summary>
-        /// IPinkoApplication
-        /// </summary>
-        [Dependency]
-        public IPinkoApplication PinkoApplication { get; set; }
-
-        /// <summary>
-        /// Server connection string
-        /// </summary>
-        public string AzureServerConnectionString { get; set; }
-
-        ///// <summary>
-        ///// Receive all message vis this Rxmemory bus
-        ///// </summary>
-        //private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
+//            return this;
+//        }
 
 
-        /// <summary>
-        /// Queus 
-        /// </summary>
-        public ConcurrentDictionary<string, InMemoryBusMessageQueue> Queues { get { return _queues; } }
+//        /// <summary>
+//        /// Deinitialize message bus
+//        /// </summary>
+//        public void Deinitialize()
+//        {
+//        }
 
-        /// <summary>
-        /// Internal queue cache
-        /// </summary>
-        readonly ConcurrentDictionary<string, InMemoryBusMessageQueue> _queues = new ConcurrentDictionary<string, InMemoryBusMessageQueue>();
-    }
-}
+//        /// <summary>
+//        /// IUnityContainer
+//        /// </summary>
+//        [Dependency]
+//        public IUnityContainer PinkoContainer { get; set; }
+
+//        /// <summary>
+//        /// IPinkoApplication
+//        /// </summary>
+//        [Dependency]
+//        public IPinkoApplication PinkoApplication { get; set; }
+
+//        /// <summary>
+//        /// Server connection string
+//        /// </summary>
+//        public string AzureServerConnectionString { get; set; }
+
+//        ///// <summary>
+//        ///// Receive all message vis this Rxmemory bus
+//        ///// </summary>
+//        //private IObservable<IBusMessageOutbound> _applicationBusMessageSend;
+
+
+//        /// <summary>
+//        /// Queus 
+//        /// </summary>
+//        public ConcurrentDictionary<string, InMemoryBusMessageQueue> Queues { get { return _queues; } }
+
+//        /// <summary>
+//        /// Internal queue cache
+//        /// </summary>
+//        readonly ConcurrentDictionary<string, InMemoryBusMessageQueue> _queues = new ConcurrentDictionary<string, InMemoryBusMessageQueue>();
+//    }
+//}

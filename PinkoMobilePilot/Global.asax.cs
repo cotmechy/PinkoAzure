@@ -7,6 +7,8 @@ using System.Web.Routing;
 using PinkDao;
 using PinkoCommon;
 using PinkoCommon.Interface;
+using PinkoWebRoleCommon;
+using PinkoWebRoleCommon.Interface;
 using PinkoWebRoleCommon.IoC;
 using PinkoWebRoleCommon.SignalRHub;
 using PinkoWebRoleCommon.Utility;
@@ -19,24 +21,25 @@ namespace PinkoMobilePilot
     public class Global : System.Web.HttpApplication
     {
 
-        /// <summary>
-        /// Register all realtime message handlers to be routed via SiganlR to web clients
-        /// </summary>
-        public void RegisterRealTimeMessageHandlers()
-        {
-            var pinkoSingalHubContext = GlobalHost.ConnectionManager.GetHubContext<PinkoSingalHub>();
+        ///// <summary>
+        ///// Register all realtime message handlers to be routed via SiganlR to web clients
+        ///// </summary>
+        //public void RegisterRealTimeMessageHandlers()
+        //{
+        //    var pinkoSingalHubContext = GlobalHost.ConnectionManager.GetHubContext<PinkoSingalHub>();
 
-            PinkoContainer = PinkoWebRoleContainerManager.Container;
-            var pinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
+        //    PinkoContainer = PinkoWebRoleContainerManager.Container;
+        //    var pinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
 
-            Trace.TraceInformation("Registering message handlers: {0}", GetType());
+        //    Trace.TraceInformation("Registering message handlers: {0}", GetType());
 
-            pinkoApplication
-                .GetSubscriber<Tuple<IBusMessageInbound, PinkoRoleHeartbeat>>()
-                .Do(x => Trace.TraceInformation("WebRole Received: {0}: {1} - {2}", GetType(), x.Item1.Verbose(), x.Item2.ToString()))
-                .Subscribe(x => pinkoSingalHubContext.Clients.notifyClientPinkoRoleHeartbeat(x.Item1.PinkoProperties[PinkoMessagePropTag.MachineName],
-                                                                                             x.Item1.PinkoProperties[PinkoMessagePropTag.DateTimeStamp]));
-        }
+        //    // route incoming heartbeat to all clients
+        //    pinkoApplication
+        //        .GetSubscriber<Tuple<IBusMessageInbound, PinkoRoleHeartbeat>>()
+        //        .Do(x => Trace.TraceInformation("WebRole Received: {0}: {1} - {2}", GetType(), x.Item1.Verbose(), x.Item2.ToString()))
+        //        .Subscribe(x => pinkoSingalHubContext.Clients.notifyClientPinkoRoleHeartbeat(x.Item1.PinkoProperties[PinkoMessagePropTag.MachineName],
+        //                                                                                     x.Item1.PinkoProperties[PinkoMessagePropTag.DateTimeStamp]));
+        //}
 
         /// <summary>
         /// Web Role Start
@@ -47,30 +50,37 @@ namespace PinkoMobilePilot
         {
             Trace.TraceInformation("Starting Web Role: {0}", GetHashCode());
             //// Streaming SignalR
-            RouteTable.Routes.MapConnection<PinkoSignalRConnection>("echo", "echo/{*operation}");
+            //RouteTable.Routes.MapConnection<PinkoSignalRConnection>("echo", "echo/{*operation}");
 
-            PinkoContainer = PinkoWebRoleContainerManager.Container;
-            var pinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
-            var pinkoConfiguration = PinkoContainer.Resolve<IPinkoConfiguration>();
+            //// Setup Web Role
+            //PinkoContainer = PinkoWebRoleContainerManager.Container;
+            //var webRoleConnectManager = PinkoContainer.Resolve<IWebRoleConnectManager>();
 
-            RegisterRealTimeMessageHandlers();
+            //webRoleConnectManager.RegisterRealTimeMessageHandlers();
+            //webRoleConnectManager.StartmockHearbeat();
 
-            // TODO: Temporary
-            // timer
-            _webRoleHearBeat = Observable.Interval(TimeSpan.FromMilliseconds(1000), Scheduler.ThreadPool);
+            // Register pinko services
+            // Setup Web Role
+            _webRoleConnectManager = PinkoWebRoleContainerManager
+                                        .Container
+                                        .Resolve<IWebRoleConnectManager>()
+                                        .InitializeWebRole();
 
+
+
+            //// TODO: Temporary
+            //// timer
+            //_webRoleHearBeat = Observable.Interval(TimeSpan.FromMilliseconds(1000), Scheduler.ThreadPool);
+
+
+            //// Set listener for outbound messages 
+            //var pinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
             //var incomingTopic =
-            //    PinkoContainer
-            //        .Resolve<IBusMessageServer>()
-            //        .GetTopic(pinkoConfiguration.PinkoMessageBusToWebAllRolesTopic);
+            //    pinkoApplication
+            //        .GetBus<IBusMessageOutbound>();
 
-            // Set listener for outbound messages 
-            var incomingTopic =
-                pinkoApplication
-                    .GetBus<IBusMessageOutbound>();
-
-            _webRoleHearBeat
-                .Subscribe(x => incomingTopic.Publish(pinkoApplication.FactorWebEnvelop(string.Empty, WebRoleId, new PinkoRoleHeartbeat()))); 
+            //_webRoleHearBeat
+            //    .Subscribe(x => incomingTopic.Publish(pinkoApplication.FactorWebEnvelop(string.Empty, _pinkoWebRoleManager.WebRoleId, new PinkoRoleHeartbeat()))); 
 
             //_webRoleHearBeat
             //    .Subscribe(x =>
@@ -227,24 +237,24 @@ namespace PinkoMobilePilot
         void Application_End(object sender, EventArgs e)
         {
             Trace.TraceInformation("Stopping Web Role: {0}", GetHashCode());
-            //  Code that runs on application shutdown
-            PinkoContainer = PinkoWebRoleContainerManager.Container;
-            PinkoContainer.Resolve<IPinkoApplication>().ApplicationRunningEvent.Set();
-            Thread.Sleep(3000);
+            _webRoleConnectManager.StopPinkoWebRole();
+
+            ////  Code that runs on application shutdown
+            ////PinkoContainer = PinkoWebRoleContainerManager.Container;
+            //PinkoContainer.Resolve<IPinkoApplication>().ApplicationRunningEvent.Set();
+            //Thread.Sleep(3000);
         }
 
         void Application_Error(object sender, EventArgs e)
         {
             // Code that runs when an unhandled error occurs
             Trace.TraceError("Application_Error Web Role: {0}", GetHashCode());
-
         }
 
         void Session_Start(object sender, EventArgs e)
         {
             // Code that runs when a new session is started
             Trace.TraceError("Session_Start Web Role: {0} - e: {1}", GetHashCode(), e.ToString());
-
         }
 
         void Session_End(object sender, EventArgs e)
@@ -254,22 +264,31 @@ namespace PinkoMobilePilot
             // is set to InProc in the Web.config file. If session mode is set to StateServer 
             // or SQLServer, the event is not raised.
             Trace.TraceError("Session_End Web Role: {0} - e: {1}", GetHashCode(), e.ToString());
-
         }
 
-        /// <summary>
-        /// Hearbeat Reactive extension - processes via SignalR
-        /// </summary>
-        private IObservable<long> _webRoleHearBeat;
+        ///// <summary>
+        ///// Hearbeat Reactive extension - processes via SignalR
+        ///// </summary>
+        //private IObservable<long> _webRoleHearBeat;
+
+        ///// <summary>
+        ///// Uniwue web role id
+        ///// </summary>
+        //public readonly string WebRoleId = Guid.NewGuid().ToString();
+
+        ///// <summary>
+        ///// Pinko web managed functionality
+        ///// </summary>
+        //private PinkoWebRoleManager _pinkoWebRoleManager;
+
+        ///// <summary>
+        ///// PinkoContainer
+        ///// </summary>
+        //public IUnityContainer PinkoContainer { get; set; }
 
         /// <summary>
-        /// Uniwue web role id
+        /// IWebRoleConnectManager
         /// </summary>
-        public readonly string WebRoleId = Guid.NewGuid().ToString();
-
-        /// <summary>
-        /// PinkoContainer
-        /// </summary>
-        public IUnityContainer PinkoContainer { get; set; }
+        private IWebRoleConnectManager _webRoleConnectManager;
     }
 }

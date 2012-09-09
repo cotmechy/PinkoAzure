@@ -60,9 +60,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AzureWebRoleBase.cs" />
-    <Compile Include="Handlers\HandleCalculateExpression.cs" />
-    <Compile Include="Handlers\HandlerSubscribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkerRole.cs" />
   </ItemGroup>
@@ -73,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MsMqServiceBus\PinkoMsMqServiceBus.csproj">
+      <Project>{cf00ec33-45e3-4fd3-8a5a-60811785bc52}</Project>
+      <Name>PinkoMsMqServiceBus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">
       <Project>{62F59F46-0E80-46CD-88CB-82EDB6DB90C5}</Project>
       <Name>PinkDao</Name>
@@ -89,14 +90,13 @@
       <Project>{684F2F70-9FBB-4C31-898F-0AB01CB1E332}</Project>
       <Name>PinkoMocks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PinkoServices\PinkoServices.csproj">
-      <Project>{904DC007-D91D-4E1C-8475-6BB56A3EC78B}</Project>
-      <Name>PinkoServices</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PinkoWorkerCommon\PinkoWorkerCommon.csproj">
       <Project>{45263391-63FC-4868-9D9E-DF84031361F9}</Project>
       <Name>PinkoWorkerCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

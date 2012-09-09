@@ -45,14 +45,14 @@
 
             console.log('PinkoHeartbeata.aspx: hub.error...');
             huBconnection.hub.error(function () {
-                console("An error occured");
+                console("An error occurred");
             });
 
             // Get pinkoSingalHub JavaScript proxy
             console.log('PinkoHeartbeata.aspx: huBconnection.pinkoSingalHub...');
             var pinkoHub = huBconnection.pinkoSingalHub;
 
-            // server calls this methos
+            // server calls this methods
             pinkoHub.addMessage = function (value) {
                 console.log('PinkoHeartbeata.aspx: Server called addMessage(' + value + ')');
             };

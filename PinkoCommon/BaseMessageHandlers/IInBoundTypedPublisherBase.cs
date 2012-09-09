@@ -7,7 +7,7 @@ using PinkoCommon.Interface;
 namespace PinkoCommon.BaseMessageHandlers
 {
     /// <summary>
-    /// Generig
+    /// Generic
     /// </summary>
     public interface IInBoundTypedPublisherBase
     {

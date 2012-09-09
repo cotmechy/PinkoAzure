@@ -35,6 +35,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
+    <Reference Include="PinkoExpressionCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_WorkerBin\PinkoExpressionCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="PinkoExpressionEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Pinko.ExprPi\bin\PinkoExpressionEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -48,8 +56,17 @@
     <Compile Include="ExceptionTypes\PinkoExceptionAzureDeserializerNotFound.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionQueueNotConfigured.cs" />
     <Compile Include="Extensions\PinkoExtensions.cs" />
+    <Compile Include="Handler\BusListenerCalculateExpression.cs" />
+    <Compile Include="Handler\BusListenerPinkoPingMessage.cs" />
+    <Compile Include="Interface\IWorkerRoleFrame.cs" />
+    <Compile Include="Interface\IWorkerRoleHeartBeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\PinkoDataAccessLayer.cs" />
+    <Compile Include="Providers\PinkoMarketEnvironment.cs" />
+    <Compile Include="Providers\PinkoMarketEnvManager.cs" />
     <Compile Include="Utility\PinkoServiceContainer.cs" />
+    <Compile Include="WorkerRoleFrame.cs" />
+    <Compile Include="WorkerRoleHeartBeat.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">
@@ -60,14 +77,8 @@
       <Project>{1E504762-93C7-4AB4-A45F-64FD6F826724}</Project>
       <Name>PinkoCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
-      <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>
-      <Name>PinkoWebRoleCommon</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

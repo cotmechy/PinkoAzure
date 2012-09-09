@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading;
 
@@ -17,7 +18,7 @@ namespace PinkoCommon.Interface
         ManualResetEvent ApplicationRunningEvent { get; }
 
         /// <summary>
-        /// Environamnet User Name
+        /// Environment User Name
         /// </summary>
         string UserName { get; }
 
@@ -27,14 +28,14 @@ namespace PinkoCommon.Interface
         string MachineName { get; }
 
         /// <summary>
-        /// Run in backgroung 
+        /// Run in background 
         /// </summary>
         void RunInBackground(Action action);
 
         /// <summary>
         /// Run in a Pinko managed worker thread
         /// </summary>
-        void RunInWorkerThread(Action action);
+        void RunInWorkerThread(string name, Action action);
 
         /// <summary>
         /// Run in background (Task)
@@ -56,5 +57,10 @@ namespace PinkoCommon.Interface
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         IObservable<T> GetSubscriber<T>();
+
+        /// <summary>
+        /// Get thread pool schedules. Set to same thread in unit test.
+        /// </summary>
+        IScheduler ThreadPoolScheduler { get; }
     }
 }

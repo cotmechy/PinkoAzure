@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Namespace="PinkoEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="PinkoEntitiesTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="PinkoEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" >
+        <EntityContainer Name="PinkoEntitiesContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PinkoFormulas" EntityType="PinkoEntities.PinkoFormula" />
+          <EntitySet Name="PinkoFormulaDictionaries" EntityType="PinkoEntities.PinkoFormulaDictionary" />
+          <AssociationSet Name="PinkoFormulaDictionaryPinkoFormula" Association="PinkoEntities.PinkoFormulaDictionaryPinkoFormula">
+            <End Role="PinkoFormulaDictionary" EntitySet="PinkoFormulaDictionaries" />
+            <End Role="PinkoFormula" EntitySet="PinkoFormulas" />
+          </AssociationSet>
+          <EntitySet Name="EntitytFormulaExpressions" EntityType="PinkoEntities.EntitytFormulaExpression" />
+        </EntityContainer>
+        <EntityType Name="PinkoFormula">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="IdType" Nullable="false" />
+          <Property Type="String" Name="IdName" Nullable="false" />
+          <Property Type="String" Name="FieldName" Nullable="false" />
+          <Property Type="String" Name="Source" Nullable="false" />
+          <Property Type="String" Name="PinkoFormulaDictionaryId" Nullable="false" />
+          <NavigationProperty Name="PinkoFormulaDictionary" Relationship="PinkoEntities.PinkoFormulaDictionaryPinkoFormula" FromRole="PinkoFormula" ToRole="PinkoFormulaDictionary" />
+        </EntityType>
+        <EntityType Name="PinkoFormulaDictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="PinkoFormulas" Relationship="PinkoEntities.PinkoFormulaDictionaryPinkoFormula" FromRole="PinkoFormulaDictionary" ToRole="PinkoFormula" />
+        </EntityType>
+        <Association Name="PinkoFormulaDictionaryPinkoFormula">
+          <End Type="PinkoEntities.PinkoFormulaDictionary" Role="PinkoFormulaDictionary" Multiplicity="1" />
+          <End Type="PinkoEntities.PinkoFormula" Role="PinkoFormula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PinkoFormulaDictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PinkoFormula">
+              <PropertyRef Name="PinkoFormulaDictionaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EntitytFormulaExpression">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="FormulaExp" Nullable="false" />
+          <Property Type="DateTime" Name="DateTimeStamp" Nullable="false" />
+          <Property Type="DateTime" Name="LastUpdateStamp" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="PinkoEntities" />
+        <Alias Key="Target" Value="PinkoEntities.Store" />
+        <EntityContainerMapping CdmEntityContainer="PinkoEntitiesContainer" StorageEntityContainer="PinkoEntitiesTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -42,14 +42,28 @@ namespace PinkoWebRoleCommon.SignalRHub
         }
 
         /// <summary>
-        /// Send to client - SignalR will stub this methon in the browser
+        /// Send to client - SignalR will stub this method in the browser
         /// </summary>
         public void NotifyClientPinkoRoleHeartbeat(string dateTimeStamp, string machineName, string signalRId)
         {
-            //Debug.WriteLine("{0}: NotifyClientPinkoRoleHeartbeat(): Context.ConnectionId: {1}", this.Verbose(),
-            //                heartbeat.Verbose());
-            //Clients[Context.ConnectionId].NotifyClientPinkoRoleHeartbeat(heartbeat);
-            ////Clients.NotifyClientPinkoRoleHeartbeat(heartbeat);
+            // Do not implement. Implemented in browser by SignalR
+        }
+
+
+        /// <summary>
+        /// Send to client - SignalR will stub this method in the browser
+        /// </summary>
+        public void ExpressionResponseError(string clientCtx, string resultValue, string errorCode, string errorDescription)
+        {
+            // Do not implement. Implemented in browser by SignalR
+        }
+
+        /// <summary>
+        /// Send to client - SignalR will stub this method in the browser
+        /// </summary>
+        public void ExpressionResponse(string clientCtx, string resultType, string resultValue)
+        {
+            // Do not implement. Implemented in browser by SignalR
         }
     }
 
