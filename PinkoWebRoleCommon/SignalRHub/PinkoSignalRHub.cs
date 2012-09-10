@@ -53,7 +53,7 @@ namespace PinkoWebRoleCommon.SignalRHub
         /// <summary>
         /// Send to client - SignalR will stub this method in the browser
         /// </summary>
-        public void ExpressionResponseError(string clientCtx, string resultValue, string errorCode, string errorDescription)
+        public void ExpressionResponseError(string clientCtx, string expression, string resultValue, string errorCode, string errorDescription)
         {
             // Do not implement. Implemented in browser by SignalR
         }
@@ -61,7 +61,7 @@ namespace PinkoWebRoleCommon.SignalRHub
         /// <summary>
         /// Send to client - SignalR will stub this method in the browser
         /// </summary>
-        public void ExpressionResponse(string clientCtx, string resultType, string resultValue)
+        public void ExpressionResponse(string clientCtx, string expression, string resultType, string resultValue)
         {
             // Do not implement. Implemented in browser by SignalR
         }

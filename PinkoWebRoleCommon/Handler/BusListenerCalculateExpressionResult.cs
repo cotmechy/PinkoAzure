@@ -36,10 +36,10 @@ namespace PinkoWebRoleCommon.Handler
                 {
                     if (msg.ErrorCode != PinkoErrorCode.Success)
                         WebRoleSignalRManager.PinkoSingalHubContext.Clients
-                            .expressionResponseError(result.ClientCtx, result.ResultValue, msg.ErrorCode, msg.ErrorDescription);
+                            .expressionResponseError(result.ClientCtx, result.ExpressionFormula, result.ResultValue, msg.ErrorCode, msg.ErrorDescription);
                     else
                         WebRoleSignalRManager.PinkoSingalHubContext.Clients
-                            .expressionResponse(result.ClientCtx, result.ResultType, result.ResultValue);
+                            .expressionResponse(result.ClientCtx, result.ExpressionFormula, result.ResultType, result.ResultValue);
                 });
             return null;
         }

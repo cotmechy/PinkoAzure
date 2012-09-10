@@ -33,7 +33,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Value pairs
         /// </summary>
-        IDictionary<string, object> PinkoProperties { get; }
+        IDictionary<string, string> PinkoProperties { get; }
 
         /// <summary>
         /// Error code. Non 0 is an error

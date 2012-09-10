@@ -18,10 +18,18 @@ namespace PinkoCommon
             QueueConfiguration[PinkoMessageBusToWorkerAllRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllRolesTopic, true);
             QueueConfiguration[PinkoMessageBusToWorkerCalcEngineActionTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineActionTopic, true);
 
+            QueueConfiguration[PinkoMessageBusToWebAllRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToWebAllRolesTopic, true);
+            QueueConfiguration[PinkoMessageBusToWebFeedToClientTopic] = new Tuple<string, bool>(PinkoMessageBusToWebFeedToClientTopic, true);
+
+
             // Set bus connection screen
 
             KeyValues["Issuer"] = "== Get from secure notes ==";
             KeyValues["SecretKey"] = "== Get from secure notes ==";
+
+            KeyValues["Issuer"] = "owner";
+            KeyValues["SecretKey"] = "/PANoEiC88Ox17lwbKfL7jmtAK1Xgdk+Z8S51+DtAtc=";
+
 
             KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
         }
@@ -39,7 +47,7 @@ namespace PinkoCommon
         /// </summary>
         public string PinkoMessageBusToWebFeedToClientTopic
         {
-            get { return "PinkoMessageBusFeedToClientTopic"; }
+            get { return "PinkoMessageBusToWebFeedToClientTopic"; }
         }
 
         /// <summary>
@@ -47,7 +55,7 @@ namespace PinkoCommon
         /// </summary>
         public string PinkoMessageBusToWebAllRolesTopic
         {
-            get { return "PinkoMessageBusAllWebRolesTopic";  }
+            get { return "PinkoMessageBusToWebAllRolesTopic"; }
         }
 
 

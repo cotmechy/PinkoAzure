@@ -16,8 +16,16 @@ namespace PinkoCommon
         /// </summary>
         public PinkoServiceMessageEnvelop()
         {
-            PinkoProperties = new Dictionary<string, object>();
+            PinkoProperties = new Dictionary<string, string>();
             ReplyTo = QueueName = string.Empty;
+
+            PinkoProperties[PinkoMessagePropTag.DateTimeStamp] = DateTime.Now.ToUniversalTime().ToLongTimeString();
+            PinkoProperties[PinkoMessagePropTag.MachineName] = string.Empty;
+            PinkoProperties[PinkoMessagePropTag.SenderName] = string.Empty;
+
+            ErrorCode = PinkoErrorCode.Success;
+            ErrorSystem = string.Empty;
+            ErrorDescription = string.Empty;
         }
 
         /// <summary>
@@ -28,7 +36,6 @@ namespace PinkoCommon
         {
             PinkoProperties[PinkoMessagePropTag.MachineName] = application.MachineName;
             PinkoProperties[PinkoMessagePropTag.SenderName] = application.UserName;
-            PinkoProperties[PinkoMessagePropTag.DateTimeStamp] = DateTime.Now.ToUniversalTime().ToLongTimeString();
         }
 
         /// <summary>
@@ -69,23 +76,44 @@ namespace PinkoCommon
         /// <summary>
         /// Value pairs
         /// </summary>
-        public IDictionary<string, object> PinkoProperties { get; set; }
+        public IDictionary<string, string> PinkoProperties { get; set; }
 
 
         /// <summary>
         /// Error code. Success.
         /// </summary>
-        public int ErrorCode { get; set; }
+        public int ErrorCode
+        {
+            get
+            {
+                return int.Parse(PinkoProperties[PinkoMessagePropTag.ErrorCode]);
+            }
+            set { PinkoProperties[PinkoMessagePropTag.ErrorCode] = value.ToString(); }
+        }
 
         /// <summary>
         /// Error Description. User friendly. 
         /// </summary>
-        public string ErrorDescription { get; set; }
+        public string ErrorDescription
+        {
+            get
+            {
+                return (string)PinkoProperties[PinkoMessagePropTag.ErrorDescription];
+            }
+            set { PinkoProperties[PinkoMessagePropTag.ErrorDescription] = value; }
+        }
 
         /// <summary>
         /// Full technical error
         /// </summary>
-        public string ErrorSystem { get; set; }
+        public string ErrorSystem
+        {
+            get
+            {
+                return (string) PinkoProperties[PinkoMessagePropTag.ErrorSystem];
+            }
+            set { PinkoProperties[PinkoMessagePropTag.ErrorSystem] = value; }
+        }
 
         /// <summary>
         /// Verbose debug string

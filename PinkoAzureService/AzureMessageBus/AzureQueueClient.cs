@@ -184,7 +184,8 @@ namespace PinkoAzureService.AzureMessageBus
             return
                 new BrokeredMessage(msg.Message)
                 {
-                    ContentType = msg.Message.GetType().ToString()
+                    ContentType = msg.Message.GetType().ToString(),
+                    ReplyTo = msg.ReplyTo
                 };
         }
 

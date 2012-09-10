@@ -82,7 +82,7 @@ namespace PinkoMsMqServiceBus
             Value = value;
         }
 
-        static public string Serialize(IDictionary<string, object> dict)
+        static public string Serialize(IDictionary<string, string> dict)
         {
             var tempdataitems = new List<DictionaryDataItem>(dict.Count);
 
@@ -97,14 +97,14 @@ namespace PinkoMsMqServiceBus
             return sw.ToString();
         }
 
-        static public IDictionary<string, object> Deserialize(string rawData)
+        static public IDictionary<string, string> Deserialize(string rawData)
         {
             var xs = new XmlSerializer(typeof(List<DictionaryDataItem>));
             var sr = new StringReader(rawData);
 
             var templist = (List<DictionaryDataItem>)xs.Deserialize(sr);
 
-            return templist.ToDictionary<DictionaryDataItem, string, object>(di => di.Key, di => di.Value);
+            return templist.ToDictionary<DictionaryDataItem, string, string>(di => di.Key, di => di.Value);
         }
     }
 }

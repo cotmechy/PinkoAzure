@@ -244,6 +244,10 @@
       <Project>{62f59f46-0e80-46cd-88cb-82edb6db90c5}</Project>
       <Name>PinkDao</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PinkoAzureService\PinkoAzureService.csproj">
+      <Project>{4c8788bf-46d5-433d-b4cd-973e60ddd3cc}</Project>
+      <Name>PinkoAzureService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkoCommon\PinkoCommon.csproj">
       <Project>{1e504762-93c7-4ab4-a45f-64fd6f826724}</Project>
       <Name>PinkoCommon</Name>

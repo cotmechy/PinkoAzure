@@ -11,24 +11,38 @@
         <form id="Form1" method="post" action="http://localhost:49171/api/PinkoFormProcessor/PostRequestFormula">
         -->
         <form id="ctrlFormRequestFormula">
-                Enter Formula: 
-            <input id="ExpressionFormula" data-bind="value: ExpressionFormula" type="text" width="200" />
+            Enter Formula: 
+            <br />
+            <textarea data-bind="value: ExpressionFormula" ></textarea>
             <br/>
             Result: 
-            <input id="ResultValue" data-bind="value: ResultValue" type="text" width="200" />
-            <br/>
+            <input data-bind="value: ResultValue" type="text"  />
+            <br />
+            ResultType:
+            <input data-bind="value: ResultType" type="text"  />
+            <br />
+            LastResultTimeStamp:
+            <input data-bind="value: LastResultTimeStamp" type="text" />
+            <br />
+            ErrorCode:
+            <input data-bind="value: ErrorCode" type="text"  />
+            <br />
+            ErrorMessage:
+            <br />
+            <textarea data-bind="value: ErrorMessage" /></textarea>
+            <br />
             <input id="ctrlBtnSubmit" type="submit" />
         </form>
     </div>
 
 
     <!-- window -->
-    <button id="ctrlOpenSinpleSample">Formula Selector</button>
-    <div id="ctlrWndFormualSelector">
+    <%--<button id="ctrlOpenSinpleSample">Formula Selector</button>--%>
+<%--    <div id="ctlrWndFormualSelector">
         <div id="ctrldictionaryGrid">
             
         </div>
-    </div>
+    </div>--%>
 
     <!-- Kendo template -->    
     <script id="tmplFromulaTemplateDefinition" type="text/x-kendo-template">
@@ -44,11 +58,14 @@
             // PinkoCalculateExpression View model
             // http://docs.kendoui.com/getting-started/framework/mvvm/overview
             var vmFormulaResult = kendo.observable({
-                ExpressionFormula: "=1+1",
+                ExpressionFormula: "1.5+1.5",
                 ResultValue: "---",
+                LastResultTimeStamp: "---",
                 ResultType: "---",
                 MaketEnvId: "MaketEnvId",
-                ClientCtx: "ClientCtx"
+                ClientCtx: "ClientCtx",
+                ErrorCode: "",
+                ErrorMessage: ""
             });
             kendo.bind($("#ctrlDivRequestFormula"), vmFormulaResult);
 
@@ -124,24 +141,24 @@
             });
 
 
-            $("#ctlrWndFormualSelector").kendoWindow({
-                actions: ["Maximize", "Minimize", "Close"],
-                //actions: ["Custom", "Refresh", "Maximize", "Minimize", "Close"],
-                //draggable: false,
-                //modal: true,
-                //resizable: false,
-                title: "Formula Chooser",
-                //height: "300px",
-                //width: "500px"
-            });
+            //$("#ctlrWndFormualSelector").kendoWindow({
+            //    actions: ["Maximize", "Minimize", "Close"],
+            //    //actions: ["Custom", "Refresh", "Maximize", "Minimize", "Close"],
+            //    //draggable: false,
+            //    //modal: true,
+            //    //resizable: false,
+            //    title: "Formula Chooser",
+            //    //height: "300px",
+            //    //width: "500px"
+            //});
 
-            $("#ctrlOpenSinpleSample").click(function ()
-            {
-                var win = $("#ctlrWndFormualSelector").data("kendoWindow");
-                //win.center();
-                win.open();
+            //$("#ctrlOpenSinpleSample").click(function ()
+            //{
+            //    var win = $("#ctlrWndFormualSelector").data("kendoWindow");
+            //    //win.center();
+            //    win.open();
 
-            });
+            //});
 
             var huBconnection = $.connection;
             var pinkoHub = huBconnection.pinkoSingalHub;
@@ -158,21 +175,31 @@
             //
             // Expression success
             //
-            pinkoHub.expressionResponse = function (clientCtx, resultType, resultValue)
+            pinkoHub.expressionResponse = function (clientCtx, resultexpression, resultType, resultValue)
             {
                 console.log("from Master ExpressionResponse: " + clientCtx + " :: " + resultType + " :: " + resultValue);
-                //vmFormulaResult.ResultValue("resultValue");
+                vmFormulaResult.set("ExpressionFormula", resultexpression);
+                vmFormulaResult.set("ResultValue", resultValue);
+                vmFormulaResult.set("ResultType", resultType);
+                vmFormulaResult.set("ErrorCode", "");
+                vmFormulaResult.set("ErrorMessage", "");
+                vmFormulaResult.set("LastResultTimeStamp", new Date().toTimeString());
             };
 
 
             //
             // Expression Error
             //
-            pinkoHub.expressionResponseError = function (clientCtx, resultValue, errorCode, errorDescription)
+            pinkoHub.expressionResponseError = function (clientCtx, resultexpression, resultValue, errorCode, errorDescription)
             {
                 console.log("from Master ExpressionResponseError: " + clientCtx + " :: " + resultValue + " :: " + errorCode + " :: " + errorDescription);
-                //vmFormulaResult.ResultValue("resultValue");
-                //$("#ResultValue"). (resultValue);
+                
+                vmFormulaResult.set("ExpressionFormula", resultexpression);
+                vmFormulaResult.set("ResultValue", resultValue);
+                vmFormulaResult.set("ErrorCode", errorCode);
+                vmFormulaResult.set("ErrorMessage", errorDescription);
+                vmFormulaResult.set("LastResultTimeStamp", new Date().toTimeString());
+                
             };
 
         };

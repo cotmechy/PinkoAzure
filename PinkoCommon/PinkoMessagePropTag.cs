@@ -13,5 +13,8 @@ namespace PinkoCommon
         public const string MessageHandlerId = "messageHandlerid";
         public const string MachineName = "machinename";
         public const string DateTimeStamp = "datetimestamp";
+        public const string ErrorCode = "ErrorCode";
+        public const string ErrorDescription = "ErrorDescription";
+        public const string ErrorSystem = "ErrorSystem";
     }
 }
