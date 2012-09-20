@@ -13,7 +13,7 @@ namespace PinkoMocks
         /// <summary>
         /// Server connection string
         /// </summary>
-        public string AzureServerConnectionString { get; private set; }
+        public string BusMessageServerConnectionString { get; private set; }
 
         /// <summary>
         /// Connect queue

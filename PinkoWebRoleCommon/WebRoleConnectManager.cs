@@ -24,7 +24,7 @@ namespace PinkoWebRoleCommon
                     () => // All Worker roles
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
-                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebAllRolesTopic)
+                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToAllWebRolesTopic)
                         .Listen()
                 );
 
@@ -32,7 +32,7 @@ namespace PinkoWebRoleCommon
                     () => // Selected
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
-                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebFeedToClientTopic, Guid.NewGuid().ToString())
+                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRoleTopic, Guid.NewGuid().ToString())
                         .Listen()
                 );
 
@@ -85,7 +85,7 @@ namespace PinkoWebRoleCommon
         //            .GetBus<IBusMessageOutbound>();
 
         //    _webRoleHearBeat
-        //        .Subscribe(x => incomingTopic.Publish(PinkoApplication.FactorWebEnvelop(string.Empty, WebRoleId, new PinkoRoleHeartbeat())));
+        //        .Subscribe(x => incomingTopic.Publish(PinkoApplication.FactorWebEnvelop(string.Empty, new PinkoRoleHeartbeat())));
         //}
 
         /// <summary>

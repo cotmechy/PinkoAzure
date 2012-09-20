@@ -13,7 +13,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Server connection string
         /// </summary>
-        string AzureServerConnectionString { get; }
+        string BusMessageServerConnectionString { get; }
 
         /// <summary>
         /// Connect queue
@@ -49,7 +49,7 @@ namespace PinkoCommon.Interface
         /// <returns></returns>
         public static string Verbose(this IBusMessageServer obj)
         {
-            return string.Format("IBusMessageServer: AzureServerConnectionString: {0}", obj.AzureServerConnectionString);
+            return string.Format("IBusMessageServer: AzureServerConnectionString: {0}", obj.BusMessageServerConnectionString);
         }
     }
 }

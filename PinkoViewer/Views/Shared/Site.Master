@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
-
 	<title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
 
 	<link href="/Content/Site.css" rel="stylesheet" type="text/css" />
@@ -11,51 +10,32 @@
     <link href="/Content/kendo.default.min.css" rel="stylesheet">
 
     <script src="/Scripts/jquery-1.7.1.js" type="text/javascript"></script>
-
-    <!--
-    <script src="/Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
-    <script src="/Scripts/jQuery.tmpl.js" type="text/javascript"></script>
-    <script src="/Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
-    <script src="/Scripts/jQuery.tmpl.js" type="text/javascript"></script>
-    <script src="../../Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
-    <script src="/Scripts/jquery-1.7.1.js" type="text/javascript"></script>
-    <script src="/Scripts/jquery-ui-1.8.11.js" type="text/javascript"></script>
-        <script src="/Scripts/jquery-1.6.2.js" type="text/javascript"> </script>
-        <script src="/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <script src="/Scripts/jquery.min.js"></script>
-
-    <script type="text/javascript">        console.log('PinkoHeartbeata.aspx: Url.Content(~/Scripts/modernizr-2.5.3)...');</script>
-
-    <script src="/Scripts/modernizr-2.5.3.js" type="text/javascript"></script>
-    -->
-
     <script src="/Scripts/jquery.signalR.js" type="text/javascript"></script>
     <script src="/Scripts/jquery.signalR.min.js" type="text/javascript"></script>
     <script src="/Scripts/hubs.js" type="text/javascript"></script>
     <script src="/signalr/hubs" type="text/javascript"></script>
-
-    <!-- 
-        <script src="/Scripts/kendo.web.min.js"></script>
-    -->
     <script src="/Scripts/console.js"></script>
     <script src="/Scripts/kendo.all.min.js"></script>
 
-    <!--   <script type="text/javascript">        console.log('PinkoHeartbeata.aspx: Url.Content(~/Scripts/knockout-2.1.0.js)...');</script>
-    <script src="/Scripts/knockout-2.1.0.js" type="text/javascript"></script>-->
-
-<!-- 
-     <script src="/Scripts/jquery-1.6.2.js" type="text/javascript"> </script>
-  <script src="/Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"> </script>
-  <script src="/Scripts/jQuery.tmpl.js" type="text/javascript"> </script>    -->
 
     <!-- SignalR streaming -->
     <script type="text/javascript">
+        // Pinko User identifiers
+        var vmUserContext = kendo.observable({
+            ClientCtx: "ClientCtx",
+            ClientId: "ClientId",
+            SignalRId: "",
+            WebRoleId: ""
+        });
+
         $(document).ready(function ()
         {
             //
             // SignalR client Object
             // https://github.com/SignalR/SignalR/wiki/SignalR-JS-Client-Hubs
             //
+
+            kendo.bind($("#ctrlFooter"), vmUserContext);
 
             console.log('PinkoHeartbeata.aspx: var huBconnection = $.connection...');
             var huBconnection = $.connection;
@@ -85,53 +65,39 @@
                 //console.log('notifyClientPinkoRoleHeartbeat: Server called: datetimeStamp: ' + datetimeStamp + ' - machineName: ' + machineName);
                 $('#ctrlTimeStamp').text(datetimeStamp);
                 $('#ctrlServerName').text(machineName);
-                $('ctrlSignalRconnectionId').text(signalRId);
+                //$('#ctrlSignalRconnectionId').text(signalRId);
             };
 
+            // Every time signalR reconnects, we get a new identifier set.
+            pinkoHub.reconnectionIdentifiers = function (clientId, signalRId, webRoleId)
+            {
+                console.log("pinkoHub.reconnectionIdentifiers = function( " + clientId + " :: " + signalRId + " :: " + webRoleId + " )");
 
-            ////
-            //// Expression success
-            ////
-            //pinkoHub.expressionResponse = function (clientCtx, resultType, resultValue)
-            //{
-            //    console.log("from Master ExpressionResponse: " + clientCtx + " :: " + resultType + " :: " + resultValue);
-            //};
+                vmUserContext.set("SignalRId", signalRId);
+                vmUserContext.set("WebRoleId", webRoleId);
+            };
 
-
-            ////
-            //// Expression Error
-            ////
-            //pinkoHub.expressionResponseError = function (clientCtx, resultValue, errorCode, errorDescription)
-            //{
-            //    console.log("from Master ExpressionResponseError....");
-            //    console.log("from Master ExpressionResponseError: " + clientCtx + " :: " + resultValue + " :: " + errorCode + " :: " + errorDescription);
-            //};
-
-
+            // SignalR connection ready
             function connectionReady()
             {
                 console.log("PinkoHeartbeata.aspx: Done calling first hub server side-function");
-                //$('#ctrlSingalRId').text(huBconnection.connectionState.connected.toString());
             };
 
             console.log('PinkoHeartbeata.aspx: huBconnection.hub.start()...');
             huBconnection.hub.start()
                 .done(function ()
                 {
-                    console.log('PinkoHeartbeata.aspx: pinkoHub.clientConnected...');
-                    pinkoHub.clientConnected("PinkoHeartbeata.aspx: Calling from client") //e.g. a login or init
+                    console.log('PinkoHeartbeata.aspx: huBconnection.connectionState...');
+
+                    pinkoHub.clientConnected(vmUserContext.ClientId, vmUserContext.WebRoleId) //e.g. a login or init
                         .done(connectionReady);
                 })
                 .fail(function ()
                 {
                     alert("PinkoHeartbeata.aspx: Could not Connect!");
                 });
-            
-
         });
     </script>
-    
-
 </head>
     
 
@@ -156,18 +122,23 @@
 		</section>
 	</div>
     <center>
-        <div class="footer">
+        <div id="ctrlFooter">
             <label>Web Role HearBeat: </label>
             &nbsp;
-            <label id="ctrlSingalRId">time stamp</label>
+            <label id="ctrlSingalRId" data-bind="value: SignalRId" type="text"></label>
+            &nbsp;
+            <label id="ctrlClientCtx" data-bind="value: ClientCtx" type="text">--</label>
             &nbsp;
             <label id="ctrlTimeStamp">time stamp</label>
-            &nbsp;
             &nbsp;
             <label id="ctrlServerName"></label>
             &nbsp;
             &nbsp;
-            <label id="ctrlSignalRconnectionId"></label>
+            <%--<label id="ctrlSignalRconnectionId"></label>--%>
+            <br/>
+                SignalRId: <input data-bind="value: SignalRId" type="text"  />
+            =====
+                <label data-bind="value: SignalRId"></label>
         </div>
     </center>
 </body>

@@ -16,12 +16,20 @@ namespace PinkoWebRoleCommon.Handler
     /// <summary>
     /// Calculate an expression request in server 
     /// </summary>
-    public class BusListenerCalculateExpressionResult : InboundMessageHandler<PinkoCalculateExpressionResult>
+    public class BusListenerCalculateExpressionResult : InboundMessageHandler<PinkoMsgCalculateExpressionResult>
     {
+        /// <summary>
+        /// Constructor - BusListenerCalculateExpressionResult 
+        /// </summary>
+        public BusListenerCalculateExpressionResult()
+        {
+            ProcessRequestHandler = ProcessRequest;
+        }
+
         /// <summary>
         /// Set handler 
         /// </summary>
-        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoCalculateExpressionResult result)
+        public IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoMsgCalculateExpressionResult result)
         {
             Trace.TraceInformation("(BusListenerCalculateExpressionResult): {0}", msg.Verbose());
             Trace.TraceInformation("(BusListenerCalculateExpressionResult): {0}", result.Verbose());
@@ -35,11 +43,11 @@ namespace PinkoWebRoleCommon.Handler
             TryCatch.RunInTry(() =>
                 {
                     if (msg.ErrorCode != PinkoErrorCode.Success)
-                        WebRoleSignalRManager.PinkoSingalHubContext.Clients
-                            .expressionResponseError(result.ClientCtx, result.ExpressionFormula, result.ResultValue, msg.ErrorCode, msg.ErrorDescription);
+                        WebRoleSignalRManager.PinkoSingalHubContext.Clients[result.DataFeedIdentifier.SignalRId]
+                            .expressionResponseError(result.DataFeedIdentifier.ClientCtx, result.ExpressionFormula, result.ResultValue, msg.ErrorCode, msg.ErrorDescription);
                     else
-                        WebRoleSignalRManager.PinkoSingalHubContext.Clients
-                            .expressionResponse(result.ClientCtx, result.ExpressionFormula, result.ResultType, result.ResultValue);
+                        WebRoleSignalRManager.PinkoSingalHubContext.Clients[result.DataFeedIdentifier.SignalRId]
+                            .expressionResponse(result.DataFeedIdentifier.ClientCtx, result.ExpressionFormula, result.ResultType, result.ResultValue);
                 });
             return null;
         }

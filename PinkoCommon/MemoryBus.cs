@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Reactive.Linq;
@@ -37,7 +38,7 @@ namespace PinkoCommon
         /// <returns></returns>
         public void Publish(T message)
         {
-            //Trace.TraceInformation("Publishing Message: {0}", message);
+            Trace.TraceInformation("({3}): {2}: {1}: Publishing Message: {0}", message, GetType(), GetHashCode(), Process.GetCurrentProcess().Id);
 
             //PinkoApplication.RunInBackground(() => _subjectPump.OnNext(message));
             _subjectPump.OnNext(message);
@@ -64,10 +65,10 @@ namespace PinkoCommon
         /// </summary>
         readonly Subject<T> _subjectPump = new Subject<T>();
 
-        /// <summary>
-        /// IPinkoApplication
-        /// </summary>
-        [Dependency]
-        public IPinkoApplication PinkoApplication { get; set; }
+        ///// <summary>
+        ///// IPinkoApplication
+        ///// </summary>
+        //[Dependency]
+        //public IPinkoApplication PinkoApplication { get; set; }
     }
 }

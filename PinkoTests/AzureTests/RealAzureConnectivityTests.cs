@@ -78,7 +78,7 @@ namespace PinkoTests.AzureTests
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
             var ev = new ManualResetEvent(false);
-            Tuple<IBusMessageInbound, PinkoPingMessage> receiveMessageInbound = null;
+            Tuple<IBusMessageInbound, PinkoMsgPing> receiveMessageInbound = null;
 
             // Connect to service
             var server = pinkoContainer.Resolve<AzureBusMessageServer>();
@@ -95,7 +95,7 @@ namespace PinkoTests.AzureTests
             ev.WaitOne(1000);
 
             // hook  listener (no natureal C3 event). use RReactive Extensions (Rx)
-            var listener = pinkoApplication.GetSubscriber<Tuple<IBusMessageInbound, PinkoPingMessage>>();
+            var listener = pinkoApplication.GetSubscriber<Tuple<IBusMessageInbound, PinkoMsgPing>>();
             listener.Subscribe(x =>
             {
                 receiveMessageInbound = x;
@@ -105,7 +105,7 @@ namespace PinkoTests.AzureTests
             // Create sample message
             var outboundMsg = new PinkoServiceMessageEnvelop()
             {
-                Message = new PinkoPingMessage { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" },
+                Message = new PinkoMsgPing { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" },
                 QueueName = queuName
             };
             outboundMsg.PinkoProperties["key1"] = "key1Value1";
@@ -124,7 +124,7 @@ namespace PinkoTests.AzureTests
             queue.Close();
 
             Assert.IsNotNull(receiveMessageInbound);
-            Assert.IsTrue(receiveMessageInbound.Item2.GetType() == typeof(PinkoPingMessage));
+            Assert.IsTrue(receiveMessageInbound.Item2.GetType() == typeof(PinkoMsgPing));
 
             // Assure properties were serialize by Azure layer
             Assert.IsTrue(receiveMessageInbound.Item1.PinkoProperties.ContainsKey("key1"));

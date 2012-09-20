@@ -36,7 +36,7 @@ namespace PinkoWorkerCommon
                 () => // Start Listening to message bus incoming messages - MessageBusWebRoleToClientsTopic
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineActionTopic, _selector)
+                    .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic, _selector)
                     .Listen()
                 );
 
@@ -44,7 +44,7 @@ namespace PinkoWorkerCommon
                 () => // Start Listening to mesage bus incoming messages - MAIN: MessageBusCrossWebRolesQueue
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerAllRolesTopic)
+                    .GetTopic(PinkoConfiguration.PinkoMessageBusToAllWorkerRolesTopic)
                     .Listen());
 
             // Return when application stops or queue stops
@@ -98,7 +98,6 @@ namespace PinkoWorkerCommon
             PinkoContainer.Resolve<IBusMessageServer>().Deinitialize();
 
             Thread.Sleep(5000);
-            //base.OnStop();
         }
 
 
@@ -115,18 +114,6 @@ namespace PinkoWorkerCommon
             get { return _messageReceiveHandlers; }
         }
         private readonly List<object> _messageReceiveHandlers = new List<object>();
-
-
-        ///// <summary>
-        ///// Time sequence
-        ///// </summary>
-        //private IObservable<long> _heartbeatTimeObservable;
-
-        ///// <summary>
-        ///// Main Queue to send outbound messages
-        ///// </summary>
-        //private IRxMemoryBus<IBusMessageOutbound> _outboundMessageBus;
-
 
         /// <summary>
         /// PinkoContainer

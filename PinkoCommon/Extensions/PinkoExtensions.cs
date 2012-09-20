@@ -15,11 +15,19 @@ namespace PinkoCommon.Extensions
         /// <returns></returns>
         public static string VerboseIdentity(this object obj)
         {
-            return string.Format("(TID: {2}: {0}) {1}"
+            return string.Format("ObjectIdentity: (TID: {2}: {0}) {1}"
                                             , obj.GetHashCode()
                                             , obj.GetType()
                                             , Thread.CurrentThread.ManagedThreadId
                                             );
+        }
+
+        /// <summary>
+        /// Is null check for all objects
+        /// </summary>
+        public static bool IsNull(this object obj)
+        {
+            return obj == null;
         }
     }
 }

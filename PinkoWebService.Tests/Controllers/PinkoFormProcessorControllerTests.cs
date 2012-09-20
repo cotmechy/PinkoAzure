@@ -21,7 +21,7 @@ namespace PinkoWebService.Tests.Controllers
             var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var controller = pinkoContainer.Resolve<PinkoFormProcessorController>();
-            pinkoContainer.Resolve<IMessageHandlerManager>().AddBusTypeHandler<PinkoCalculateExpression>();
+            pinkoContainer.Resolve<IMessageHandlerManager>().AddBusTypeHandler<PinkoMsgCalculateExpression>();
 
             // Listen for outbound traffic to 
             IBusMessageOutbound outboundMsg = null;
@@ -29,10 +29,10 @@ namespace PinkoWebService.Tests.Controllers
                 .GetSubscriber<IBusMessageOutbound>()
                 .Subscribe(x => outboundMsg = x);
 
-            controller.GetCalc("Expression formula", "marketenvid", "clientctx");
+            controller.GetCalc("Expression formula", "marketenvid", "clientctx", "clientid", "signalr", "webroleid");
  
             Assert.IsNotNull(outboundMsg);
-            Assert.IsNotNull(outboundMsg.Message is PinkoCalculateExpression);
+            Assert.IsNotNull(outboundMsg.Message is PinkoMsgCalculateExpression);
         }
     }
 }

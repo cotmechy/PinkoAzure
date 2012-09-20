@@ -14,16 +14,16 @@ using PinkoWorkerCommon.ExceptionTypes;
 namespace PinkoAzureService.AzureMessageBus
 {
     /// <summary>
-    /// Specific implementation for Asuze message bus cloud service
+    /// Specific implementation for Azure message bus cloud service
     /// </summary>
     public class AzureBusMessageServer : IBusMessageServer
     {
         /// <summary>
-        /// Connect to single Queuen
+        /// Connect to single Queue
         /// </summary>
         public IBusMessageQueue ConnectToQueue(string queueName, string selector = "")
         {
-            Trace.TraceInformation("Connectting to Queue/Topic: {0} - selector: {2}  in {1}...", queueName, AzureServerConnectionString, selector);
+            Trace.TraceInformation("Connecting to Queue/Topic: {0} - selector: {2}  in {1}...", queueName, BusMessageServerConnectionString, selector);
             AzureQueueClient client = null;
 
             // create queue/topic
@@ -61,7 +61,7 @@ namespace PinkoAzureService.AzureMessageBus
             client = PinkoContainer.Resolve<AzureQueueClient>();
             client.QueueName = queueName;
             client.AzureNamespaceManager = _azureNamespaceManager;
-            client.Initialize(AzureServerConnectionString);
+            client.Initialize(BusMessageServerConnectionString);
             return client;
         }
 
@@ -87,16 +87,16 @@ namespace PinkoAzureService.AzureMessageBus
                     ServicePointManager.DefaultConnectionLimit = 12;
 
                     // Create the queue if it does not exist already
-                    AzureServerConnectionString = PinkoConfiguration.GetSetting("Microsoft.ServiceBus.ConnectionString");
+                    BusMessageServerConnectionString = PinkoConfiguration.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
-                    Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", AzureServerConnectionString);
-                    _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(AzureServerConnectionString);
+                    Trace.TraceInformation("Creating AzureNamespaceManager: {0}...", BusMessageServerConnectionString);
+                    _azureNamespaceManager = NamespaceManager.CreateFromConnectionString(BusMessageServerConnectionString);
 
                     // Set listener for outbound messages 
                     PinkoApplication.GetSubscriber<IBusMessageOutbound>()
                         .Do(x => Trace.TraceInformation("AzureBusMessageServer Sending: {0}", x.Verbose()))
                         .ObserveOn(PinkoApplication.ThreadPoolScheduler)
-                        .Subscribe(x => GetTopic(string.IsNullOrEmpty(x.ReplyTo) ? x.QueueName : x.ReplyTo).Send(x));
+                        .Subscribe(x => GetTopic(x.QueueName).Send(x));
                 });
 
             return this;
@@ -136,7 +136,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Server connection string
         /// </summary>
-        public string AzureServerConnectionString { get; set; }
+        public string BusMessageServerConnectionString { get; set; }
 
         /// <summary>
         /// Azure messaging server Namespace

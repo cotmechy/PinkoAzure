@@ -35,14 +35,14 @@ namespace PinkoTests.PinkoWebRoleTests
 
             Task.Factory.StartNew(() => webRoleConnect.Initialize());
 
-            Tuple<IBusMessageInbound, PinkoRoleHeartbeat> msg = null;
-            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToWebAllRolesTopic);
-            incomingTopic.GetIncomingSubscriber<PinkoRoleHeartbeat>().Subscribe(x => msg = x);
+            Tuple<IBusMessageInbound, PinkoMsgRoleHeartbeat> msg = null;
+            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToAllWebRolesTopic);
+            incomingTopic.GetIncomingSubscriber<PinkoMsgRoleHeartbeat>().Subscribe(x => msg = x);
 
             // Simulate incoming topic message
             incomingTopic.Send(new PinkoServiceMessageEnvelop(pinkoApplication)
             {
-                Message = new PinkoRoleHeartbeat()
+                Message = new PinkoMsgRoleHeartbeat()
             });
 
             Assert.IsNotNull(msg);

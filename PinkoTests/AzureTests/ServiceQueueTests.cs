@@ -45,14 +45,14 @@ namespace PinkoTests.AzureTests
         public void BrokeredMessageSerialization()
         {
             var pinkoContainer = PinkoContainerMock.GetMockContainer();
-            var pm = new PinkoPingMessage { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" };
+            var pm = new PinkoMsgPing { SenderMachine = "ClientMachine", ResponderMachine = "ServerMachine" };
             var bm = AzureQueueClient.FactorNewOutboundMessage(new PinkoServiceMessageEnvelop() {Message = pm});
 
             // check for proepr deserialization
             var abm = new AzureBrokeredMessageEnvelopInbound(pinkoContainer.Resolve<IPinkoApplication>(), bm);
             Assert.IsNotNull(abm.Message);
-            Assert.IsTrue(abm.Message.GetType() == typeof(PinkoPingMessage));
-            Assert.IsTrue(bm.ContentType.Equals(typeof(PinkoPingMessage).ToString()));
+            Assert.IsTrue(abm.Message.GetType() == typeof(PinkoMsgPing));
+            Assert.IsTrue(bm.ContentType.Equals(typeof(PinkoMsgPing).ToString()));
 
             Assert.IsTrue(abm.PinkoProperties.ContainsKey(PinkoMessagePropTag.MachineName));
             Assert.IsTrue(abm.PinkoProperties.ContainsKey(PinkoMessagePropTag.SenderName));

@@ -15,7 +15,7 @@ namespace PinkoMsMqServiceBus
         /// <summary>
         /// Server connection string
         /// </summary>
-        public string AzureServerConnectionString
+        public string BusMessageServerConnectionString
         {
             get { return "MsMqBusMessageServerConnectionString"; }
         }

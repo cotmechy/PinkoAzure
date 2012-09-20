@@ -11,12 +11,20 @@ namespace PinkoWorkerCommon.Handler
     /// <summary>
     /// Handler Ping message response
     /// </summary>
-    public class BusListenerPinkoPingMessage : InboundMessageHandler<PinkoPingMessage>
+    public class BusListenerPinkoPingMessage : InboundMessageHandler<PinkoMsgPing>
     {
+        /// <summary>
+        /// Constructor - BusListenerPinkoPingMessage 
+        /// </summary>
+        public BusListenerPinkoPingMessage()
+        {
+            ProcessRequestHandler = ProcessRequest;
+        }
+
         /// <summary>
         /// Handle message
         /// </summary>
-        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoPingMessage typedMsg)
+        public IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoMsgPing typedMsg)
         {
             typedMsg.ResponderMachine = PinkoApplication.MachineName;
             typedMsg.ResponderDateTime = DateTime.Now;

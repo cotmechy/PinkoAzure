@@ -12,7 +12,7 @@ namespace PinkoCommon.BaseMessageHandlers
     /// <summary>
     /// Handler Ping message response
     /// </summary>
-    public abstract class InboundMessageHandler<T>
+    public class InboundMessageHandler<T>
     {
         /// <summary>
         /// Register Handler with RxMesagebus. Subscribe for incoming messages to process in the Rx Bus 
@@ -37,8 +37,7 @@ namespace PinkoCommon.BaseMessageHandlers
         private void HandlerAction(IBusMessageInbound msg, T expression)
         {
             //Trace.TraceInformation("HandlerAction: {0}", expression.);
-
-            var response = ProcessRequest(msg, expression);
+            var response = ProcessRequestHandler(msg, expression);
 
             // No response required
             if (response == null) return;
@@ -46,10 +45,16 @@ namespace PinkoCommon.BaseMessageHandlers
             response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = _handlerId;
             response.PinkoProperties[PinkoMessagePropTag.SenderName] = PinkoApplication.MachineName;
 
-            response.QueueName = response.ReplyTo;
-
-            // Send reply to user
-            ReplyQueue.Publish(response);
+            if (string.IsNullOrEmpty(response.ReplyTo))
+            {
+                Trace.TraceInformation("Missing ReplyTo. Not sending response for: {0}", msg.Verbose() );
+            }
+            else
+            {
+                response.QueueName = response.ReplyTo;
+                response.ReplyTo = string.Empty;
+                ReplyQueue.Publish(response);
+            }
         }
 
         /// <summary>
@@ -60,7 +65,7 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <summary>
         /// Set handler 
         /// </summary>
-        public abstract IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, T type);
+        public Func<IBusMessageInbound, T, IBusMessageOutbound> ProcessRequestHandler = null;
 
         /// <summary>
         /// REply queue publisher

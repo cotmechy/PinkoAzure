@@ -43,6 +43,11 @@ namespace PinkoCommon.Interface
         string ErrorSystem { get; set; }
 
         /// <summary>
+        /// WebRoleId to target specific selector in outgoing topic
+        /// </summary>
+        string WebRoleId { get; set; }
+
+        /// <summary>
         /// Verbose debug string
         /// </summary>
         /// <returns></returns>

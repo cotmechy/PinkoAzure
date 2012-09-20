@@ -21,8 +21,8 @@ namespace PinkoTests
             var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var pinkoPingMessageHandler = pinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register();
-            var pm = new PinkoPingMessage { SenderMachine = "UnitTestClientMachine" };
-            var pme = new PinkoServiceMessageEnvelop() {Message = pm, QueueName = "QueueNameResponse"};
+            var pm = new PinkoMsgPing { SenderMachine = "UnitTestClientMachine" };
+            var pme = new PinkoServiceMessageEnvelop() { Message = pm, QueueName = "QueueNameRquest", ReplyTo = "QueueNameResponse" };
             IBusMessageOutbound outboundMsg = null;
 
             // Listen for outbound traffic
@@ -32,12 +32,11 @@ namespace PinkoTests
 
             // Send mock message
             pinkoApplication
-                .GetBus<Tuple<IBusMessageInbound, PinkoPingMessage>>()
-                .Publish(new Tuple<IBusMessageInbound, PinkoPingMessage>(pme, pm));
+                .GetBus<Tuple<IBusMessageInbound, PinkoMsgPing>>()
+                .Publish(new Tuple<IBusMessageInbound, PinkoMsgPing>(pme, pm));
 
             Assert.IsNotNull(outboundMsg);
-            Assert.IsNotNull(outboundMsg.Message is PinkoPingMessage);
-            Assert.IsNotNull(((PinkoPingMessage)outboundMsg.Message).ResponderMachine.Equals(pinkoApplication.MachineName));
+            Assert.IsNotNull(outboundMsg.Message is PinkoMsgPing);
         }
     }
 }

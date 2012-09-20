@@ -41,7 +41,7 @@ namespace PinkoTests.PinkoCalcWorkerTests
             pinkoContainer.RegisterInstance<IWorkerRoleHeartBeat>(pinkoContainer.Resolve<WorkerRoleHeartBeat>().Initialize());
             pinkoApplication.ApplicationRunningEvent.WaitOne(6000);
 
-            var outboudMessages = busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusToWebAllRolesTopic).OutboudMessages;
+            var outboudMessages = busMessageServer.GetTopic(pinkoConfiguration.PinkoMessageBusToAllWebRolesTopic).OutboudMessages;
             Assert.IsTrue(outboudMessages >= 5);
         }
 

@@ -5,7 +5,7 @@ namespace PinkDao
     /// <summary>
     /// PinkoRoleHeartbeat
     /// </summary>
-    public class PinkoRoleHeartbeat
+    public class PinkoMsgRoleHeartbeat
     {
         ///// <summary>
         ///// 

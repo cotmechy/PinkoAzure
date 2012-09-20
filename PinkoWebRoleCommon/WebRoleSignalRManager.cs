@@ -30,7 +30,7 @@ namespace PinkoWebRoleCommon
             Trace.TraceInformation("Registering message handlers: {0}", GetType());
 
             // route incoming heartbeat to all clients
-            PinkoContainer.Resolve<IMessageHandlerManager>().GetSubscriber<PinkoRoleHeartbeat>()
+            PinkoContainer.Resolve<IMessageHandlerManager>().GetSubscriber<PinkoMsgRoleHeartbeat>()
                 .Do(x => Trace.TraceInformation("WebRole Received: {0}: {1} - {2}", GetType(), x.Item1.Verbose(), x.Item2.ToString()))
                 .Subscribe(x => PinkoSingalHubContext.Clients.notifyClientPinkoRoleHeartbeat(
                                                                                                 x.Item1.PinkoProperties[PinkoMessagePropTag.MachineName],

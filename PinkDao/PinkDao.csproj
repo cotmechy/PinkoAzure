@@ -52,7 +52,8 @@
     </Compile>
     <Compile Include="Extensions\DaoExtensions.cs" />
     <Compile Include="PinkoCalcSubsAction.cs" />
-    <Compile Include="PinkoCalculateExpression.cs" />
+    <Compile Include="PinkoMsgCalculateExpression.cs" />
+    <Compile Include="PinkoMsgClientConnect.cs" />
     <Compile Include="PinkoDataFeedIdentifier.cs" />
     <Compile Include="PinkoEntities.Context.cs">
       <AutoGen>True</AutoGen>
@@ -75,8 +76,8 @@
     <Compile Include="PinkoFormulaDictionary.cs">
       <DependentUpon>PinkoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="PinkoPingMessage.cs" />
-    <Compile Include="PinkoRoleHeartbeat.cs" />
+    <Compile Include="PinkoMsgPing.cs" />
+    <Compile Include="PinkoMsgRoleHeartbeat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

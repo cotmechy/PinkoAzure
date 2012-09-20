@@ -8,7 +8,7 @@ namespace PinkDao
     /// <summary>
     /// Ping message
     /// </summary>
-    public class PinkoPingMessage
+    public class PinkoMsgPing
     {
         public string SenderMachine = string.Empty;
         public DateTime SenderDateTime = DateTime.Now;

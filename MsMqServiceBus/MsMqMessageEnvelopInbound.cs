@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using PinkDao;
 using PinkoCommon;
+using PinkoCommon.ExceptionTypes;
+using PinkoCommon.Extensions;
 using PinkoCommon.Interface;
 using PinkoCommon.Utility;
+using PinkoWorkerCommon.ExceptionTypes;
 
 namespace PinkoMsMqServiceBus
 {
@@ -23,35 +26,27 @@ namespace PinkoMsMqServiceBus
             : base(pinkoApplication)
         {
             _message = msg;
-            //string queue = _message.DestinationQueue.QueueName;
-            //string val = _message.Body.ToString();
 
             Trace.TraceInformation("Message Label: {0}", msg.Label);
-            
-            //this.FromMsMqWrapper(msg);
+            MsMqMessageEnvelopInbound inbound = null;
 
-            if (msg.Label == typeof(PinkoRoleHeartbeat).ToString())
-                this.FromMsMqWrapper<PinkoRoleHeartbeat>(msg);
+            if (msg.Label == typeof(PinkoMsgRoleHeartbeat).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgRoleHeartbeat>(msg);
 
-            if (msg.Label == typeof(PinkoPingMessage).ToString())
-                this.FromMsMqWrapper<PinkoPingMessage>(msg);
+            if (msg.Label == typeof(PinkoMsgPing).ToString())
+                inbound =this.FromMsMqWrapper<PinkoMsgPing>(msg);
 
-            if (msg.Label == typeof(PinkoCalculateExpression).ToString())
-                this.FromMsMqWrapper<PinkoCalculateExpression>(msg);
+            if (msg.Label == typeof(PinkoMsgCalculateExpression).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgCalculateExpression>(msg);
 
-            if (msg.Label == typeof(PinkoCalculateExpressionResult).ToString())
-                this.FromMsMqWrapper<PinkoCalculateExpressionResult>(msg);
+            if (msg.Label == typeof(PinkoMsgCalculateExpressionResult).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgCalculateExpressionResult>(msg);
 
+            if (msg.Label == typeof(PinkoMsgClientConnect).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgClientConnect>(msg);
 
-            //Message = _message.Body;
-            //ReplyTo = string.IsNullOrEmpty(_message) ? string.Empty : _message.ReplyTo;
-
-            //msg.Container.Components.ForEach(x => PinkoProperties[x.Key] = x.Value.ToString());
-
-            //var chars = new char[_message.Extension.Length / sizeof(char)];
-            //Buffer.BlockCopy(_message.Extension, 0, chars, 0, _message.Extension.Length);
-            //DataItem.DeserializeData(new string(chars));
-
+            if (inbound.IsNull())
+                throw new PinkoExceptionMsMqNotFound("Missing MsMq handler in MsMqMessageEnvelopInbound()");
         }
 
         /// <summary>

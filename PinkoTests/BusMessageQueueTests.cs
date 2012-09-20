@@ -10,6 +10,7 @@ using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
+using PinkoWorkerCommon.Handler;
 
 namespace PinkoTests
 {
@@ -19,6 +20,61 @@ namespace PinkoTests
     [TestClass]
     public class BusMessageQueueTests
     {
+        /// <summary>
+        /// Test that reply to is empty after responding in queue name rest
+        /// </summary>
+        [TestMethod]
+        public void TestPinkoReplyToCleared()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
+            var pinkoPingMessageHandler = pinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register();
+            var pm = new PinkoMsgPing { SenderMachine = "UnitTestClientMachine" };
+            var pme = new PinkoServiceMessageEnvelop() { Message = pm, QueueName = "QueueNameRequest", ReplyTo = "QueueNameResponse" };
+            IBusMessageOutbound outboundMsg = null;
+
+            // Listen for outbound traffic
+            pinkoApplication
+                .GetSubscriber<IBusMessageOutbound>()
+                .Subscribe(x => outboundMsg = x);
+
+            // Send mock message
+            pinkoApplication
+                .GetBus<Tuple<IBusMessageInbound, PinkoMsgPing>>()
+                .Publish(new Tuple<IBusMessageInbound, PinkoMsgPing>(pme, pm));
+
+            Assert.IsNotNull(outboundMsg);
+            Assert.IsNotNull(((PinkoMsgPing)outboundMsg.Message).ResponderMachine.Equals(pinkoApplication.MachineName));
+            Assert.IsTrue(outboundMsg.QueueName.Equals("QueueNameResponse")); // ReplyTo is the responder queue
+            Assert.IsTrue(string.IsNullOrEmpty(outboundMsg.ReplyTo));  // It s cleared by class InboundMessageHandler<T>
+        }
+
+        /// <summary>
+        /// Assure not response if not reply to
+        /// </summary>
+        [TestMethod]
+        public void TestPinkoNoReplyTo()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
+            var pinkoPingMessageHandler = pinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register();
+            var pm = new PinkoMsgPing { SenderMachine = "UnitTestClientMachine" };
+            var pme = new PinkoServiceMessageEnvelop() { Message = pm, QueueName = "QueueNameRequest" };
+            IBusMessageOutbound outboundMsg = null;
+
+            // Listen for outbound traffic
+            pinkoApplication
+                .GetSubscriber<IBusMessageOutbound>()
+                .Subscribe(x => outboundMsg = x);
+
+            // Send mock message
+            pinkoApplication
+                .GetBus<Tuple<IBusMessageInbound, PinkoMsgPing>>()
+                .Publish(new Tuple<IBusMessageInbound, PinkoMsgPing>(pme, pm));
+
+            Assert.IsNull(outboundMsg); // assure not reply if there is no ReplyTo
+        }
+
 
         //
         // http://stackoverflow.com/questions/8005892/using-reactive-extension-rx-for-msmq-message-receive-using-async-pattern-queu
@@ -34,7 +90,7 @@ namespace PinkoTests
         public void TestMsMqServerSendReceivePinkoRoleHeartbeat()
         {
             // Each type needs to be added to 
-            TestMsMqServerSendReceiveObject<PinkoRoleHeartbeat>(new PinkoRoleHeartbeat());
+            TestMsMqServerSendReceiveObject<PinkoMsgRoleHeartbeat>(new PinkoMsgRoleHeartbeat(), "UnitTestTopic_PinkoRoleHeartbeat");
         }
 
         /// <summary>
@@ -43,7 +99,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestMsMqServerSendReceivePinkoPingMessage()
         {
-            TestMsMqServerSendReceiveObject<PinkoPingMessage>(new PinkoPingMessage());
+            TestMsMqServerSendReceiveObject<PinkoMsgPing>(new PinkoMsgPing(), "UnitTestTopic_PinkoPingMessage");
         }
 
         /// <summary>
@@ -53,7 +109,7 @@ namespace PinkoTests
         public void TestMsMqServerSendReceivePinkoCalculateExpression()
         {
             // Each type needs to be added to 
-            TestMsMqServerSendReceiveObject<PinkoCalculateExpression>(new PinkoCalculateExpression());
+            TestMsMqServerSendReceiveObject<PinkoMsgCalculateExpression>(new PinkoMsgCalculateExpression(), "UnitTestTopic_PinkoCalculateExpression");
         }
 
         /// <summary>
@@ -62,23 +118,31 @@ namespace PinkoTests
         [TestMethod]
         public void TestMsMqServerSendReceivePinkoCalculateExpressionResult()
         {
-            TestMsMqServerSendReceiveObject<PinkoCalculateExpressionResult>(new PinkoCalculateExpressionResult());
+            TestMsMqServerSendReceiveObject<PinkoMsgCalculateExpressionResult>(new PinkoMsgCalculateExpressionResult(), "UnitTestTopic_PinkoCalculateExpressionResult");
+        }
+
+        /// <summary>
+        /// Test Send message in queue - All types
+        /// </summary>
+        [TestMethod]
+        public void TestMsMqServerSendReceivePinkoClientConnectMessage()
+        {
+            TestMsMqServerSendReceiveObject<PinkoMsgClientConnect>(new PinkoMsgClientConnect(), "UnitTestTopic_PinkoClientConnectMessage");
         }
 
         /// <summary>
         /// Test Send message in queue - Object
         /// </summary>
-        public void TestMsMqServerSendReceiveObject<T>(object serializableObj)
+        public void TestMsMqServerSendReceiveObject<T>(object serializableObj, string testTopic)
         {
             var pinkoContainer = PinkoContainerMock.GetMockContainer(false);
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var ev = new ManualResetEvent(false);
+
             var messageServer = pinkoContainer.Resolve<MsMqBusMessageServer>().Initialize();
-
             pinkoContainer.RegisterInstance<IBusMessageServer>(messageServer);
-            var config = pinkoContainer.Resolve<IPinkoConfiguration>();
 
-            var incomingTopic = messageServer.GetTopic(config.PinkoMessageBusToWebAllRolesTopic);
+            var incomingTopic = messageServer.GetTopic(testTopic);
 
             Task.Factory.StartNew(incomingTopic.Listen); // async listening
 
@@ -95,20 +159,16 @@ namespace PinkoTests
             var outboutMsg = new PinkoServiceMessageEnvelop(pinkoApplication)
             {
                 Message = serializableObj,
-                QueueName = config.PinkoMessageBusToWebAllRolesTopic
+                QueueName = testTopic
             };
 
             pinkoContainer
-                .Resolve<IPinkoApplication>()
-                .GetBus<IBusMessageOutbound>()
+                .Resolve<IRxMemoryBus<IBusMessageOutbound>>()
                 .Publish(outboutMsg);
 
             pinkoApplication.ApplicationRunningEvent.Set();
 
-            if (ev.WaitOne(20000))
-                Debug.WriteLine("Test Signaled ...");
-            else
-                Debug.WriteLine("Test Timeout ...");
+            Debug.WriteLine(ev.WaitOne(20000) ? "Test Signaled ..." : "Test Timeout ...");
 
             incomingTopic.GetIncomingSubscriber<T>().Subscribe().Dispose();
 
@@ -176,10 +236,10 @@ namespace PinkoTests
             var config = pinkoContainer.Resolve<IPinkoConfiguration>();
             
             // Get Topic
-            var incomingTopic = messageServer.GetTopic(config.PinkoMessageBusToWebAllRolesTopic);
+            var incomingTopic = messageServer.GetTopic(config.PinkoMessageBusToAllWebRolesTopic);
 
             Assert.IsNotNull(incomingTopic);
-            Assert.IsTrue(incomingTopic.QueueName.Equals(config.PinkoMessageBusToWebAllRolesTopic));
+            Assert.IsTrue(incomingTopic.QueueName.Equals(config.PinkoMessageBusToAllWebRolesTopic));
             Assert.IsNotNull(messageServer.Queues.Count == 1);
         }
 
@@ -236,19 +296,20 @@ namespace PinkoTests
             var messageBus = pinkoContainer.Resolve<IBusMessageServer>();
             var config = pinkoContainer.Resolve<IPinkoConfiguration>();
 
-            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToWebAllRolesTopic);
+            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToAllWebRolesTopic);
 
             Tuple<IBusMessageInbound, string> msg = null;
             incomingTopic.GetIncomingSubscriber<string>().Subscribe(x => msg = x);
+            const string msgText = "SringIncomingMessageTest";
 
             // Simulate incoming topic message
             incomingTopic.Send(new PinkoServiceMessageEnvelop()
                                    {
-                                       Message = "SringIncomingMessageTest"
+                                       Message = msgText
                                    });
 
             Assert.IsNotNull(msg);
-            Assert.IsTrue(msg.Item2.Equals("SringIncomingMessageTest"));
+            Assert.IsTrue(msg.Item2.Equals(msgText));
         }
     }
 }

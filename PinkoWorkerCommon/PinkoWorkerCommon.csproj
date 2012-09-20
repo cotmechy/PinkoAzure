@@ -56,7 +56,7 @@
     <Compile Include="ExceptionTypes\PinkoExceptionAzureDeserializerNotFound.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionQueueNotConfigured.cs" />
     <Compile Include="Extensions\PinkoExtensions.cs" />
-    <Compile Include="Handler\BusListenerCalculateExpression.cs" />
+    <Compile Include="Handler\BusListenerCalculateExpressionSnapshot.cs" />
     <Compile Include="Handler\BusListenerPinkoPingMessage.cs" />
     <Compile Include="Interface\IWorkerRoleFrame.cs" />
     <Compile Include="Interface\IWorkerRoleHeartBeat.cs" />

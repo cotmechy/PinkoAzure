@@ -17,7 +17,7 @@ namespace PinkoCommon
         public PinkoServiceMessageEnvelop()
         {
             PinkoProperties = new Dictionary<string, string>();
-            ReplyTo = QueueName = string.Empty;
+            WebRoleId = ReplyTo = QueueName = string.Empty;
 
             PinkoProperties[PinkoMessagePropTag.DateTimeStamp] = DateTime.Now.ToUniversalTime().ToLongTimeString();
             PinkoProperties[PinkoMessagePropTag.MachineName] = string.Empty;
@@ -72,6 +72,11 @@ namespace PinkoCommon
         /// ReplyTo
         /// </summary>
         public string ReplyTo { set; get; }
+
+        /// <summary>
+        /// WebRoleId to target specific selector in outgoing topic
+        /// </summary>
+        public string WebRoleId { get; set; }
 
         /// <summary>
         /// Value pairs

@@ -57,6 +57,9 @@ namespace PinkoMsMqServiceBus
     /// </summary>
     public static class MsMqWrapperExtensions
     {
+        /// <summary>
+        /// convert outbound message to MsMq message type
+        /// </summary>
         static public MsMqWrapper<T> ToMsMqWrapper<T>(this IBusMessageOutbound inbound)
         {
             var wrapper = new MsMqWrapper<T>()
@@ -73,9 +76,13 @@ namespace PinkoMsMqServiceBus
             return wrapper;
         }
 
+        /// <summary>
+        /// Convert msg from MsMq to Pinko Type
+        /// </summary>
         static public MsMqMessageEnvelopInbound FromMsMqWrapper<T>(this MsMqMessageEnvelopInbound inbound, Message msg)
         {
-            var msMqWrapper = (MsMqWrapper<T>)msg.Body;
+
+            var msMqWrapper = (MsMqWrapper<T>)msg.Body;  // If exception, you are missing MSMq formatter in _msmqFormatter
 
             inbound.Message = msMqWrapper.Message;
             inbound.QueueName = msMqWrapper.QueueName;

@@ -15,21 +15,17 @@ namespace PinkoCommon
         public PinkoConfiguration()
         {
             QueueConfiguration = new Dictionary<string, Tuple<string, bool>>();
-            QueueConfiguration[PinkoMessageBusToWorkerAllRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllRolesTopic, true);
-            QueueConfiguration[PinkoMessageBusToWorkerCalcEngineActionTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineActionTopic, true);
+            QueueConfiguration[PinkoMessageBusToAllWorkerRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWorkerRolesTopic, true);
+            QueueConfiguration[PinkoMessageBusToWorkerCalcEngineTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineTopic, true);
 
-            QueueConfiguration[PinkoMessageBusToWebAllRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToWebAllRolesTopic, true);
-            QueueConfiguration[PinkoMessageBusToWebFeedToClientTopic] = new Tuple<string, bool>(PinkoMessageBusToWebFeedToClientTopic, true);
+            QueueConfiguration[PinkoMessageBusToAllWebRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWebRolesTopic, true);
+            QueueConfiguration[PinkoMessageBusToWebRoleTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleTopic, true);
 
+            QueueConfiguration[PinkoMessageBusToWebRoleCalcResultTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleCalcResultTopic, true);
 
             // Set bus connection screen
-
             KeyValues["Issuer"] = "== Get from secure notes ==";
             KeyValues["SecretKey"] = "== Get from secure notes ==";
-
-            KeyValues["Issuer"] = "owner";
-            KeyValues["SecretKey"] = "/PANoEiC88Ox17lwbKfL7jmtAK1Xgdk+Z8S51+DtAtc=";
-
 
             KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
         }
@@ -45,17 +41,17 @@ namespace PinkoCommon
         /// <summary>
         /// Calc engine send real time data to specific clients. Client use selectors.
         /// </summary>
-        public string PinkoMessageBusToWebFeedToClientTopic
+        public string PinkoMessageBusToWebRoleTopic
         {
-            get { return "PinkoMessageBusToWebFeedToClientTopic"; }
+            get { return "PinkoMessageBusToWebRoleTopic"; }
         }
 
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        public string PinkoMessageBusToWebAllRolesTopic
+        public string PinkoMessageBusToAllWebRolesTopic
         {
-            get { return "PinkoMessageBusToWebAllRolesTopic"; }
+            get { return "PinkoMessageBusToAllWebRolesTopic"; }
         }
 
 
@@ -85,17 +81,25 @@ namespace PinkoCommon
         /// <summary>
         /// Main bus for workers 
         /// </summary>
-        public string PinkoMessageBusToWorkerAllRolesTopic
+        public string PinkoMessageBusToAllWorkerRolesTopic
         {
-            get { return "PinkoMessageBusToWorkerAllRolesTopic"; }
+            get { return "PinkoMessageBusToAllWorkerRolesTopic"; }
         }
 
         /// <summary>
         /// To worker role with calcengineId selector
         /// </summary>
-        public string PinkoMessageBusToWorkerCalcEngineActionTopic
+        public string PinkoMessageBusToWorkerCalcEngineTopic
         {
-            get { return "PinkoMessageBusToWorkerCalcEngineActionTopic"; }
+            get { return "PinkoMessageBusToWorkerCalcEngineTopic"; }
+        }
+
+        /// <summary>
+        /// To WebRole calculation results
+        /// </summary>
+        public string PinkoMessageBusToWebRoleCalcResultTopic
+        {
+            get { return "PinkoMessageBusToWebRoleCalcResultTopic"; }
         }
 
         /// <summary>

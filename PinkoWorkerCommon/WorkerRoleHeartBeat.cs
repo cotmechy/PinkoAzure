@@ -19,19 +19,19 @@ namespace PinkoWorkerCommon
     {
         public IWorkerRoleHeartBeat Initialize()
         {
-            //// Set role heartbeat
-            //_heartbeatTimeObservable = Observable.Interval(TimeSpan.FromSeconds(PinkoConfiguration.HeartbeatIntervalSec), Scheduler.ThreadPool);
+            // Set role heartbeat
+            _heartbeatTimeObservable = Observable.Interval(TimeSpan.FromSeconds(PinkoConfiguration.HeartbeatIntervalSec), Scheduler.ThreadPool);
 
-            //_outboundMessageBus = PinkoApplication.GetBus<IBusMessageOutbound>();
+            _outboundMessageBus = PinkoApplication.GetBus<IBusMessageOutbound>();
 
-            //// Send heartbeat
-            //_heartbeatTimeObservable
-            //    .Subscribe(x => _outboundMessageBus.Publish(
-            //        new PinkoServiceMessageEnvelop(PinkoApplication)
-            //        {
-            //            QueueName = PinkoConfiguration.PinkoMessageBusToWebAllRolesTopic,
-            //            Message = new PinkoRoleHeartbeat()
-            //        }));
+            // Send heartbeat
+            _heartbeatTimeObservable
+                .Subscribe(x => _outboundMessageBus.Publish(
+                    new PinkoServiceMessageEnvelop(PinkoApplication)
+                    {
+                        QueueName = PinkoConfiguration.PinkoMessageBusToAllWebRolesTopic,
+                        Message = new PinkoMsgRoleHeartbeat()
+                    }));
 
             return this;
         }

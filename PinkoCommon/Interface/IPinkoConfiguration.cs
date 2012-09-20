@@ -22,24 +22,29 @@ namespace PinkoCommon.Interface
         IDictionary EnvironmentVariables { get; }
 
         /// <summary>
-        /// Calc engine send real time data to specific clients. Clinet use selectors.
+        /// Calc engine send real time data to specific clients. Client use selectors.
         /// </summary>
-        string PinkoMessageBusToWebFeedToClientTopic { get; }
+        string PinkoMessageBusToWebRoleTopic { get; }
 
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        string PinkoMessageBusToWebAllRolesTopic { get; }
+        string PinkoMessageBusToAllWebRolesTopic { get; }
 
         /// <summary>
         /// Broadcast to all Calc Engines
         /// </summary>
-        string PinkoMessageBusToWorkerAllRolesTopic { get; }
+        string PinkoMessageBusToAllWorkerRolesTopic { get; }
 
         /// <summary>
-        /// Messgaes to specific Calc engine. the calc engine has  selector
+        /// Messages to specific Calc engine. the calc engine has  selector
         /// </summary>
-        string PinkoMessageBusToWorkerCalcEngineActionTopic { get; }
+        string PinkoMessageBusToWorkerCalcEngineTopic { get; }
+
+        /// <summary>
+        /// To WebRole calculation results
+        /// </summary>
+        string PinkoMessageBusToWebRoleCalcResultTopic { get; }
 
         /// <summary>
         /// Queue/Topic configuration

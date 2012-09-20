@@ -25,20 +25,6 @@ namespace PinkoCalcEngineWorker
             PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
             WorkerRoleFrame = PinkoContainer.Resolve<IWorkerRoleFrame>();
 
-            //// This worker role handles these messages
-            //PinkoContainer.Resolve<IMessageHandlerManager>().AddHandler<PinkoCalculateExpression>();
-            //PinkoContainer.Resolve<IMessageHandlerManager>().AddHandler<PinkoCalcSubsAction>();
-//koContainer.Resolve<HandleCalculateExpression>().Register()
-
-            //// Register message type to process
-            //WorkerRoleFrame.MessageHandlers.Add(PinkoContainer.Resolve<HandleCalculateExpression>().Register());
-            //WorkerRoleFrame.MessageHandlers[typeof(PinkoCalcSubsAction).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalcSubsAction>>();
-            //WorkerRoleFrame.MessageHandlers.a[typeof(PinkoCalculateExpression).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalculateExpression>>();
-            ////WorkerRoleFrame.MessageHandlers.AddRange(new object[]
-            //{
-            //    PinkoContainer.Resolve<HandlerPinkoPingMessage>().Register(),
-            //});
-
             return rtn;
         }
 

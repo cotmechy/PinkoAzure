@@ -14,6 +14,7 @@ using PinkoWebRoleCommon;
 using PinkoWebRoleCommon.Handler;
 using PinkoWebRoleCommon.Interface;
 using PinkoWebRoleCommon.IoC;
+using PinkoWebRoleCommon.SignalRHub;
 
 namespace PinkoViewer
 {
@@ -53,6 +54,17 @@ namespace PinkoViewer
 
             var pinkoContainer = PinkoWebRoleContainerManager.Container;
 
+            // Hub will initialize when constructed by SignalR
+            PinkoSingalHub.PinkoSingalHubInitBus = hub =>
+                {
+                    // Inject member manually after instance created
+                    hub.WebRoleConnectManager = pinkoContainer.Resolve<IWebRoleConnectManager>();
+                    hub.PinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
+                    hub.ServerMessageBus = pinkoContainer.Resolve<IRxMemoryBus<IBusMessageOutbound>>();
+                    hub.PinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
+                };
+
+
             // Register pinko services
             // Setup Web Role
             pinkoContainer.Resolve<IWebRoleConnectManager>().InitializeWebRole();
@@ -67,8 +79,17 @@ namespace PinkoViewer
             pinkoContainer.Resolve<IWebRoleConnectManager>()
                 .BusListenerHandlers.Add(PinkoWebRoleContainerManager.Container.Resolve<BusListenerCalculateExpressionResult>().Register());
 
-            ////// Register message handler for this role 
-            //pinkoContainer.Resolve<IMessageHandlerManager>().AddHandler<PinkoCalculateExpressionResult>();
+            // Start listening to incoming calculation responses
+            pinkoContainer
+                .Resolve<IPinkoApplication>()
+                .RunInWorkerThread("PinkoMessageBusToWebRoleCalcResultTopic",
+                    () => 
+                    pinkoContainer
+                        .Resolve<IBusMessageServer>()
+                        .GetTopic(pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRoleCalcResultTopic)
+                        .Listen()
+                );
+
         }
     }
 }

@@ -61,6 +61,10 @@
       <Project>{1e504762-93c7-4ab4-a45f-64fd6f826724}</Project>
       <Name>PinkoCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PinkoWorkerCommon\PinkoWorkerCommon.csproj">
+      <Project>{45263391-63fc-4868-9d9e-df84031361f9}</Project>
+      <Name>PinkoWorkerCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

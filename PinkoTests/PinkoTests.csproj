@@ -85,6 +85,7 @@
     <Compile Include="PinkoServiceMessageTests.cs" />
     <Compile Include="PinkoWebRoleTests\WebRoleConnectManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OtherTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -105,12 +106,8 @@
       <Name>PinkoMocks</Name>
     </ProjectReference>
     <ProjectReference Include="..\PinkoWebRoleCommon\PinkoWebRoleCommon.csproj">
-      <Project>{E6D1CB52-42C5-4C65-B41B-3C4FE4F73804}</Project>
+      <Project>{e6d1cb52-42c5-4c65-b41b-3c4fe4f73804}</Project>
       <Name>PinkoWebRoleCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PinkoWebService\PinkoWebService.csproj">
-      <Project>{6dabe8ef-4682-420a-aee5-83b1e680d9a2}</Project>
-      <Name>PinkoWebService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

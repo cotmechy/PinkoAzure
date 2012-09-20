@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using PinkDao;
+using PinkoCommon.ExceptionTypes;
+using PinkoCommon.Extensions;
 using PinkoCommon.Interface;
 
 namespace PinkoMsMqServiceBus
@@ -46,7 +48,7 @@ namespace PinkoMsMqServiceBus
 
             _msgQueue = new MessageQueue(_msmqPrivateName, false, false)
                 {
-                    Formatter = _formatter
+                    Formatter = _msmqFormatter
                     //MessageReadPropertyFilter = new MessagePropertyFilter()
                 };
 
@@ -65,7 +67,7 @@ namespace PinkoMsMqServiceBus
 
             _msgQueueReader = new MessageQueue(_msmqPrivateName, false, false)
             {
-                Formatter = _formatter
+                Formatter = _msmqFormatter
             };
 
             Trace.TraceInformation("Starting Listening to private: {0}", _msmqPrivateName);
@@ -87,6 +89,8 @@ namespace PinkoMsMqServiceBus
                 //string body = mq.Formatter.Read(messageReceived) as string;
 
                 var msg = _msgQueueReader.Receive();
+
+                Trace.TraceInformation("MsMq Received:Queue: {0}", QueueName);
 
                 // Send to listeners via Rx bus
                 MessageHandlerManager.SendToHandler(new MsMqMessageEnvelopInbound(PinkoApplication, msg)
@@ -144,30 +148,37 @@ namespace PinkoMsMqServiceBus
                     //MessageType  = msg.Message.GetType().ToString()
                 };
 
-            msmqMsg.Formatter = _formatter; // new XmlMessageFormatter(new Type[] { typeof(string) });
+            msmqMsg.Formatter = _msmqFormatter; // new XmlMessageFormatter(new Type[] { typeof(string) });
             //msmqMsg.Body = msg.Message;
             
-            if (msg.Message.GetType() == typeof(PinkoRoleHeartbeat))
+            if (msg.Message.GetType() == typeof(PinkoMsgRoleHeartbeat))
             {
-                msmqMsg.Body = msg.ToMsMqWrapper<PinkoRoleHeartbeat>();
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgRoleHeartbeat>();
                 msmqMsg.Label = msg.Message.GetType().ToString();
             }
-            if (msg.Message.GetType() == typeof(PinkoPingMessage))
+            if (msg.Message.GetType() == typeof(PinkoMsgPing))
             {
-                msmqMsg.Body = msg.ToMsMqWrapper<PinkoPingMessage>();
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgPing>();
                 msmqMsg.Label = msg.Message.GetType().ToString();
             }
-            if (msg.Message.GetType() == typeof(PinkoCalculateExpression))
+            if (msg.Message.GetType() == typeof(PinkoMsgCalculateExpression))
             {
-                msmqMsg.Body = msg.ToMsMqWrapper<PinkoCalculateExpression>();
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgCalculateExpression>();
                 msmqMsg.Label = msg.Message.GetType().ToString();
             }
-            if (msg.Message.GetType() == typeof(PinkoCalculateExpressionResult))
+            if (msg.Message.GetType() == typeof(PinkoMsgCalculateExpressionResult))
             {
-                msmqMsg.Body = msg.ToMsMqWrapper<PinkoCalculateExpressionResult>();
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgCalculateExpressionResult>();
+                msmqMsg.Label = msg.Message.GetType().ToString();
+            }
+            if (msg.Message.GetType() == typeof(PinkoMsgClientConnect))
+            {
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgClientConnect>();
                 msmqMsg.Label = msg.Message.GetType().ToString();
             }
 
+            if (msmqMsg.Label.IsNull())
+                throw new PinkoExceptionMsMqNotFound("Missing MsMq handler in FactorNewOutboundMessage()");
 
             // set message property
             //_msgQueue.MessageReadPropertyFilter.SetAll();
@@ -210,12 +221,14 @@ namespace PinkoMsMqServiceBus
         private MessageQueue _msgQueueReader;
         private string _msmqPrivateName;
 
-        private readonly XmlMessageFormatter _formatter = new XmlMessageFormatter(new Type[]
+        private readonly XmlMessageFormatter _msmqFormatter = new XmlMessageFormatter(new Type[]
             {
-                typeof (MsMqWrapper<PinkoRoleHeartbeat>),
-                typeof (MsMqWrapper<PinkoPingMessage>),
-                typeof (MsMqWrapper<PinkoCalculateExpression>),
-                typeof (MsMqWrapper<PinkoCalculateExpressionResult>)
+                typeof (MsMqWrapper<PinkoMsgRoleHeartbeat>),
+                typeof (MsMqWrapper<PinkoMsgPing>),
+                typeof (MsMqWrapper<PinkoMsgCalculateExpression>),
+                typeof (MsMqWrapper<PinkoMsgCalculateExpressionResult>),
+                typeof (MsMqWrapper<PinkoMsgClientConnect>),
+                typeof (PinkoDataFeedIdentifier)
             });
 
         /// <summary>

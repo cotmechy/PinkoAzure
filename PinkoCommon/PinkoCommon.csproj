@@ -54,8 +54,7 @@
     <Compile Include="BaseMessageHandlers\InboundMessageHandler.cs" />
     <Compile Include="BaseMessageHandlers\InboundTypedPublisher.cs" />
     <Compile Include="BaseMessageHandlers\MessageHandlerManager.cs" />
-    <Compile Include="InMemoryBus\InMemoryBusMessageQueue.cs" />
-    <Compile Include="InMemoryBus\InMemoryBusMessageServer.cs" />
+    <Compile Include="ExceptionTypes\PinkoExceptionMsMqNotFound.cs" />
     <Compile Include="Interface\IBusMessageInbound.cs" />
     <Compile Include="Interface\IBusMessageOutbound.cs" />
     <Compile Include="Interface\IBusMessageQueue.cs" />
@@ -84,6 +83,7 @@
       <Name>PinkDao</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

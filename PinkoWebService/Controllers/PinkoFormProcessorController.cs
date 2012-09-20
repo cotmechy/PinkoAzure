@@ -13,66 +13,28 @@ namespace PinkoWebService.Controllers
 {
     public class PinkoFormProcessorController : ApiController
     {
-
-        ///// <summary>
-        ///// Constructor - PinkoFormProcessorController 
-        ///// </summary>
-        //public PinkoFormProcessorController()
-        //{
-        //    //PinkoApplication = PinkoWebRoleContainerManager
-        //    //    .Container
-        //    //    .Resolve<IPinkoApplication>();
-
-        //    //_webRoleConnectManager =
-        //    //    PinkoWebRoleContainerManager
-        //    //        .Container.Resolve<IWebRoleConnectManager>();
-
-        //    //_serverMessageBus = PinkoApplication
-        //    //    .GetBus<IBusMessageOutbound>();
-        //}
-
-
-        ////
-        //// GET: /PinkoFormProcessor/
-        //public HttpResponseMessage Get()
-        //{
-        //    Trace.TraceInformation(GetType() + ": Get");
-
-        //    return new HttpResponseMessage(HttpStatusCode.OK);
-        //}
-
-
-        ////
-        //// GET: /PinkoFormProcessor/
-        //public HttpResponseMessage PostCalculateFormula(PinkoCalculateExpression reqFormula)
-        //{
-        //    //Trace.TraceInformation(GetType() + ": Post(PinkoCalculateExpression): " + reqFormula.Verbose());
-
-        //    reqFormula.ResultValue = double.MinValue; 
-
-        //    ServerMessageBus.Publish(PinkoApplication.FactorWebEnvelop("", WebRoleConnectManager.WebRoleId, reqFormula));
-
-        //    return new HttpResponseMessage(HttpStatusCode.OK);
-        //}
-
         //
         // GET: /PinkoFormProcessor/
         //public HttpResponseMessage GetCalc(PinkoCalculateExpression reqForm)
-        public HttpResponseMessage GetCalc(string expressionFormula, string maketEnvId, string clientCtx)
+        public HttpResponseMessage GetCalc(string expressionFormula, string maketEnvId, string clientCtx, string clientId, string signalRId, string webRoleId)
         {
-            var expMsg = new PinkoCalculateExpression
-            {
-                ExpressionFormula = expressionFormula,
-                MaketEnvId = maketEnvId,
-                //ResultValue = double.MinValue,
-                ClientCtx = clientCtx
-            };
+            var expMsg = new PinkoMsgCalculateExpression
+                {
+                    ExpressionFormula = expressionFormula,
+                    DataFeedIdentifier =
+                        {
+                            MaketEnvId = maketEnvId,
+                            ClientCtx = clientCtx,
+                            ClientId = clientId,
+                            SignalRId = signalRId,
+                            WebRoleId = webRoleId
+                        }
+                };
 
             var msgEnvelop = PinkoApplication.FactorWebEnvelop(clientCtx, WebRoleConnectManager.WebRoleId, expMsg);
-            //Trace.TraceInformation("GetCalc: {0}", expMsg.Verbose());
 
-            msgEnvelop.ReplyTo = PinkoConfiguration.PinkoMessageBusToWebFeedToClientTopic;
-            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineActionTopic;
+            msgEnvelop.ReplyTo = PinkoConfiguration.PinkoMessageBusToWebRoleCalcResultTopic;
+            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic;
 
             ServerMessageBus.Publish(msgEnvelop);
 
@@ -81,7 +43,6 @@ namespace PinkoWebService.Controllers
             //string uri = Url.Route(null, new { id = reqForm.MaketEnvId });
             //response.Headers.Location = new Uri(Request.RequestUri, uri);
             //return response;
-
         }
 
         // // http://www.codeproject.com/Articles/344078/ASP-NET-WebAPI-Getting-Started-with-MVC4-and-WebAP

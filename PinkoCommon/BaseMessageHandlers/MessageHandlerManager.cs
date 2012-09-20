@@ -67,10 +67,12 @@ namespace PinkoCommon.BaseMessageHandlers
             var inboundPublisher = new Dictionary<string, IInBoundTypedPublisherBase>();
 
             inboundPublisher[typeof(string).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, string>>();
-            inboundPublisher[typeof(PinkoPingMessage).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoPingMessage>>();
-            inboundPublisher[typeof(PinkoRoleHeartbeat).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoRoleHeartbeat>>();
-            inboundPublisher[typeof(PinkoCalculateExpression).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalculateExpression>>();
-            inboundPublisher[typeof(PinkoCalculateExpressionResult).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoCalculateExpressionResult>>();
+            inboundPublisher[typeof(PinkoMsgPing).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoMsgPing>>();
+            inboundPublisher[typeof(PinkoMsgRoleHeartbeat).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoMsgRoleHeartbeat>>();
+            inboundPublisher[typeof(PinkoMsgCalculateExpression).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoMsgCalculateExpression>>();
+            inboundPublisher[typeof(PinkoMsgCalculateExpressionResult).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoMsgCalculateExpressionResult>>();
+            inboundPublisher[typeof(PinkoMsgClientConnect).ToString()] = PinkoContainer.Resolve<InboundTypedPublisher<IBusMessageInbound, PinkoMsgClientConnect>>();
+            
 
             return inboundPublisher;
         }

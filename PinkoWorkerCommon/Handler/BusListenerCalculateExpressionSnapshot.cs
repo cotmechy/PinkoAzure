@@ -16,18 +16,28 @@ namespace PinkoWorkerCommon.Handler
     /// <summary>
     /// Calculate an expression request in server 
     /// </summary>
-    public class BusListenerCalculateExpression : InboundMessageHandler<PinkoCalculateExpression>
+    public class BusListenerCalculateExpressionSnapshot : InboundMessageHandler<PinkoMsgCalculateExpression>
     {
+        /// <summary>
+        /// Constructor - BusListenerCalculateExpression 
+        /// </summary>
+        public BusListenerCalculateExpressionSnapshot()
+        {
+            ProcessRequestHandler = ProcessRequest;
+        }
+
         /// <summary>
         /// Handle adhoc request
         /// </summary>
-        public override IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoCalculateExpression expression)
+        public IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, PinkoMsgCalculateExpression expression)
         {
             var outMsg = (IBusMessageOutbound)msg;
-            var marketEnv = PinkoMarketEnvManager.GetMarketEnv(expression.MaketEnvId);
-            var result = new PinkoCalculateExpressionResult().FromRequest(expression);
+            var marketEnv = PinkoMarketEnvManager.GetMarketEnv(expression.DataFeedIdentifier.MaketEnvId);
+            var result = new PinkoMsgCalculateExpressionResult().FromRequest(expression);
+            
             outMsg.Message = result;
-
+            outMsg.WebRoleId = expression.DataFeedIdentifier.WebRoleId;
+            outMsg.ErrorCode = PinkoErrorCode.Success;
 
             var ex = TryCatch.RunInTry(() =>
             {
