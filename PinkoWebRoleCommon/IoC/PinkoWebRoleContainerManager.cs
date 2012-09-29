@@ -23,7 +23,7 @@ namespace PinkoWebRoleCommon.IoC
             //// TODO: remove temp to run offline
             //var pinkoContainer = PinkoServiceContainer.BuildContainer();
 
-            pinkoContainer.RegisterInstance<IWebRoleConnectManager>(pinkoContainer.Resolve<WebRoleConnectManager>().Initialize());
+//            pinkoContainer.RegisterInstance<IWebRoleConnectManager>(pinkoContainer.Resolve<WebRoleConnectManager>().Initialize());
             //pinkoContainer.RegisterInstance<IWebRoleSignalRManager>(pinkoContainer.Resolve<WebRoleSignalRManager>());
 
             //// TODO: remove temp to run offline. simulate worker role running

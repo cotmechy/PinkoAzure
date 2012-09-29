@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Text;
 using System.Threading;
 using Microsoft.Practices.Unity;
-using PinkDao;
-using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoWorkerCommon.Handler;
 using PinkoWorkerCommon.Interface;
@@ -23,7 +17,7 @@ namespace PinkoWorkerCommon
         /// <summary>
         /// Run()
         /// </summary>
-        public void Run()
+        public void Run(string brodcastTopic, string directTopic)
         {
             // Register base handlers
             MessageReceiveHandlers.AddRange(new object[]
@@ -31,68 +25,37 @@ namespace PinkoWorkerCommon
                 PinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register(),
             });
 
-            // TODO: Move to individual service
-            PinkoApplication.RunInWorkerThread("PinkoMessageBusToWorkerCalcEngineActionTopic",
-                () => // Start Listening to message bus incoming messages - MessageBusWebRoleToClientsTopic
+            PinkoApplication.RunInWorkerThread(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic,
+                () => 
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic, _selector)
+                    .GetTopic(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic)
                     .Listen()
                 );
 
-            PinkoApplication.RunInWorkerThread("PinkoMessageBusToWorkerAllRolesTopic",
-                () => // Start Listening to mesage bus incoming messages - MAIN: MessageBusCrossWebRolesQueue
+            PinkoApplication.RunInWorkerThread(directTopic,
+                () => 
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoConfiguration.PinkoMessageBusToAllWorkerRolesTopic)
-                    .Listen());
+                    .GetTopic(directTopic, _selector)
+                    .Listen()
+                );
 
-            // Return when application stops or queue stops
+            PinkoApplication.RunInWorkerThread(brodcastTopic,
+                () => 
+                PinkoContainer
+                    .Resolve<IBusMessageServer>()
+                    .GetTopic(brodcastTopic)
+                    .Listen());
         }
 
-        ///// <summary>
-        ///// Worker Role OnStart()
-        ///// </summary>
-        ///// <returns></returns>
-        //public override bool OnStart()
-        //{
-        //    //
-        //    // The Worker role lifetime is managed bny Windows Azure, so there is not 
-        //    // an IoC bootstrapper available.  
-        //    // We manually set the container here and eventually as the starting point for each role.
-        //    //
-        //    PinkoContainer = PinkoServiceContainer.BuildContainer();  // Real Contianer
-        //    PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
-
-        //    return base.OnStart();
-        //}
-
-        ///// <summary>
-        ///// Start Heart Beat
-        ///// </summary>
-        //public void StartHeartBeat()
-        //{
-        //    // Set role heartbeat
-        //    _heartbeatTimeObservable = Observable.Interval(TimeSpan.FromSeconds(PinkoConfiguration.HeartbeatIntervalSec), Scheduler.ThreadPool);
-
-        //    _outboundMessageBus = PinkoApplication.GetBus<IBusMessageOutbound>();
-
-        //    // Send heartbeat
-        //    _heartbeatTimeObservable
-        //        .Subscribe(x => _outboundMessageBus.Publish(
-        //            new PinkoServiceMessageEnvelop(PinkoApplication)
-        //            {
-        //                QueueName = PinkoConfiguration.PinkoMessageBusToWebAllRolesTopic,
-        //                Message = new PinkoRoleHeartbeat()
-        //            }));
-        //}
 
         /// <summary>
         /// Worker Role OnStop()
         /// </summary>
         public void Stop()
         {
-            Trace.TraceInformation("Stopping worker role: {0}");
+            Trace.TraceInformation("Stopping worker role...");
 
             PinkoApplication.ApplicationRunningEvent.Set();
             PinkoContainer.Resolve<IBusMessageServer>().Deinitialize();

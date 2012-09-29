@@ -15,7 +15,10 @@ namespace PinkoCommon
         public PinkoConfiguration()
         {
             QueueConfiguration = new Dictionary<string, Tuple<string, bool>>();
-            QueueConfiguration[PinkoMessageBusToAllWorkerRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWorkerRolesTopic, true);
+
+            QueueConfiguration[PinkoMessageBusToAllWorkersTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWorkersTopic, true);
+
+            QueueConfiguration[PinkoMessageBusToWorkerAllCalcEngineTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllCalcEngineTopic, true);
             QueueConfiguration[PinkoMessageBusToWorkerCalcEngineTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineTopic, true);
 
             QueueConfiguration[PinkoMessageBusToAllWebRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWebRolesTopic, true);
@@ -24,8 +27,8 @@ namespace PinkoCommon
             QueueConfiguration[PinkoMessageBusToWebRoleCalcResultTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleCalcResultTopic, true);
 
             // Set bus connection screen
-            KeyValues["Issuer"] = "== Get from secure notes ==";
-            KeyValues["SecretKey"] = "== Get from secure notes ==";
+            KeyValues["Issuer"] = "----";
+            KeyValues["SecretKey"] = "-------";
 
             KeyValues["Microsoft.ServiceBus.ConnectionString"] = "Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=" + KeyValues["Issuer"] + ";SharedSecretValue=" + KeyValues["SecretKey"];
         }
@@ -36,22 +39,6 @@ namespace PinkoCommon
         public IDictionary EnvironmentVariables
         {
             get { return Environment.GetEnvironmentVariables(); }
-        }
-
-        /// <summary>
-        /// Calc engine send real time data to specific clients. Client use selectors.
-        /// </summary>
-        public string PinkoMessageBusToWebRoleTopic
-        {
-            get { return "PinkoMessageBusToWebRoleTopic"; }
-        }
-
-        /// <summary>
-        /// Broadcast to all web roles
-        /// </summary>
-        public string PinkoMessageBusToAllWebRolesTopic
-        {
-            get { return "PinkoMessageBusToAllWebRolesTopic"; }
         }
 
 
@@ -79,11 +66,52 @@ namespace PinkoCommon
         }
 
         /// <summary>
+        /// Calc engine send real time data to specific clients. Client use selectors.
+        /// </summary>
+        public string PinkoMessageBusToWebRoleTopic
+        {
+            get { return "PinkoMessageBusToWebRoleTopic"; }
+        }
+
+        /// <summary>
+        /// Broadcast to all web roles
+        /// </summary>
+        public string PinkoMessageBusToAllWebRolesTopic
+        {
+            get { return "PinkoMessageBusToAllWebRolesTopic"; }
+        }
+
+        /// <summary>
+        /// Main bus for ALL workers 
+        /// </summary>
+        public string PinkoMessageBusToAllWorkersTopic
+        {
+            get { return "PinkoMessageBusToAllWorkersTopic"; }
+        }
+
+        /// <summary>
+        /// All subscription managers worker roles
+        /// </summary>
+        public string PinkoMessageBusToWorkerAllSubscriptionManagerWorker
+        {
+            get { return "PinkoMessageBusToWorkerAllSubscriptionManagerWorker";  } 
+        }
+
+
+        /// <summary>
+        /// Single subscription managers worker role
+        /// </summary>
+        public string PinkoMessageBusToWorkerSubscriptionManagerWorker
+        {
+            get { return "PinkoMessageBusToWorkerSubscriptionManagerWorker"; }
+        }
+
+        /// <summary>
         /// Main bus for workers 
         /// </summary>
-        public string PinkoMessageBusToAllWorkerRolesTopic
+        public string PinkoMessageBusToWorkerAllCalcEngineTopic
         {
-            get { return "PinkoMessageBusToAllWorkerRolesTopic"; }
+            get { return "PinkoMessageBusToWorkerAllCalcEngineTopic"; }
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using PinkDao;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoCommon.Utility;
 using PinkoWorkerCommon.ExceptionTypes;
@@ -21,7 +22,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <summary>
         /// Initialize
         /// </summary>
-        public void Initialize(string azureServerConnectionString)
+        public void Initialize(string azureServerConnectionString, string selector)
         {
             //AzureMessageClient = PinkoConfiguration.QueueConfiguration[QueueName].Item2
             //                                ? (MessageClientEntity)QueueClient.CreateFromConnectionString(azureServerConnectionString, QueueName)
@@ -34,13 +35,30 @@ namespace PinkoAzureService.AzureMessageBus
             ////_messageHandlerManager.AddHandler<PinkoRoleHeartbeatHub>();
 
             // Azure msg factory
+            AzureServerConnectionString = azureServerConnectionString;
+            ClientFilter = string.IsNullOrEmpty(selector) ? QueueName : selector ;
+
             var tokenProvider = TokenProvider.CreateSharedSecretTokenProvider(PinkoConfiguration.GetSetting("Issuer"), PinkoConfiguration.GetSetting("SecretKey"));
-
             _messageFactory = MessagingFactory.Create(AzureNamespaceManager.Address, tokenProvider);
-            //AzureNamespaceManager.
-
             _msgSender = _messageFactory.CreateMessageSender(QueueName);
 
+            //
+            // Set filtered subscription when needed
+            // 
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(azureServerConnectionString);
+            if (string.IsNullOrEmpty(selector))
+            {
+                if (!namespaceManager.SubscriptionExists(QueueName, ClientFilter))
+                    MsgSubscriptionDescription = namespaceManager.CreateSubscription(QueueName, ClientFilter);
+            }
+            else
+            {
+                // Create a "Selector" filtered subscription
+                var selectorFilter = new SqlFilter(string.Format("{0} = '{1}'", PinkoMessagePropTag.RoleId, ClientFilter));
+
+                if (!namespaceManager.SubscriptionExists(QueueName, ClientFilter))
+                    MsgSubscriptionDescription = namespaceManager.CreateSubscription(QueueName, ClientFilter, selectorFilter);
+            }
 
             // http://msdn.microsoft.com/en-us/library/windowsazure/hh699844.aspx
 
@@ -67,22 +85,29 @@ namespace PinkoAzureService.AzureMessageBus
 
             //Note that when you create a MessageReceiver for subscriptions, the entityPath parameter is of the form topicPath/subscriptions/subscriptionName. Therefore, to create a MessageReceiver for the Inventory subscription of the DataCollectionTopic topic, entityPath must be DataCollectionTopic/subscriptions/Inventory. The code appears as follows:
 
+
+
         }
 
+
         /// <summary>
-        /// Start listening to incoming queues. We are usiing Task space to allowed OS to manage threads
+        /// Start listening to incoming queues. We are using Task space to allowed OS to manage threads
         /// </summary>
         public void Listen()
         {
-            var msgReceiver = _messageFactory.CreateMessageReceiver(QueueName);
+            //
+            // https://www.windowsazure.com/en-us/develop/net/how-to-guides/service-bus-topics/#header-5
+            //
+
+            var msgReceiver = _messageFactory.CreateSubscriptionClient(QueueName, ClientFilter);
             _isRunning = true;
 
-            Trace.TraceInformation("Starting Listening to {0}", QueueName);
+            Trace.TraceInformation("Starting Listening to {0} - Selector: {1}", QueueName, ClientFilter);
 
             // run as long as app is running
             while (_isRunning && !PinkoApplication.ApplicationRunningEvent.WaitOne(0))
             {
-                var ex = TryCatch.RunInTry(() =>  
+                var ex = TryCatch.RunInTry(() =>
                 {
                     // Receive the message
                     BrokeredMessage receivedMessage = null;
@@ -100,9 +125,9 @@ namespace PinkoAzureService.AzureMessageBus
 
                         // Send to listeners
                         MessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
-                                                                   {
-                                                                       QueueName = QueueName
-                                                                   });
+                        {
+                            QueueName = QueueName
+                        });
 
                         receivedMessage.Complete();
                     }
@@ -132,6 +157,71 @@ namespace PinkoAzureService.AzureMessageBus
 
             msgReceiver.Close();
         }
+
+
+        ///// <summary>
+        ///// Start listening to incoming queues. We are using Task space to allowed OS to manage threads
+        ///// </summary>
+        //public void Listen()
+        //{
+        //    var msgReceiver = _messageFactory.CreateMessageReceiver(QueueName);
+        //    _isRunning = true;
+
+        //    Trace.TraceInformation("Starting Listening to {0}", QueueName);
+
+        //    // run as long as app is running
+        //    while (_isRunning && !PinkoApplication.ApplicationRunningEvent.WaitOne(0))
+        //    {
+        //        var ex = TryCatch.RunInTry(() =>
+        //        {
+        //            // Receive the message
+        //            BrokeredMessage receivedMessage = null;
+
+        //            // TODO: how to listen to topics
+        //            //receivedMessage = IsTopic ? null : _queueClient.Receive();
+        //            receivedMessage = msgReceiver.Receive();
+
+        //            Trace.TraceInformation("Checking Azure Message Queue: {0}", QueueName);
+
+        //            if (receivedMessage != null)
+        //            {
+        //                // Process the message
+        //                Trace.TraceInformation("Azure MessageBus Received: {0}: {1}", QueueName, receivedMessage.Verbose());
+
+        //                // Send to listeners
+        //                MessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
+        //                                                           {
+        //                                                               QueueName = QueueName
+        //                                                           });
+
+        //                receivedMessage.Complete();
+        //            }
+        //        });
+
+        //        if (ex is MessagingException)
+        //        {
+        //            if (!((MessagingException)ex).IsTransient)
+        //            {
+        //                Trace.WriteLine(ex.Message);
+        //                throw ex;
+        //            }
+
+        //            PinkoApplication.ApplicationRunningEvent.WaitOne(PinkoConfiguration.MessageQueueCheckIntervalMs);
+        //        }
+
+
+        //        if (ex is OperationCanceledException)
+        //        {
+        //            if (!_isRunning)
+        //            {
+        //                Trace.WriteLine(ex.Message);
+        //                throw ex;
+        //            }
+        //        }
+        //    }
+
+        //    msgReceiver.Close();
+        //}
 
         /// <summary>
         /// Close
@@ -248,6 +338,16 @@ namespace PinkoAzureService.AzureMessageBus
         public string QueueName { get; set; }
 
         /// <summary>
+        /// Filter / Selector 
+        /// </summary>
+        public string ClientFilter { get; set; }
+
+        /// <summary>
+        /// AzureServerConnectionString
+        /// </summary>
+        public string AzureServerConnectionString { get; set; }
+
+        /// <summary>
         /// Set signal when ready to stop lis
         /// </summary>
         private bool _isRunning = false;
@@ -261,6 +361,11 @@ namespace PinkoAzureService.AzureMessageBus
         /// MessagingFactory
         /// </summary>
         private MessagingFactory _messageFactory;
+
+        /// <summary>
+        /// MsMq subscriber / support filtering
+        /// </summary>
+        private SubscriptionDescription MsgSubscriptionDescription;
 
         /// <summary>
         /// MessageSender

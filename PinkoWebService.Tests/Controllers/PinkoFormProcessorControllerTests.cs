@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Net;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
+using PinkoCommon;
 using PinkoCommon.Interface;
 using PinkoMocks;
+using PinkoWebRoleCommon.Interface;
 using PinkoWebRoleCommon.IoC;
 using PinkoWebService.Controllers;
 
@@ -21,6 +24,7 @@ namespace PinkoWebService.Tests.Controllers
             var pinkoContainer = PinkoContainerMock.GetMockContainer();
             var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
             var controller = pinkoContainer.Resolve<PinkoFormProcessorController>();
+            var webRoleConnectManager = pinkoContainer.Resolve<IWebRoleConnectManager>();
             pinkoContainer.Resolve<IMessageHandlerManager>().AddBusTypeHandler<PinkoMsgCalculateExpression>();
 
             // Listen for outbound traffic to 
@@ -29,10 +33,15 @@ namespace PinkoWebService.Tests.Controllers
                 .GetSubscriber<IBusMessageOutbound>()
                 .Subscribe(x => outboundMsg = x);
 
-            controller.GetCalc("Expression formula", "marketenvid", "clientctx", "clientid", "signalr", "webroleid");
- 
+            var result = controller.GetCalc(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Label3: 3 + 3; ", "marketenvid", "clientctx", "clientid", "signalr", "webroleid"); //, "subscribtionid");
+
+            Assert.IsTrue(result.StatusCode == HttpStatusCode.OK);
             Assert.IsNotNull(outboundMsg);
             Assert.IsNotNull(outboundMsg.Message is PinkoMsgCalculateExpression);
+
+            // web role id required for snapshot calculation
+            Assert.IsFalse(string.IsNullOrEmpty(webRoleConnectManager.WebRoleId));
+            Assert.IsTrue(outboundMsg.PinkoProperties[PinkoMessagePropTag.RoleId] == webRoleConnectManager.WebRoleId);
         }
     }
 }

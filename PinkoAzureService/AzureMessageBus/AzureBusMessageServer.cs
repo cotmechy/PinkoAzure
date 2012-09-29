@@ -23,27 +23,28 @@ namespace PinkoAzureService.AzureMessageBus
         /// </summary>
         public IBusMessageQueue ConnectToQueue(string queueName, string selector = "")
         {
-            Trace.TraceInformation("Connecting to Queue/Topic: {0} - selector: {2}  in {1}...", queueName, BusMessageServerConnectionString, selector);
+            //Trace.TraceInformation("Connecting to Queue/Topic: {0} - selector: {2}  in {1}...", queueName, BusMessageServerConnectionString, selector);
             AzureQueueClient client = null;
 
             // create queue/topic
             var ex = TryCatch.RunInTry(() =>
                                   {
                                       // Create Queue
-                                      if (PinkoConfiguration.QueueConfiguration[queueName].Item2 && !_azureNamespaceManager.QueueExists(queueName))
+                                      if (!PinkoConfiguration.QueueConfiguration[queueName].Item2 && !_azureNamespaceManager.QueueExists(queueName))
                                       {
+                                          Trace.TraceInformation("Connecting to Queue: {0} - selector: {2}  in {1}...", queueName, BusMessageServerConnectionString, selector);
                                           var td = new QueueDescription(queueName) { MaxSizeInMegabytes = 5120, DefaultMessageTimeToLive = new TimeSpan(0, 0, 30) };
                                           _azureNamespaceManager.CreateQueue(td);
                                       }
 
                                       // Create Topic
-                                      if (!PinkoConfiguration.QueueConfiguration[queueName].Item2)
+                                      if (PinkoConfiguration.QueueConfiguration[queueName].Item2)
                                       {
+                                          Trace.TraceInformation("Connecting to Topic: {0} - selector: {2}  in {1}...", queueName, BusMessageServerConnectionString, selector);
                                           var td = new TopicDescription(queueName)
                                                        {
                                                            MaxSizeInMegabytes = 5120,
                                                            DefaultMessageTimeToLive = new TimeSpan(0, 0, 20)
-                                                           // TODO: Add Selector
                                                        };
 
                                           if (!_azureNamespaceManager.TopicExists(queueName))
@@ -61,7 +62,7 @@ namespace PinkoAzureService.AzureMessageBus
             client = PinkoContainer.Resolve<AzureQueueClient>();
             client.QueueName = queueName;
             client.AzureNamespaceManager = _azureNamespaceManager;
-            client.Initialize(BusMessageServerConnectionString);
+            client.Initialize(BusMessageServerConnectionString, selector);
             return client;
         }
 

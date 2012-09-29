@@ -20,6 +20,8 @@
 
     <!-- SignalR streaming -->
     <script type="text/javascript">
+        
+
         // Pinko User identifiers
         var vmUserContext = kendo.observable({
             ClientCtx: "ClientCtx",
@@ -89,7 +91,7 @@
                 {
                     console.log('PinkoHeartbeata.aspx: huBconnection.connectionState...');
 
-                    pinkoHub.clientConnected(vmUserContext.ClientId, vmUserContext.WebRoleId) //e.g. a login or init
+                    pinkoHub.clientConnected(vmUserContext.ClientId, vmUserContext.WebRoleId, vmUserContext.SignalRId) //e.g. a login or init
                         .done(connectionReady);
                 })
                 .fail(function ()
@@ -125,9 +127,9 @@
         <div id="ctrlFooter">
             <label>Web Role HearBeat: </label>
             &nbsp;
-            <label id="ctrlSingalRId" data-bind="value: SignalRId" type="text"></label>
+            <label id="ctrlSingalRId" data-bind="value: SignalRId" ></label>
             &nbsp;
-            <label id="ctrlClientCtx" data-bind="value: ClientCtx" type="text">--</label>
+            <label id="ctrlClientCtx" data-bind="value: ClientCtx" >--</label>
             &nbsp;
             <label id="ctrlTimeStamp">time stamp</label>
             &nbsp;
@@ -142,11 +144,5 @@
         </div>
     </center>
 </body>
-
-
-
-
-
-
 
 </html>

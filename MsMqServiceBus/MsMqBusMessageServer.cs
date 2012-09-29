@@ -32,7 +32,7 @@ namespace PinkoMsMqServiceBus
 
                 var q = PinkoContainer.Resolve<MsMqBusMessageQueue>();
                 q.QueueName = queueName;
-                q.Initialize(string.Empty);
+                q.Initialize(string.Empty, selector);
                 return q;
             });
 

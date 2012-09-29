@@ -20,7 +20,7 @@ namespace PinkoWebRoleCommon
         public IWebRoleConnectManager Initialize()
         {
             // Start listening to incoming topics
-            PinkoApplication.RunInWorkerThread("PinkoMessageBusToWebAllRolesTopic",
+            PinkoApplication.RunInWorkerThread(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToAllWebRolesTopic,
                     () => // All Worker roles
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
@@ -28,7 +28,7 @@ namespace PinkoWebRoleCommon
                         .Listen()
                 );
 
-            PinkoApplication.RunInWorkerThread("PinkoMessageBusToWebFeedToClientTopic",
+            PinkoApplication.RunInWorkerThread(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRoleTopic,
                     () => // Selected
                     PinkoContainer
                         .Resolve<IBusMessageServer>()

@@ -12,12 +12,13 @@ namespace PinkoMocks
         /// </summary>
         public string QueueName { get; set; }
 
+
         /// <summary>
         /// Initialize
         /// </summary>
-        public void Initialize(string azureServerConnectionString)
+        public void Initialize(string azureServerConnectionString, string selector)
         {
-            // Nothing to do
+        
         }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace PinkoMocks
         public void Send(IBusMessageOutbound message)
         {
             OutboudMessages++;
+            LastMessageSent = message;
             MessageHandlerManager.SendToHandler((IBusMessageInbound) message);
         }
 
@@ -49,6 +51,11 @@ namespace PinkoMocks
         /// OutboudMessages 
         /// </summary>
         public long OutboudMessages { get; private set; }
+
+        /// <summary>
+        /// Keep last message sent through this mock
+        /// </summary>
+        public IBusMessageOutbound LastMessageSent;
 
         /// <summary>
         /// get Rx Subscriber for incoming message type

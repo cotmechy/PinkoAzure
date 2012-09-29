@@ -15,9 +15,32 @@ namespace PinkoTests.AzureTests
     /// <summary>
     /// Summary description for RealAzureConnectivityTests
     /// </summary>
-    //[TestClass]
+//    [TestClass]
     public class RealAzureConnectivityTests
     {
+        /// <summary>
+        /// Test Connecting to Topic with selector
+        /// </summary>
+  //      [TestMethod]
+        public void ConnectingTopicSelector()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var pinkoConfiguration = pinkoContainer.Resolve<IPinkoConfiguration>();
+
+            // Connect to service
+            var server = pinkoContainer.Resolve<AzureBusMessageServer>();
+            pinkoContainer.RegisterInstance<IBusMessageServer>(server);
+            server.Initialize();
+
+            // Connect to queue
+            const string queueName = "UnitTestTopicName";
+            pinkoConfiguration.QueueConfiguration[queueName] = new Tuple<string, bool>(queueName, true /* Topic */);
+            var queue = server.ConnectToQueue(queueName);
+
+            queue.Close();
+            server.Deinitialize();
+        }
+
         /// <summary>
         /// Test Connecting to Topic
         /// </summary>
@@ -34,7 +57,7 @@ namespace PinkoTests.AzureTests
 
             // Connect to queue
             const string queueName = "UnitTestTopicName";
-            pinkoConfiguration.QueueConfiguration[queueName] = new Tuple<string, bool>(queueName, false /* Topic */);
+            pinkoConfiguration.QueueConfiguration[queueName] = new Tuple<string, bool>(queueName, true /* Topic */);
             var queue = server.ConnectToQueue(queueName);
 
             queue.Close();
@@ -57,11 +80,11 @@ namespace PinkoTests.AzureTests
 
             // Connect to queue
             const string queuName = "UnitTestQueueName";
-            pinkoConfiguration.QueueConfiguration[queuName] = new Tuple<string, bool>(queuName, true);
+            pinkoConfiguration.QueueConfiguration[queuName] = new Tuple<string, bool>(queuName, false);
             var queue = server.ConnectToQueue(queuName);
 
             const string queuName2 = "UnitTestQueueName2";
-            pinkoConfiguration.QueueConfiguration[queuName2] = new Tuple<string, bool>(queuName2, true);
+            pinkoConfiguration.QueueConfiguration[queuName2] = new Tuple<string, bool>(queuName2, false);
             var queue2 = server.ConnectToQueue(queuName2);
 
             queue.Close();
@@ -87,7 +110,7 @@ namespace PinkoTests.AzureTests
 
             // Connect to queue
             const string queuName = "UnitTestQueueName";
-            pinkoConfiguration.QueueConfiguration[queuName] = new Tuple<string, bool>(queuName, true);
+            pinkoConfiguration.QueueConfiguration[queuName] = new Tuple<string, bool>(queuName, false);
             var queue = server.ConnectToQueue(queuName);
 
             // Listen to messages
@@ -112,9 +135,6 @@ namespace PinkoTests.AzureTests
             outboundMsg.PinkoProperties["key2"] = "key1Value2";
 
             // simulate incoming message to teh WebRole
-            //pinkoApplication
-            //    .GetBus<Tuple<IBusMessageInbound, PinkoPingMessage>>()
-            //    .Publish(new Tuple<IBusMessageInbound, PinkoPingMessage>(outboundMsg, outboundMsg.Message as PinkoPingMessage));
             pinkoApplication
                 .GetBus<IBusMessageOutbound>()
                 .Publish(outboundMsg);

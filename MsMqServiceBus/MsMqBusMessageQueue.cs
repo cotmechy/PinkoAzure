@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Messaging;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 using PinkDao;
 using PinkoCommon.ExceptionTypes;
@@ -29,7 +25,7 @@ namespace PinkoMsMqServiceBus
         /// <summary>
         /// Initialize
         /// </summary>
-        public void Initialize(string azureServerConnectionString)
+        public void Initialize(string azureServerConnectionString, string selector)
         {
             Trace.TraceWarning(string.Empty);
             Trace.TraceWarning(string.Empty);
@@ -142,15 +138,8 @@ namespace PinkoMsMqServiceBus
         /// <returns></returns>
         public Message FactorNewOutboundMessage(IBusMessageOutbound msg)
         {
-            var msmqMsg = 
-                new Message()
-                {
-                    //MessageType  = msg.Message.GetType().ToString()
-                };
+            var msmqMsg = new Message {Formatter = _msmqFormatter};
 
-            msmqMsg.Formatter = _msmqFormatter; // new XmlMessageFormatter(new Type[] { typeof(string) });
-            //msmqMsg.Body = msg.Message;
-            
             if (msg.Message.GetType() == typeof(PinkoMsgRoleHeartbeat))
             {
                 msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgRoleHeartbeat>();
@@ -228,7 +217,8 @@ namespace PinkoMsMqServiceBus
                 typeof (MsMqWrapper<PinkoMsgCalculateExpression>),
                 typeof (MsMqWrapper<PinkoMsgCalculateExpressionResult>),
                 typeof (MsMqWrapper<PinkoMsgClientConnect>),
-                typeof (PinkoDataFeedIdentifier)
+                typeof (PinkoDataFeedIdentifier),
+                typeof (PinkoFormPoint)
             });
 
         /// <summary>

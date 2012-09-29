@@ -42,32 +42,30 @@ namespace PinkoWebRoleCommon.SignalRHub
         /// <summary>
         /// Client Connected
         /// </summary>
-        public void ClientConnected(string clientId, string oldWebRoleId)
+        public void ClientConnected(string clientId, string oldWebRoleId, string oldSignalRId)
         {
             Debug.WriteLine("{0}: ClientConnected(): clientId: {1} - Context.ConnectionId: {2}", this.Verbose(), clientId, Context.ConnectionId);
 
-            // TODO: Send broadcast to all calc engines to clients to replace routing web role id
-            
             var clientIdentifier = new PinkoMsgClientConnect
             {
                 DataFeedIdentifier =
                 {
                     ClientId = clientId,
                     SignalRId = Context.ConnectionId,
+                    WebRoleId = WebRoleConnectManager.WebRoleId,
+
                     PreviousWebRoleId = oldWebRoleId,
-                    WebRoleId = WebRoleConnectManager.WebRoleId
+                    PreviousSignalRId = oldSignalRId
                 }
             };
 
             var msgEnvelop = PinkoApplication.FactorWebEnvelop(clientId, WebRoleConnectManager.WebRoleId, clientIdentifier);
 
-            // Send to Worker roles
-            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToAllWorkerRolesTopic;
+            // Broadcast to all Worker roles
+            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToAllWorkersTopic;
             ServerMessageBus.Publish(msgEnvelop);
 
-            //// Send to Web roles
-            //msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWebRoleTopic;
-            //ServerMessageBus.Publish(msgEnvelop);
+            // Send to Web roles
             Clients[Context.ConnectionId].reconnectionIdentifiers(clientId, clientIdentifier.DataFeedIdentifier.SignalRId, clientIdentifier.DataFeedIdentifier.WebRoleId);
         }
 
@@ -101,7 +99,7 @@ namespace PinkoWebRoleCommon.SignalRHub
         /// <summary>
         /// Send to client - SignalR will stub this method in the browser
         /// </summary>
-        public void ExpressionResponse(string clientCtx, string expression, string resultType, string resultValue)
+        public void ExpressionResponse(string clientCtx, string results, string resultType, string subscribtionId)
         {
             // Do not implement. Implemented in browser by SignalR
         }

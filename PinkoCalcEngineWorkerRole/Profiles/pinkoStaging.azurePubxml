@@ -9,14 +9,14 @@
     <AzureEnableRemoteDesktop>True</AzureEnableRemoteDesktop>
     <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
     <AzureFallbackToDeleteAndRecreateIfUpgradeFails>False</AzureFallbackToDeleteAndRecreateIfUpgradeFails>
-    <AzureHostedServiceLabel>pinko</AzureHostedServiceLabel>
-    <AzureHostedServiceName>pinko</AzureHostedServiceName>
+    <AzureHostedServiceLabel>WorkerRoleServices</AzureHostedServiceLabel>
+    <AzureHostedServiceName>workerroleservices</AzureHostedServiceName>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
     <AzureServiceConfiguration>Cloud</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Debug</AzureSolutionConfiguration>
-    <AzureStorageAccountLabel>pinkstorage</AzureStorageAccountLabel>
-    <AzureStorageAccountName>pinkstorage</AzureStorageAccountName>
+    <AzureStorageAccountLabel>WorkerRoleServices</AzureStorageAccountLabel>
+    <AzureStorageAccountName>workerroleservices</AzureStorageAccountName>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
   </PropertyGroup>
 </Project>

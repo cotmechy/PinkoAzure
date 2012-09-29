@@ -8,7 +8,7 @@ namespace PinkoMocks
 {
     public class WebRoleConnectManagerMock : IWebRoleConnectManager
     {
-        private string _webRoleId;
+        //private string _webRoleId;
 
         /// <summary>
         /// Initialize 

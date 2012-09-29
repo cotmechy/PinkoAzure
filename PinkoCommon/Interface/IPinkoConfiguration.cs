@@ -22,6 +22,22 @@ namespace PinkoCommon.Interface
         IDictionary EnvironmentVariables { get; }
 
         /// <summary>
+        /// Main bus for ALL workers 
+        /// </summary>
+        string PinkoMessageBusToAllWorkersTopic { get; }
+
+
+        /// <summary>
+        /// All subscription managers worker roles
+        /// </summary>
+        string PinkoMessageBusToWorkerAllSubscriptionManagerWorker { get; }
+
+        /// <summary>
+        /// Single subscription managers worker role
+        /// </summary>
+        string PinkoMessageBusToWorkerSubscriptionManagerWorker { get; }
+
+        /// <summary>
         /// Calc engine send real time data to specific clients. Client use selectors.
         /// </summary>
         string PinkoMessageBusToWebRoleTopic { get; }
@@ -34,7 +50,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Broadcast to all Calc Engines
         /// </summary>
-        string PinkoMessageBusToAllWorkerRolesTopic { get; }
+        string PinkoMessageBusToWorkerAllCalcEngineTopic { get; }
 
         /// <summary>
         /// Messages to specific Calc engine. the calc engine has  selector

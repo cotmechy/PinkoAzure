@@ -22,8 +22,12 @@ namespace PinkoCalcEngineWorker
             var rtn = base.OnStart();
 
             PinkoContainer = PinkoServiceContainer.BuildContainer();  // Real Container
+            
             PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
+            PinkoConfiguration = PinkoContainer.Resolve<IPinkoConfiguration>();
             WorkerRoleFrame = PinkoContainer.Resolve<IWorkerRoleFrame>();
+
+            PinkoServiceContainer.RegisterCalcEngineExtra(PinkoContainer);
 
             return rtn;
         }
@@ -33,7 +37,15 @@ namespace PinkoCalcEngineWorker
         /// </summary>
         public override void Run()
         {
-            PinkoApplication.RunInWorkerThread( "Initialize WorkerRole", () => WorkerRoleFrame.Run());
+            // start listening to Topic messages
+            PinkoApplication.RunInWorkerThread("Initialize PinkoCalcEngineWorker",
+                                               () =>
+                                               WorkerRoleFrame.Run(
+                                                   PinkoConfiguration.PinkoMessageBusToWorkerAllCalcEngineTopic,
+                                                   PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic)
+                );
+
+
             base.Run();
         }
 
@@ -42,7 +54,7 @@ namespace PinkoCalcEngineWorker
         /// </summary>
         public override void OnStop()
         {
-            Trace.TraceInformation("Stopping worker role: {0}");
+            Trace.TraceInformation("Stopping worker role PinkoCalcEngineWorker");
 
             WorkerRoleFrame.Stop();
 
@@ -54,6 +66,10 @@ namespace PinkoCalcEngineWorker
         /// </summary>
         public IWorkerRoleFrame WorkerRoleFrame { private get; set; }
 
+        /// <summary>
+        /// IPinkoConfiguration
+        /// </summary>
+        public IPinkoConfiguration PinkoConfiguration { private get; set; }
 
         /// <summary>
         /// PinkoContainer

@@ -19,10 +19,10 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Initialize
         /// </summary>
-        void Initialize(string azureServerConnectionString);
+        void Initialize(string azureServerConnectionString, string selector);
 
         /// <summary>
-        /// Start listening to incoming queues. We are usiing Task space to allowed OS to manage threads
+        /// Start listening to incoming queues. We are using Task space to allowed OS to manage threads
         /// </summary>
         void Listen();
 

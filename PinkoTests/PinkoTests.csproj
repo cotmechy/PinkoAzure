@@ -86,6 +86,9 @@
     <Compile Include="PinkoWebRoleTests\WebRoleConnectManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OtherTests.cs" />
+    <Compile Include="PinkoMessageActionTests.cs" />
+    <Compile Include="PinkoDictionaryTest.cs" />
+    <Compile Include="BusListenerSubscribeExpressionHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

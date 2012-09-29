@@ -15,6 +15,12 @@ namespace PinkoMocks
 
         public T Invoke<T>(IPinkoMarketEnvironment marketEnv, Func<IPinkoMarketEnvironment, T> paramFunc)
         {
+            //if (typeof (T) == typeof (double[]))
+            //    return new double[] {0.0};
+
+            //if (typeof(T) == typeof(double[][]))
+            //    return new double[] { new double[] {0.0} };
+
             return paramFunc(marketEnv);
         }
 

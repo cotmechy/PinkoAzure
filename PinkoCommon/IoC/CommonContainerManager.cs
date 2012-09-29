@@ -44,7 +44,6 @@ namespace PinkoCommon.IoC
 
             pinkoContainer.RegisterInstance<IRxMemoryBus<IBusMessageOutbound>>(pinkoContainer.Resolve<IPinkoApplication>().GetBus<IBusMessageOutbound>());
 
-
             return pinkoContainer;
         }
     }

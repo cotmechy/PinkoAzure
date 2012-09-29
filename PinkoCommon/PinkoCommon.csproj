@@ -55,6 +55,7 @@
     <Compile Include="BaseMessageHandlers\InboundTypedPublisher.cs" />
     <Compile Include="BaseMessageHandlers\MessageHandlerManager.cs" />
     <Compile Include="ExceptionTypes\PinkoExceptionMsMqNotFound.cs" />
+    <Compile Include="Extension\PinkoUserExpressionFormulaExtensions.cs" />
     <Compile Include="Interface\IBusMessageInbound.cs" />
     <Compile Include="Interface\IBusMessageOutbound.cs" />
     <Compile Include="Interface\IBusMessageQueue.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Interface\IPinkoConfiguration.cs" />
     <Compile Include="Interface\IPinkoMarketEnvManager.cs" />
     <Compile Include="Interface\IRxMemoryBus.cs" />
+    <Compile Include="Interface\Storage\IPinkoStorage.cs" />
     <Compile Include="IoC\CommonContainerManager.cs" />
     <Compile Include="Extensions\PinkoExtensions.cs" />
     <Compile Include="MemoryBus.cs" />
@@ -75,7 +77,9 @@
     <Compile Include="PinkoServiceMessageEnvelop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceListenerDebug.cs" />
+    <Compile Include="Utility\PinkoDictionary.cs" />
     <Compile Include="Utility\TryCatch.cs" />
+    <Compile Include="Utility\TryTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinkDao\PinkDao.csproj">

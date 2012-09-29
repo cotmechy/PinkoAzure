@@ -11,9 +11,11 @@ namespace PinkoWorkerCommon.Interface
     public interface IWorkerRoleFrame
     {
         /// <summary>
-        /// Run()
+        /// Start running Worker Role
         /// </summary>
-        void Run();
+        /// <param name="brodcastTopic">Non filtered topic to broadcast to all instance of the worker role</param>
+        /// <param name="directTopic">direct filter topic to specific client</param>
+        void Run(string brodcastTopic, string directTopic);
 
         ///// <summary>
         ///// Start Heart Beat

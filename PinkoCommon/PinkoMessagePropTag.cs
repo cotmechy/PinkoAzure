@@ -16,5 +16,6 @@ namespace PinkoCommon
         public const string ErrorCode = "ErrorCode";
         public const string ErrorDescription = "ErrorDescription";
         public const string ErrorSystem = "ErrorSystem";
+        public const string RoleId = "RoleId";
     }
 }
