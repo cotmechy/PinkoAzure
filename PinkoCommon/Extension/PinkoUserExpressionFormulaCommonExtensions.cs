@@ -7,7 +7,7 @@ namespace PinkoCommon.Extension
     /// <summary>
     /// PinkoUserExpressionFormulaExtensions
     /// </summary>
-    public static class PinkoUserExpressionFormulaExtensions
+    public static class PinkoUserExpressionFormulaCommonExtensions
     {
         /// <summary>
         /// Convert a string to typed PinkoUserExpressionFormula[]

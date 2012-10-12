@@ -127,10 +127,10 @@ namespace PinkoWebRoleCommon
             get { return _webRoleId; }
         }
 
-        ///// <summary>
-        ///// Heartbeat Reactive extension - processes via SignalR
-        ///// </summary>
-        private IObservable<long> _webRoleHearBeat;
+        /////// <summary>
+        /////// Heartbeat Reactive extension - processes via SignalR
+        /////// </summary>
+        //private IObservable<long> _webRoleHearBeat;
 
         /// <summary>
         /// Unique web role id

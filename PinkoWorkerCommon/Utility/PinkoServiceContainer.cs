@@ -6,7 +6,6 @@ using PinkoExpressionCommon;
 using PinkoExpressionEngine;
 using PinkoWorkerCommon.Handler;
 using PinkoWorkerCommon.Interface;
-using PinkoWorkerCommon.Providers;
 
 namespace PinkoWorkerCommon.Utility
 {
@@ -60,7 +59,7 @@ namespace PinkoWorkerCommon.Utility
             //pinkoContainer.RegisterInstance<IPinkoFormulaSubscriberManager>(pinkoContainer.Resolve<PinkoFormulaSubscriberManager>());
 
             // Register message type to process
-            pinkoContainer.Resolve<IWorkerRoleFrame>().MessageReceiveHandlers.Add(pinkoContainer.Resolve<BusListenerSubscribeExpressionHandler>().Register()); // This could go in the worker Role project
+            pinkoContainer.Resolve<IWorkerRoleFrame>().MessageReceiveHandlers.Add(pinkoContainer.Resolve<BusListenerUserSubscriberExpressionHandler>().Register()); // This could go in the worker Role project
 
             // This worker role handles these messages types
             pinkoContainer.Resolve<IMessageHandlerManager>().AddBusTypeHandler<PinkoMsgCalculateExpression>();

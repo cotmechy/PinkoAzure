@@ -11,10 +11,17 @@ namespace PinkDao
     public enum PinkoMessageAction
     {
         InvalidMessageAction = -1,  // Usually string cannot be converted
-        Snapshot,
-        Subscription,
+        
+        // Snapshot request
+        UserSnapshot,
+
+        // User triggered subscriptions
+        UserSubscription,
         Unsubscribe,
 
+        /// Subscription Manager sent this request
+        ManagerSubscription,
+        ManagerUnsubscribe,
 
         // Do not remove and must be always last
         MaxActions

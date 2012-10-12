@@ -35,6 +35,9 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="PinkoExpressionCommon">
+      <HintPath>..\_WorkerBin\PinkoExpressionCommon.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -52,6 +55,7 @@
       <DependentUpon>PinkoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\DaoExtensions.cs" />
+    <Compile Include="PinkoDaoStatic.cs" />
     <Compile Include="PinkoMessageAction.cs" />
     <Compile Include="PinkoMsgCalculateExpression.cs" />
     <Compile Include="PinkoMsgCalculateExpressionResult.cs" />
@@ -81,7 +85,10 @@
     <Compile Include="PinkoMsgPing.cs" />
     <Compile Include="PinkoMsgRoleHeartbeat.cs" />
     <Compile Include="PinkoPoint.cs" />
+    <Compile Include="PinkoSubscription.cs" />
+    <Compile Include="PinkoUserExpressionFormula.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultsTuppleWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="PinkoEntities.edmx">
@@ -109,9 +116,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Storage\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

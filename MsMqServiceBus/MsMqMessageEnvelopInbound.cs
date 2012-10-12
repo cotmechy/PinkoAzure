@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using PinkDao;
 using PinkoCommon;
 using PinkoCommon.ExceptionTypes;
+using PinkoCommon.Extension;
 using PinkoCommon.Extensions;
 using PinkoCommon.Interface;
 using PinkoCommon.Utility;

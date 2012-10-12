@@ -3,10 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
+using PinkoCommon.Extension;
+using PinkoCommon.Utility;
 using PinkoExpressionCommon;
 using PinkoExpressionEngine;
 using PinkoMocks;
 using Microsoft.Practices.Unity;
+using PinkoWorkerCommon.ExceptionTypes;
 
 namespace PinkoTests
 {
@@ -16,6 +19,94 @@ namespace PinkoTests
     [TestClass]
     public class PinkoExpressionTests
     {
+
+        /// <summary>
+        /// Return type mismatch.  i.e.: expecting return type to be a double[]
+        /// </summary>
+        [TestMethod]
+        public void TestBadReturnType()
+        {
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+
+            var ex = TryCatch.RunInTry(() => expEngine.ParseAndCompile<double[][]>("{ A = RForm(\"Symbol\", \"throw PinkoExceptionDataNotSubscribed\", \"Price.Bid\", \"Reuters\"); [A] }"));
+
+            Assert.IsInstanceOfType(ex, typeof(ArgumentException));
+        }
+
+
+        /// <summary>
+        /// Missing History subscription
+        /// </summary>
+        [TestMethod]
+        public void TestSubscriptionNotfoundHist()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+
+            var complExp = expEngine.ParseAndCompile<double[][]>("{ A = RHist(\"Symbol\", \"throw PinkoExceptionDataNotSubscribed\", \"Price.Bid\", \"Reuters\", \"Hour\", 360); [A] }");
+            var ex = TryCatch.RunInTry(() => expEngine.Invoke(marketEnv, complExp));
+
+            Assert.IsInstanceOfType(ex, typeof(PinkoExceptionDataNotSubscribed));
+        }
+
+        /// <summary>
+        /// Missing Data point subscription
+        /// </summary>
+        [TestMethod]
+        public void TestSubscriptionNotfoundSinglePoint()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var marketEnv = pinkoContainer.Resolve<IPinkoMarketEnvironment>();
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+
+            var complExp = expEngine.ParseAndCompile<double[]>("{ A = RForm(\"Symbol\", \"throw PinkoExceptionDataNotSubscribed\", \"Price.Bid\", \"Reuters\"); [A] }");
+            var ex = TryCatch.RunInTry(() => expEngine.Invoke(marketEnv, complExp));
+
+            Assert.IsInstanceOfType(ex, typeof(PinkoExceptionDataNotSubscribed));
+        }
+
+
+        /// <summary>
+        /// IsFormulaChanged - true
+        /// </summary>
+        [TestMethod]
+        public void TestIsFormulaChangedNull()
+        {
+            var expression = SampleMockData.GetPinkoMsgCalculateExpression()[0];
+            var expression2 = SampleMockData.GetPinkoMsgCalculateExpression()[0];
+
+            expression.ExpressionFormulasStr = "new formulas";
+
+            Assert.IsTrue(expression.IsFormulaChanged(expression2));
+        }
+
+        /// <summary>
+        /// IsFormulaChanged - Default 
+        /// </summary>
+        [TestMethod]
+        public void TestIsFormulaChanged()
+        {
+            var expression = SampleMockData.GetPinkoMsgCalculateExpression()[0];
+            var expression2 = SampleMockData.GetPinkoMsgCalculateExpression()[0];
+
+            Assert.IsFalse(expression.IsFormulaChanged(expression2));
+        }
+
+
+        /// <summary>
+        /// PinkoDataFeedIdentifier - CopyToNull
+        /// </summary>
+        [TestMethod]
+        public void TestPinkoDataFeedIdentifierCopyToNull()
+        {
+            var expression = SampleMockData.GetPinkoMsgCalculateExpression()[0];
+            expression.ExpressionFormulas = null;
+            var newone = expression.CopyTo(new PinkoMsgCalculateExpression());
+
+            Assert.IsTrue(expression.IsEqual(newone));
+        }
+
 
         /// <summary>
         /// PinkoDataFeedIdentifier - CopyTo()
@@ -75,7 +166,7 @@ namespace PinkoTests
             };
 
             var expression = msgObj.GetExpression();
-            Assert.IsTrue(expression.Replace(" ", string.Empty) == "{ Lbl_1000 = 1000.1 * 1000.2; Lbl_1001 = 1001.1 * 1001.2; Lbl_1002 = 1002.1 * 1002.2; [  Lbl_1000, Lbl_1001, Lbl_1002 ]  }".Replace(" ", string.Empty));
+            Assert.IsTrue(expression.Reduce() == "{ Lbl_0 = 0.1 * 0.2; Lbl_1 = 1.1 * 1.2; Lbl_2 = 2.1 * 2.2; [  Lbl_0, Lbl_1, Lbl_2 ]  }".Reduce());
         }
 
         /// <summary>

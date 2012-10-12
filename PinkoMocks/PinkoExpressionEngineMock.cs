@@ -7,8 +7,8 @@ namespace PinkoMocks
     {
         public Func<IPinkoMarketEnvironment, T> ParseAndCompile<T>(string formula)
         {
-            if (null != ExceptionCall)
-                ExceptionCall();
+            if (null != ExceptionParseAction)
+                ExceptionParseAction();
 
             return environment => default(T);
         }
@@ -21,9 +21,13 @@ namespace PinkoMocks
             //if (typeof(T) == typeof(double[][]))
             //    return new double[] { new double[] {0.0} };
 
+            if (null != ExceptionInvokeAction)
+                ExceptionInvokeAction();
+
             return paramFunc(marketEnv);
         }
 
-        public Action ExceptionCall = null;
+        public Action ExceptionParseAction = null;
+        public Action ExceptionInvokeAction = null;
     }
 }

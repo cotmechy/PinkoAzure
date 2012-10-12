@@ -11,7 +11,7 @@ namespace PinkoCommon.Utility
     public class PinkoDictionary<TK, T>
     {
         /// <summary>
-        /// Replace keyed item 
+        /// Replace keyed item  when condition is true. Done this way to assure atomic operation in dictionary.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="conditionAction"></param>

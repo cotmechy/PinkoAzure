@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using PinkDao;
 using PinkoCommon.ExceptionTypes;
+using PinkoCommon.Extension;
 using PinkoCommon.Extensions;
 using PinkoCommon.Interface;
 

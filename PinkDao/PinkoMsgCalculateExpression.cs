@@ -6,45 +6,16 @@ using Microsoft.Practices.ObjectBuilder2;
 namespace PinkDao
 {
     /// <summary>
-    /// UserFormaula - single user formula
-    /// </summary>
-    public class PinkoUserExpressionFormula
-    {
-        /// <summary>
-        /// Id created at runtime as an int to improve performance. The RuntimeId is sent to the client 
-        /// with each update.  It is only valid for each runtime session.  Not designed to be stored.
-        /// </summary>
-        public int RuntimeId;
-
-        /// <summary>
-        /// UUID for formula
-        /// </summary>
-        public string FormulaId;
-
-        /// <summary>
-        /// User assigned label. used in expression.
-        /// </summary>
-        public string ExpressionLabel;
-
-        /// <summary>
-        /// Formula expression.
-        /// </summary>
-        public string ExpressionFormula;
-    }
-
-
-    /// <summary>
     /// Calculation Expression 
     /// </summary>
     public class PinkoMsgCalculateExpression
     {
         public PinkoDataFeedIdentifier DataFeedIdentifier = new PinkoDataFeedIdentifier();
-        public PinkoUserExpressionFormula[] ExpressionFormulas = null;
+        public PinkoUserExpressionFormula[] ExpressionFormulas = PinkoCalculateExpressionDaoExtensions.DefaultnewPinkoUserExpressionFormula;
         public string ExpressionFormulasStr = string.Empty;
 
         public int ResultType;
-        public PinkoMessageAction MsgAction = PinkoMessageAction.Snapshot;
-
+        public PinkoMessageAction MsgAction = PinkoMessageAction.UserSnapshot;
     }
 
 
@@ -54,6 +25,12 @@ namespace PinkDao
     public static class PinkoCalculateExpressionDaoExtensions
     {
         /// <summary>
+        /// Default 
+        /// </summary>
+        public static readonly PinkoUserExpressionFormula[] DefaultnewPinkoUserExpressionFormula = new PinkoUserExpressionFormula[] {};
+
+
+        /// <summary>
         /// Copy all value
         /// </summary>
         /// <param name="src"></param>
@@ -61,7 +38,7 @@ namespace PinkDao
         /// <returns>Destination passed in parameter</returns>
         public static PinkoMsgCalculateExpression CopyTo(this PinkoMsgCalculateExpression src, PinkoMsgCalculateExpression dest)
         {
-            dest.ExpressionFormulas = src.ExpressionFormulas;
+            dest.ExpressionFormulas = src.ExpressionFormulas.DeepClone();
             dest.ExpressionFormulasStr = src.ExpressionFormulasStr;
             dest.MsgAction = src.MsgAction;
             dest.ResultType = src.ResultType;
@@ -70,11 +47,40 @@ namespace PinkDao
             return dest;
         }
 
+        /// <summary>
+        /// Copy all value
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="dest"></param>
+        /// <returns>Destination passed in parameter</returns>
+        public static PinkoMsgCalculateExpressionResult CopyTo(this PinkoMsgCalculateExpression src, PinkoMsgCalculateExpressionResult dest)
+        {
+            src.DataFeedIdentifier.CopyTo(dest.DataFeedIdentifier);
+            dest.ExpressionFormulas = src.ExpressionFormulas.DeepClone();
+            dest.ResultType = src.ResultType;
+
+            return dest;
+        }
+
+        /// <summary>
+        /// Was formula changed ? 
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="src"></param>
+        /// <returns>
+        /// True: formula was changed
+        /// False: formula was not changed
+        /// </returns>
+        public static bool IsFormulaChanged(this PinkoMsgCalculateExpression src, PinkoMsgCalculateExpression dest)
+        {
+            return src == null ||  false == dest.ExpressionFormulasStr.Equals(src.ExpressionFormulasStr);
+        }
 
 
         /// <summary>
         /// Checks values are the same by comparing internal values.
         /// </summary>
+        /// <param name="dest"> </param>
         /// <param name="src"></param>
         /// <returns>
         /// True: they are equal
@@ -90,21 +96,8 @@ namespace PinkDao
         }
 
         /// <summary>
-        /// Default result 
-        /// </summary>
-        public static ResultsTuppleWrapper[] DefaultResultTupple
-            = new[]
-                {
-                    new ResultsTuppleWrapper()
-                        {
-                            OriginalFormula = new PinkoUserExpressionFormula() {ExpressionFormula = string.Empty, ExpressionLabel = string.Empty, FormulaId = string.Empty, RuntimeId = 0 },
-                            PointSeries = new[] {new PinkoFormPoint() {PointTime = double.NaN}}
-                        }
-                };
-
-
-        /// <summary>
         /// Get formula string representation for expression engine
+        /// Build:  [{ A = 1 + 1; B = A +2; [A, B] }
         /// </summary>
         public static string GetExpression(this PinkoMsgCalculateExpression obj)
         {
@@ -113,11 +106,12 @@ namespace PinkDao
 
         /// <summary>
         /// Get formula string representation for expression engine
+        /// Build:  [{ A = 1 + 1; B = A +2; [A, B] }
         /// </summary>
-        private static string GetExpression(IEnumerable<PinkoUserExpressionFormula> expressionFormulas)
+        public static string GetExpression(this IEnumerable<PinkoUserExpressionFormula> expressionFormulas)
         {
-            var sb = new StringBuilder(1028);
-            var sbLbl = new StringBuilder(1028);
+            var sb = new StringBuilder(PinkoDaoStatic.StringBuilderDefaultSize);
+            var sbLbl = new StringBuilder(PinkoDaoStatic.StringBuilderDefaultSize);
             var comma = string.Empty;
 
             sb.Append("{ ");
@@ -147,16 +141,16 @@ namespace PinkDao
                                  );
         }
 
-        /// <summary>
-        /// PinkoCalculateExpressionResult
-        /// </summary>
-        public static string Verbose(this PinkoMsgCalculateExpressionResult obj)
-        {
-            return string.Format("PinkoCalculateExpressionResult: Result: {0} - {1}",
-                                 string.Join(" = ", obj.ResultsTupple.Select(x => string.Format("{0} = {1}", x.OriginalFormula.ExpressionLabel, x.PointSeries.Select(p => p.Verbose())))),
-                                 obj.DataFeedIdentifier
-                                 );
-        }
+        ///// <summary>
+        ///// PinkoCalculateExpressionResult
+        ///// </summary>
+        //public static string Verbose(this PinkoMsgCalculateExpressionResult obj)
+        //{
+        //    return string.Format("PinkoCalculateExpressionResult: Result: {0} - {1}",
+        //                         string.Join(" = ", obj.ResultsTupple.Select(x => string.Format("{0} = {1}", x.OriginalFormula.ExpressionLabel, x.PointSeries.Select(p => p.Verbose())))),
+        //                         obj.DataFeedIdentifier
+        //                         );
+        //}
 
         /// <summary>
         /// PinkoCalculateExpressionResult from PinkoCalculateExpressionResult
@@ -165,6 +159,7 @@ namespace PinkDao
         {
             obj.DataFeedIdentifier = src.DataFeedIdentifier.CopyTo(new PinkoDataFeedIdentifier());
             obj.ResultType = src.ResultType;
+            obj.ExpressionFormulas = src.ExpressionFormulas.DeepClone();
 
             return obj;
         }

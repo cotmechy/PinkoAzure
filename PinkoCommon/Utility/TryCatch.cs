@@ -16,7 +16,7 @@ namespace PinkoCommon.Utility
         /// <returns></returns>
         static public Exception RunInTry(Func<string> msgaction, Action action)
         {
-            Exception ex = RunInTrySilent(action);
+            var ex = RunInTrySilent(action);
 
             if (null != ex)
                 Trace.TraceError("{0}\r\n{1}", msgaction, ex);
@@ -48,7 +48,7 @@ namespace PinkoCommon.Utility
         /// </summary>
         static public void RunInTryThrow(Action action)
         {
-            Exception ex = RunInTry(action);
+            var ex = RunInTry(action);
 
             if (ex != null)
                 throw ex;

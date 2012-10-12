@@ -72,10 +72,10 @@ namespace PinkoCommon.Utility
             {
                 action();
             }
-            catch (Exception ex)
-            {
-                Trace.TraceWarning("ERROR: {0}", ex.ToString());
-            }
+            //catch (Exception ex)
+            //{
+            //    Trace.TraceWarning("ERROR: {0}", ex.ToString());
+            //}
             finally
             {
                 double timeElapse;

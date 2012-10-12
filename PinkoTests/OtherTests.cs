@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PinkoCommon.Extension;
 using PinkoCommon.Extensions;
 
 namespace PinkoTests

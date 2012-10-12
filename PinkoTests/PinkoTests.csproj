@@ -89,6 +89,11 @@
     <Compile Include="PinkoMessageActionTests.cs" />
     <Compile Include="PinkoDictionaryTest.cs" />
     <Compile Include="BusListenerSubscribeExpressionHandlerTests.cs" />
+    <Compile Include="BusListenerCalculateSubsCalcExpressionHandlerTests.cs" />
+    <Compile Include="PinkoExpressionSubscribersTests.cs" />
+    <Compile Include="CloneTests.cs" />
+    <Compile Include="PinkoCalculatorTests.cs" />
+    <Compile Include="Utility\OutbountListener.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

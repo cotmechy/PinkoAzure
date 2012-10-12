@@ -12,18 +12,18 @@ namespace PinkoWebRoleCommon.Extensions
     /// </summary>
     static public class RequestsExtensions
     {
-        /// <summary>
-        /// Object Identity
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static string Verbose(this IRequest obj)
-        {
-            return string.Format("{0}: Name: {1} - Authen: {2}"
-                                            , obj.VerboseIdentity()
-                                            , obj.User.Identity.Name
-                                            , obj.User.Identity.IsAuthenticated
-                                            );
-        }
+        ///// <summary>
+        ///// Object Identity
+        ///// </summary>
+        ///// <param name="obj"></param>
+        ///// <returns></returns>
+        //public static string Verbose(this IRequest obj)
+        //{
+        //    return string.Format("{0}: Name: {1} - Authen: {2}"
+        //                                    , obj.VerboseIdentity()
+        //                                    , obj.User.Identity.Name
+        //                                    , obj.User.Identity.IsAuthenticated
+        //                                    );
+        //}
     }
 }

@@ -15,12 +15,12 @@ namespace PinkoTests
             Assert.IsTrue(PinkoMessageAction.InvalidMessageAction == PinkoMessageActionExtensions._maxActions.ToString().ToPinkoMessageAction());
             Assert.IsTrue(PinkoMessageAction.InvalidMessageAction == "100".ToPinkoMessageAction());
 
-            Assert.IsTrue(PinkoMessageAction.Snapshot == "0".ToPinkoMessageAction());
-            Assert.IsTrue(PinkoMessageAction.Subscription == "1".ToPinkoMessageAction());
+            Assert.IsTrue(PinkoMessageAction.UserSnapshot == "0".ToPinkoMessageAction());
+            Assert.IsTrue(PinkoMessageAction.UserSubscription == "1".ToPinkoMessageAction());
 
             Assert.IsTrue("-1" == PinkoMessageAction.InvalidMessageAction.ToSerialString());
-            Assert.IsTrue("0" == PinkoMessageAction.Snapshot.ToSerialString());
-            Assert.IsTrue("1" == PinkoMessageAction.Subscription.ToSerialString());
+            Assert.IsTrue("0" == PinkoMessageAction.UserSnapshot.ToSerialString());
+            Assert.IsTrue("1" == PinkoMessageAction.UserSubscription.ToSerialString());
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using PinkoCommon;
+using PinkoCommon.Extension;
 using PinkoCommon.Interface;
 
 namespace PinkoMocks
@@ -95,6 +97,25 @@ namespace PinkoMocks
         {
             get { return Scheduler.CurrentThread; }
         }
+
+        /// <summary>
+        /// Get Time atomic sequence. 
+        /// </summary>
+        /// <returns></returns>
+        public long GetTimeSequence()
+        {
+            return TestSequenceValue;
+        }
+
+        /// <summary>
+        /// Run parallel
+        /// </summary>
+        public void ForEachParallel<T>(IEnumerable<T> collection, Action<T> action)
+        {
+            collection.ForEach(action);
+        }
+
+        public const long TestSequenceValue = 100000009;
 
         /// <summary>
         /// Get in memory - subscriber

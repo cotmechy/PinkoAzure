@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Practices.Unity;
 using PinkDao;
 using PinkoCommon;
@@ -92,58 +93,8 @@ namespace PinkoWorkerCommon.Handler
         /// </summary>
         protected override bool FilterIncomingMsg(System.Tuple<IBusMessageInbound, PinkoMsgCalculateExpression> msg)
         {
-            return msg.Item2.MsgAction == PinkoMessageAction.Snapshot;
+            return msg.Item2.MsgAction == PinkoMessageAction.UserSnapshot;
         }
-
-
-        ///// <summary>
-        ///// Get Result tuple - double[]
-        ///// </summary>
-        //static public ResultsWrapper[] GetTupleResult(PinkoUserExpressionFormula[] expressions, double[] results)
-        //{
-        //    var tuple = new ResultsWrapper[results.Count()];
-
-        //    for (var idx = 0; idx < results.Count(); idx++)
-        //    {
-        //        var pinkoResult = new[]
-        //            {
-        //                new PinkoFormPoint()
-        //                    {
-        //                        PointValue = results[idx],
-        //                        PointTime = DateTime.Now.ToOADate()
-        //                    }
-        //            };
-
-        //        tuple[idx] = new ResultsWrapper() { OriginalFormula = expressions[idx], PointSeries = pinkoResult };
-        //    }
-
-        //    return tuple;
-        //}
-
-        ///// <summary>
-        ///// Get Result tuple - double[][]
-        ///// </summary>
-        //static public ResultsWrapper[] GetTupleResult(PinkoUserExpressionFormula[] expressions, double[][] results)
-        //{
-        //    var tuple = new ResultsWrapper[expressions.Count()];
-
-        //    for (var idx = 0; idx < results.Count(); idx++)
-        //    {
-        //        var pinkoResults = results[idx].Select(x => 
-        //                new PinkoFormPoint()
-        //                    {
-        //                        PointValue = x,
-        //                        PointTime = DateTime.Now.ToOADate()
-        //                    }
-        //            ).ToArray();
-
-        //        tuple[idx] = new ResultsWrapper() { OriginalFormula = expressions[idx], PointSeries = pinkoResults };
-        //    }
-
-        //    return tuple;
-        //}
-
-
 
         /// <summary>
         /// IPinkoMarketEnvManager

@@ -62,5 +62,15 @@ namespace PinkoCommon.Interface
         /// Get thread pool schedules. Set to same thread in unit test.
         /// </summary>
         IScheduler ThreadPoolScheduler { get; }
+
+        /// <summary>
+        /// Get Time atomic sequence. 
+        /// </summary>
+        long GetTimeSequence();
+
+        /// <summary>
+        /// Run parallel
+        /// </summary>
+        void ForEachParallel<T>(IEnumerable<T> collection, Action<T> action);
     }
 }

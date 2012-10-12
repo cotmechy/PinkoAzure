@@ -35,9 +35,15 @@ namespace PinkoWebService.Tests.Controllers
 
             var result = controller.GetCalc(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Label3: 3 + 3; ", "marketenvid", "clientctx", "clientid", "signalr", "webroleid"); //, "subscribtionid");
 
+            var outMsg = outboundMsg.Message as PinkoMsgCalculateExpression;
             Assert.IsTrue(result.StatusCode == HttpStatusCode.OK);
-            Assert.IsNotNull(outboundMsg);
-            Assert.IsNotNull(outboundMsg.Message is PinkoMsgCalculateExpression);
+            Assert.IsNotNull(outMsg);
+
+            Assert.IsTrue(outMsg.DataFeedIdentifier.MaketEnvId.Equals("marketenvid"));
+            Assert.IsTrue(outMsg.DataFeedIdentifier.ClientCtx.Equals("clientctx"));
+            Assert.IsTrue(outMsg.DataFeedIdentifier.ClientId.Equals("clientid"));
+            Assert.IsTrue(outMsg.DataFeedIdentifier.SignalRId.Equals("signalr"));
+            Assert.IsTrue(outMsg.DataFeedIdentifier.WebRoleId.Equals("webroleid"));
 
             // web role id required for snapshot calculation
             Assert.IsFalse(string.IsNullOrEmpty(webRoleConnectManager.WebRoleId));

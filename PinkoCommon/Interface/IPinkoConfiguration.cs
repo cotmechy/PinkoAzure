@@ -30,12 +30,12 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// All subscription managers worker roles
         /// </summary>
-        string PinkoMessageBusToWorkerAllSubscriptionManagerWorker { get; }
+        string PinkoMessageBusToWorkerAllSubscriptionManagerTopic { get; }
 
         /// <summary>
         /// Single subscription managers worker role
         /// </summary>
-        string PinkoMessageBusToWorkerSubscriptionManagerWorker { get; }
+        string PinkoMessageBusToWorkerSubscriptionManagerTopic { get; }
 
         /// <summary>
         /// Calc engine send real time data to specific clients. Client use selectors.
@@ -71,6 +71,11 @@ namespace PinkoCommon.Interface
         /// Message queue interval check 
         /// </summary>
         int MessageQueueCheckIntervalMs { get; }
+
+        /// <summary>
+        /// Queue into initial subscription to calc engines
+        /// </summary>
+        string PinkoMessageBusToCalcEngineQueue { get; }
 
         /// <summary>
         /// Get configuration setting

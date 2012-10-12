@@ -11,6 +11,20 @@ namespace PinkoWorkerCommon.Extensions
         /// <summary>
         /// Get Result tuple - double[] - in ResultsWrapper to serialize into the message bus
         /// </summary>
+        static public ResultsTuppleWrapper[] GetResultsTuple(this PinkoUserExpressionFormula[] expressions, object results)
+        {
+            if (results is double[])
+                return expressions.GetTupleResult(results as double[]);
+
+            if (results is double[][])
+                return expressions.GetTupleResult(results as double[][]);
+
+            return ResultsTuppleWrapperExtensions.ResultsTuppleWrapperDeault;
+        }
+
+        /// <summary>
+        /// Get Result tuple - double[] - in ResultsWrapper to serialize into the message bus
+        /// </summary>
         static public ResultsTuppleWrapper[] GetTupleResult(this PinkoUserExpressionFormula[] expressions, double[] results)
         {
             var tuple = new ResultsTuppleWrapper[results.Count()];

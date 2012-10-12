@@ -50,6 +50,15 @@
         /// <summary>
         /// CopyTo
         /// </summary>
+        public static PinkoDataFeedIdentifier DeepClone(this PinkoDataFeedIdentifier src)
+        {
+            return src.CopyTo(new PinkoDataFeedIdentifier());
+        }
+
+
+        /// <summary>
+        /// CopyTo
+        /// </summary>
         public static PinkoDataFeedIdentifier CopyTo(this PinkoDataFeedIdentifier src, PinkoDataFeedIdentifier dest)
         {
             dest.ClientCtx = src.ClientCtx;
@@ -74,6 +83,7 @@
                                  "WebRoleId: {2} - " +
                                  "SubscribtionId: {3} - " +
                                  "ClientCtx: {4} - " +
+                                 "MaketEnvId: {7} - " +
                                  "PreviousWebRoleId: {5} - " +
                                  "PreviousSignalRId: {6}",
                                         obj.ClientId,
@@ -82,7 +92,8 @@
                                         obj.SubscribtionId,
                                         obj.ClientCtx,
                                         obj.PreviousWebRoleId,
-                                        obj.PreviousSignalRId
+                                        obj.PreviousWebRoleId,
+                                        obj.MaketEnvId
                                 );
         }
     }

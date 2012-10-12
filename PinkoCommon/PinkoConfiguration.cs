@@ -26,6 +26,11 @@ namespace PinkoCommon
 
             QueueConfiguration[PinkoMessageBusToWebRoleCalcResultTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleCalcResultTopic, true);
 
+            QueueConfiguration[PinkoMessageBusToWorkerAllSubscriptionManagerTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllSubscriptionManagerTopic, true);
+            QueueConfiguration[PinkoMessageBusToWorkerSubscriptionManagerTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerSubscriptionManagerTopic, true);
+
+            QueueConfiguration[PinkoMessageBusToCalcEngineQueue] = new Tuple<string, bool>(PinkoMessageBusToCalcEngineQueue, false);  // Queue
+
             // Set bus connection screen
             KeyValues["Issuer"] = "----";
             KeyValues["SecretKey"] = "-------";
@@ -92,7 +97,7 @@ namespace PinkoCommon
         /// <summary>
         /// All subscription managers worker roles
         /// </summary>
-        public string PinkoMessageBusToWorkerAllSubscriptionManagerWorker
+        public string PinkoMessageBusToWorkerAllSubscriptionManagerTopic
         {
             get { return "PinkoMessageBusToWorkerAllSubscriptionManagerWorker";  } 
         }
@@ -101,13 +106,21 @@ namespace PinkoCommon
         /// <summary>
         /// Single subscription managers worker role
         /// </summary>
-        public string PinkoMessageBusToWorkerSubscriptionManagerWorker
+        public string PinkoMessageBusToWorkerSubscriptionManagerTopic
         {
             get { return "PinkoMessageBusToWorkerSubscriptionManagerWorker"; }
         }
 
         /// <summary>
-        /// Main bus for workers 
+        /// Queue into initial subscription to calc engines
+        /// </summary>
+        public string PinkoMessageBusToCalcEngineQueue
+        {
+            get { return "PinkoMessageBusToCalcEngineQueue"; }
+        }
+
+        /// <summary>
+        /// Main bus for calcEngines
         /// </summary>
         public string PinkoMessageBusToWorkerAllCalcEngineTopic
         {
@@ -123,7 +136,7 @@ namespace PinkoCommon
         }
 
         /// <summary>
-        /// To WebRole calculation results
+        /// To CaclEngine calculation results to Web roles
         /// </summary>
         public string PinkoMessageBusToWebRoleCalcResultTopic
         {

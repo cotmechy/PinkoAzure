@@ -44,7 +44,7 @@ namespace PinkoCommon.BaseMessageHandlers
             // No response required
             if (response == null) return;
 
-            response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = _handlerId;
+            response.PinkoProperties[PinkoMessagePropTag.MessageHandlerId] = MsgHandlerId;
             response.PinkoProperties[PinkoMessagePropTag.SenderName] = PinkoApplication.MachineName;
 
             if (string.IsNullOrEmpty(response.ReplyTo))
@@ -65,7 +65,6 @@ namespace PinkoCommon.BaseMessageHandlers
         /// </summary>
         public abstract IBusMessageOutbound ProcessRequest(IBusMessageInbound msg, T expression);
 
-
         /// <summary>
         /// Derived type can override to filter Rx Where().  All message are included by default.
         /// </summary>
@@ -77,7 +76,7 @@ namespace PinkoCommon.BaseMessageHandlers
         /// <summary>
         /// HandlerId
         /// </summary>
-        private readonly string _handlerId = Guid.NewGuid().ToString();
+        public readonly string MsgHandlerId = Guid.NewGuid().ToString();
 
         ///// <summary>
         ///// Set handler 
@@ -90,7 +89,7 @@ namespace PinkoCommon.BaseMessageHandlers
         protected IRxMemoryBus<IBusMessageOutbound> ReplyQueue;
 
         /// <summary>
-        /// Rx Susbcriber for this handler
+        /// Rx Subscriber for this handler
         /// </summary>
         public IRxMemoryBus<Tuple<IBusMessageInbound, T>> HandlerPublisher;
 

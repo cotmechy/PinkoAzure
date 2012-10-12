@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using PinkoCommon;
 using PinkoCommon.BaseMessageHandlers;
 using PinkoCommon.Interface;
+using PinkoCommon.Interface.Storage;
 using PinkoExpressionCommon;
 using PinkoWebRoleCommon.Interface;
 
@@ -31,6 +32,8 @@ namespace PinkoMocks
             container.RegisterInstance<IPinkoConfiguration>(new PinkoConfiguration());
             container.RegisterInstance<IPinkoApplication>(container.Resolve<PinkoApplicationMock>());
             container.RegisterInstance<IPinkoExpressionEngine>(new PinkoExpressionEngineMock());
+            container.RegisterInstance<IPinkoStorage>(new PinkoStorageMock());
+
             container.RegisterInstance<IMessageHandlerManager>(container.Resolve<MessageHandlerManager>().Initialize()); // Handle messages
 
             container.RegisterInstance<IPinkoMarketEnvironment>(new PinkoMarketEnvironmentMock());

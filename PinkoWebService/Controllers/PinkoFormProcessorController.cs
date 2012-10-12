@@ -20,14 +20,13 @@ namespace PinkoWebService.Controllers
                                             string maketEnvId, 
                                             string clientCtx, 
                                             string clientId, 
-                                            string signalRId, 
+                                            string signalRId,
                                             string webRoleId
-                                            //string subscribtionId
                                             )
         {
             var expMsg = new PinkoMsgCalculateExpression
                 {
-                    ExpressionFormulas = PinkoUserExpressionFormulaExtensions.FromUrlParameter(expressionFormula),
+                    ExpressionFormulas = PinkoUserExpressionFormulaCommonExtensions.FromUrlParameter(expressionFormula),
                     ExpressionFormulasStr = expressionFormula.Replace(" ", string.Empty),
                     DataFeedIdentifier =
                         {
@@ -46,7 +45,8 @@ namespace PinkoWebService.Controllers
             var msgEnvelop = PinkoApplication.FactorWebEnvelop(clientCtx, WebRoleConnectManager.WebRoleId, expMsg);
 
             msgEnvelop.ReplyTo = PinkoConfiguration.PinkoMessageBusToWebRoleCalcResultTopic;
-            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic;
+            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWorkerAllSubscriptionManagerTopic;
+
             msgEnvelop.PinkoProperties[PinkoMessagePropTag.RoleId] = WebRoleConnectManager.WebRoleId; 
             ServerMessageBus.Publish(msgEnvelop);
 

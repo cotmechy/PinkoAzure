@@ -92,6 +92,23 @@ namespace PinkoCommon
         }
 
         /// <summary>
+        /// Run parallel
+        /// </summary>
+        public void ForEachParallel<T>(IEnumerable<T> collection, Action<T> action)
+        {
+            collection.AsParallel().ForAll(action);
+        }
+
+        /// <summary>
+        /// Get Time atomic sequence. 
+        /// </summary>
+        /// <returns></returns>
+        public long GetTimeSequence()
+        {
+            return DateTime.Now.Ticks;
+        }
+
+        /// <summary>
         /// MachineName
         /// </summary>
         public string MachineName

@@ -45,6 +45,17 @@ namespace PinkoCalcEngineWorker
                                                    PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic)
                 );
 
+            // 
+            // this role requires listening to queue for new subscriptions. 
+            //
+            PinkoApplication.RunInWorkerThread(PinkoConfiguration.PinkoMessageBusToCalcEngineQueue,
+                () =>
+                PinkoContainer
+                    .Resolve<IBusMessageServer>()
+                    .GetTopic(PinkoConfiguration.PinkoMessageBusToCalcEngineQueue)
+                    .Listen()
+                );
+
 
             base.Run();
         }

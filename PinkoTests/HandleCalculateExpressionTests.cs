@@ -20,58 +20,6 @@ namespace PinkoTests
     public class HandleCalculateExpressionTests
     {
 
-        /// <summary>
-        /// check IsSubscribtion filter - success
-        /// </summary>
-        [TestMethod]
-        public void TestBusListenerSubscribeExpressionHandlerSuccess()
-        {
-            var pinkoContainer = PinkoContainerMock.GetMockContainer();
-            var webRoleConnectManager = pinkoContainer.Resolve<IWebRoleConnectManager>();
-            var outboutBus = pinkoContainer.Resolve<IRxMemoryBus<IBusMessageOutbound>>();
-            var handler = pinkoContainer.Resolve<BusListenerSubscribeExpressionHandler>().Register();
-
-            var msgObj = SampleMockData.GetPinkoMsgCalculateExpression()[0];
-
-            msgObj.MsgAction = PinkoMessageAction.Subscription;  // Set to subscription
-
-            IBusMessageOutbound busMessageOutbound = null;
-            outboutBus.Subscriber.Subscribe(x => busMessageOutbound = x);
-
-            // Test formula
-            var envelop = new PinkoServiceMessageEnvelop() { Message = msgObj, ReplyTo = "UniteTestReplyQueue" };
-            envelop.PinkoProperties[PinkoMessagePropTag.RoleId] = webRoleConnectManager.WebRoleId;
-
-            handler.HandlerPublisher.Publish(new Tuple<IBusMessageInbound, PinkoMsgCalculateExpression>(envelop, msgObj));
-
-            Assert.IsNotNull(busMessageOutbound);  // process snapshots
-        }
-
-        /// <summary>
-        /// check IsSubscribtion filter - fail
-        /// </summary>
-        [TestMethod]
-        public void TestBusListenerSubscribeExpressionHandlerFail()
-        {
-            var pinkoContainer = PinkoContainerMock.GetMockContainer();
-            var webRoleConnectManager = pinkoContainer.Resolve<IWebRoleConnectManager>();
-            var outboutBus = pinkoContainer.Resolve<IRxMemoryBus<IBusMessageOutbound>>();
-            var handler = pinkoContainer.Resolve<BusListenerSubscribeExpressionHandler>().Register();
-
-            var msgObj = SampleMockData.GetPinkoMsgCalculateExpression()[0];
-
-            IBusMessageOutbound busMessageOutbound = null;
-            outboutBus.Subscriber.Subscribe(x => busMessageOutbound = x);
-
-            // Test formula
-            var envelop = new PinkoServiceMessageEnvelop() { Message = msgObj, ReplyTo = "UniteTestReplyQueue" };
-            envelop.PinkoProperties[PinkoMessagePropTag.RoleId] = webRoleConnectManager.WebRoleId;
-
-            handler.HandlerPublisher.Publish(new Tuple<IBusMessageInbound, PinkoMsgCalculateExpression>(envelop, msgObj));
-
-            Assert.IsNull(busMessageOutbound);  // do not process snapshots
-        }
-
 
 
         /// <summary>
@@ -87,7 +35,7 @@ namespace PinkoTests
 
             var msgObj = SampleMockData.GetPinkoMsgCalculateExpression()[0];
 
-            msgObj.MsgAction = PinkoMessageAction.Subscription;  // Set to subscription
+            msgObj.MsgAction = PinkoMessageAction.UserSubscription;  // Set to subscription
 
             IBusMessageOutbound busMessageOutbound = null;
             outboutBus.Subscriber.Subscribe(x => busMessageOutbound = x);
@@ -132,7 +80,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestFromUrlParameterincomplete()
         {
-            var formulas = PinkoUserExpressionFormulaExtensions.FromUrlParameter(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Lab");
+            var formulas = PinkoUserExpressionFormulaCommonExtensions.FromUrlParameter(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Lab");
 
             Assert.IsTrue(formulas.Length == 0);
         }
@@ -143,7 +91,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestFromUrlParameterEmpty()
         {
-            var formulas = PinkoUserExpressionFormulaExtensions.FromUrlParameter(string.Empty);
+            var formulas = PinkoUserExpressionFormulaCommonExtensions.FromUrlParameter(string.Empty);
 
             Assert.IsNotNull(formulas);
             Assert.IsNotNull(formulas.Length == 0);
@@ -155,7 +103,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestFromUrlParameter()
         {
-            var formulas = PinkoUserExpressionFormulaExtensions.FromUrlParameter(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Label3: 3 + 3; ");
+            var formulas = PinkoUserExpressionFormulaCommonExtensions.FromUrlParameter(" formulaId1 : Label1 : 1 + 1; formulaId2 : Label2: 2 + 2; formulaId3 :Label3: 3 + 3; ");
 
             Assert.IsTrue(formulas[0].FormulaId == "formulaId1");
             Assert.IsTrue(formulas[0].ExpressionLabel == "Label1");
@@ -343,7 +291,7 @@ namespace PinkoTests
                              };
 
             // Test formula - should exception
-            expEngine.ExceptionCall = () =>
+            expEngine.ExceptionParseAction = () =>
                                           {
                                               throw new Exception("MockException");
                                           };

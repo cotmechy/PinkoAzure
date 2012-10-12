@@ -1,4 +1,5 @@
 ﻿using PinkoExpressionCommon;
+using PinkoWorkerCommon.ExceptionTypes;
 
 namespace PinkoMocks
 {
@@ -12,6 +13,11 @@ namespace PinkoMocks
         {
             switch (n)
             {
+
+                case "throw PinkoExceptionDataNotSubscribed":
+                    throw new PinkoExceptionDataNotSubscribed(s, n, t, p);
+                    break;
+
                 case "IBM":
                     return IbmPrice;
                 case "MSFT":
@@ -59,6 +65,7 @@ namespace PinkoMocks
                 case "HPQ":
                     return 74.2998928177636;
                 default:
+                    //throw new PinkoExceptionDataNotSubscribed(s, n, t, p);
                     return double.NaN;
             }
         }
@@ -70,11 +77,16 @@ namespace PinkoMocks
         {
             switch (n)
             {
+                case "throw PinkoExceptionDataNotSubscribed":
+                    throw new PinkoExceptionDataNotSubscribed(s, n, t, p);
+                    break;
+
                 case "IBM":
                     return IbmSeries;
                 case "MSFT":
                     return MsftSeries;
                 default:
+                    //throw new PinkoExceptionDataNotSubscribed(s, n, t, p);
                     return InvalidSeries;
             }
         }
