@@ -36,7 +36,9 @@ namespace PinkDao
     /// </summary>
     public static class PinkoUserExpressionFormulaExtensions
     {
-
+        /// <summary>
+        /// Comparer
+        /// </summary>
         public static readonly PinkoUserExpressionFormulaComparer Comparer = new PinkoUserExpressionFormulaComparer();
 
         ///// <summary>
@@ -53,6 +55,22 @@ namespace PinkDao
         //           dest.RuntimeId.Equals(src.RuntimeId)
         //        ;
         //}
+
+
+
+        /// <summary>
+        /// Is array equal values
+        /// </summary>
+        public static bool IsEqual(this PinkoUserExpressionFormula[] src, PinkoUserExpressionFormula[] dest)
+        {
+            if (null == src && null == dest)
+                return true;
+
+            if (null == src || null == dest)
+                return false;
+
+            return src.SequenceEqual(dest, Comparer);
+        }
 
 
         /// <summary>

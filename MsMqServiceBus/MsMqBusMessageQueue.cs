@@ -45,7 +45,7 @@ namespace PinkoMsMqServiceBus
 
             _msgQueue = new MessageQueue(_msmqPrivateName, false, false)
                 {
-                    Formatter = _msmqFormatter
+                    Formatter = MsmqFormatter
                     //MessageReadPropertyFilter = new MessagePropertyFilter()
                 };
 
@@ -64,7 +64,7 @@ namespace PinkoMsMqServiceBus
 
             _msgQueueReader = new MessageQueue(_msmqPrivateName, false, false)
             {
-                Formatter = _msmqFormatter
+                Formatter = MsmqFormatter
             };
 
             Trace.TraceInformation("Starting Listening to private: {0}", _msmqPrivateName);
@@ -90,7 +90,7 @@ namespace PinkoMsMqServiceBus
                 Trace.TraceInformation("MsMq Received:Queue: {0}", QueueName);
 
                 // Send to listeners via Rx bus
-                MessageHandlerManager.SendToHandler(new MsMqMessageEnvelopInbound(PinkoApplication, msg)
+                IncominBusMessageHandlerManager.SendToHandler(new MsMqMessageEnvelopInbound(PinkoApplication, msg)
                 {
                     QueueName = QueueName
                 });
@@ -139,7 +139,7 @@ namespace PinkoMsMqServiceBus
         /// <returns></returns>
         public Message FactorNewOutboundMessage(IBusMessageOutbound msg)
         {
-            var msmqMsg = new Message {Formatter = _msmqFormatter};
+            var msmqMsg = new Message {Formatter = MsmqFormatter};
 
             if (msg.Message.GetType() == typeof(PinkoMsgRoleHeartbeat))
             {
@@ -166,8 +166,19 @@ namespace PinkoMsMqServiceBus
                 msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgClientConnect>();
                 msmqMsg.Label = msg.Message.GetType().ToString();
             }
+            if (msg.Message.GetType() == typeof(PinkoMsgClientTimeout))
+            {
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgClientTimeout>();
+                msmqMsg.Label = msg.Message.GetType().ToString();
+            }
+            if (msg.Message.GetType() == typeof(PinkoMsgClientPing))
+            {
+                msmqMsg.Body = msg.ToMsMqWrapper<PinkoMsgClientPing>();
+                msmqMsg.Label = msg.Message.GetType().ToString();
+            }
 
-            if (msmqMsg.Label.IsNull())
+
+            if (string.IsNullOrEmpty(msmqMsg.Label))
                 throw new PinkoExceptionMsMqNotFound("Missing MsMq handler in FactorNewOutboundMessage()");
 
             // set message property
@@ -201,7 +212,7 @@ namespace PinkoMsMqServiceBus
         /// <returns></returns>
         public IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>()
         {
-            return MessageHandlerManager.GetSubscriber<T>();
+            return IncominBusMessageHandlerManager.GetSubscriber<T>();
         }
 
         /// <summary>
@@ -211,15 +222,24 @@ namespace PinkoMsMqServiceBus
         private MessageQueue _msgQueueReader;
         private string _msmqPrivateName;
 
-        private readonly XmlMessageFormatter _msmqFormatter = new XmlMessageFormatter(new Type[]
+        public readonly XmlMessageFormatter MsmqFormatter = new XmlMessageFormatter(new Type[]
             {
                 typeof (MsMqWrapper<PinkoMsgRoleHeartbeat>),
                 typeof (MsMqWrapper<PinkoMsgPing>),
                 typeof (MsMqWrapper<PinkoMsgCalculateExpression>),
                 typeof (MsMqWrapper<PinkoMsgCalculateExpressionResult>),
                 typeof (MsMqWrapper<PinkoMsgClientConnect>),
+                typeof (MsMqWrapper<PinkoMsgClientTimeout>),
                 typeof (PinkoDataFeedIdentifier),
-                typeof (PinkoFormPoint)
+                typeof (PinkoFormPoint),
+                typeof (PinkoMsgRoleHeartbeat),
+                typeof (PinkoMsgPing),
+                typeof (PinkoMsgCalculateExpression),
+                typeof (PinkoMsgCalculateExpressionResult),
+                typeof (PinkoMsgClientConnect),
+                typeof (PinkoMsgClientTimeout),
+                typeof (PinkoMsgClientPing),
+                typeof (MsMqWrapper<PinkoMsgClientPing>),
             });
 
         /// <summary>
@@ -239,7 +259,7 @@ namespace PinkoMsMqServiceBus
         /// IMessageHandlerManager
         /// </summary>
         [Dependency]
-        public IMessageHandlerManager MessageHandlerManager { get; set; }
+        public IIncominBusMessageHandlerManager IncominBusMessageHandlerManager { get; set; }
 
         /// <summary>
         /// IUnityContainer

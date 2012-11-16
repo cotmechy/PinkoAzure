@@ -31,6 +31,17 @@ namespace PinkDao
 
 
         /// <summary>
+        /// DeepClone
+        /// </summary>
+        /// <returns>new instance</returns>
+        public static PinkoMsgCalculateExpression DeepClone(this PinkoMsgCalculateExpression src)
+        {
+            return CopyTo(src, new PinkoMsgCalculateExpression());
+        }
+
+
+
+        /// <summary>
         /// Copy all value
         /// </summary>
         /// <param name="src"></param>

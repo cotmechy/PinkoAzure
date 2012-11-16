@@ -97,6 +97,8 @@
   <ItemGroup>
     <Compile Include="Controllers\PinkoDictionaryControllerTest.cs" />
     <Compile Include="Controllers\PinkoFormProcessorControllerTests.cs" />
+    <Compile Include="Controllers\PinkoFormProcessorSubscriberControllerTests.cs" />
+    <Compile Include="Controllers\PinkoClientPingControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

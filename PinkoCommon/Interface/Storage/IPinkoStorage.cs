@@ -11,5 +11,10 @@ namespace PinkoCommon.Interface.Storage
         /// Save current expression
         /// </summary>
         bool SaveExpression(string bucket, string partition, string rowKey, PinkoMsgCalculateExpression expression);
+
+        /// <summary>
+        /// Remove Expression
+        /// </summary>
+        bool RemoveExpression(string bucket, string partition, string rowKey, PinkoMsgCalculateExpression expression);
     }
 }

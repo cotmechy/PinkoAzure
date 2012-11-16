@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="PinkoCalcEngineWorkerRole" 
+                      xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*" schemaVersion="2012-05.1.7">
+  <Role name="PinkoCalcEngineWorker">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://pinko-app-bus-dev.servicebus.windows.net;SharedSecretIssuer=PinkoWorkerRoles;SharedSecretValue=FZuAdPzBbmGgqnEUh6zaJHaoBVcvP7lSzV5U5kbdeCo=" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="comtechy" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBkAYJKoZIhvcNAQcDoIIBgTCCAX0CAQAxggFBMIIBPQIBADAlMBExDzANBgNVBAMTBmNhcmxvcwIQHhtIgjc01bJI3kiDMRmhVzANBgkqhkiG9w0BAQEFAASCAQC55a0/mWY+RUdQBL4y6DUxn8F7LLazSkTrjHSlkgngGJFVSl9pskvNRPR6pP+oIkBF8DMd4lPSSHKTBBV5YGb+jubqVpdAWgAEKtllyqYpdLdFqYUflXZGZYub2hW6qwdZxOuCdEdNtNL5vJ7mmSULqPlyg3tDapv9sKXb7QMl6OV6BZHa40J7I12w6SreL6zLdOHQWOanvZiziJk3XWIcmttk12SMVB1PBxDMWWPzB23gUQkdCxEujXGgjyWJYHZsr70tVUmcqBwsyCcY516vWmR7CD7nfpHd5swC+uz3svYEG5nfE9EeeKmdKqH4x9wBGymU1SteIFA+zinajoKqMDMGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI6zXm5KEsbNeAEFOmBlbQcvDj40SvjKPxcRQ=" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2013-07-05T23:59:59.0000000-04:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="56AE788C3022E99799177EC8C16C1F55F370B5FB" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

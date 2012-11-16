@@ -10,12 +10,6 @@ namespace PinkoMsMqServiceBus
     /// </summary>
     public class MsMqWrapper<T>
     {
-        /// <summary>
-        /// Serializable message 
-        /// </summary>
-        //typeof(PinkoPingMessage),
-        //typeof(PinkoCalculateExpression),
-        //typeof(PinkoCalculateExpressionResult)
 
         //[XmlInclude(typeof(PinkoRoleHeartbeat))]
         public T Message { set; get; }
@@ -95,18 +89,6 @@ namespace PinkoMsMqServiceBus
             return inbound;
         }
 
-
-
-
-        ///// <summary>
-        ///// MsMqWrapper
-        ///// </summary>
-        ///// <param name="obj"></param>
-        ///// <returns></returns>
-        //public static string Verbose(this MsMqWrapper obj)
-        //{
-        //    return string.Format("MsMqWrapper: ", "");
-        //}
     }
 
 }

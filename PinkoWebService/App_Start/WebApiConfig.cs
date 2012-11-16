@@ -10,11 +10,10 @@ namespace PinkoWebService
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
-                name:  "DefaultApi",
+                name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-                //defaults: new { controller = "PinkoFormulaDictionary", action = "Index", id = RouteParameter.Optional }
-            );
+                );
         }
     }
 }

@@ -21,7 +21,8 @@ namespace PinkDao
 
         /// Subscription Manager sent this request
         ManagerSubscription,
-        ManagerUnsubscribe,
+
+        //ReconnectSubscribe,
 
         // Do not remove and must be always last
         MaxActions

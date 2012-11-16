@@ -20,14 +20,15 @@ namespace PinkoCalcEngineWorker
         public override bool OnStart()
         {
             var rtn = base.OnStart();
+            var pinkoServiceContainer = new PinkoServiceContainer();
 
-            PinkoContainer = PinkoServiceContainer.BuildContainer();  // Real Container
+            PinkoContainer = pinkoServiceContainer.BuildContainer();  // Real Container
             
             PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
             PinkoConfiguration = PinkoContainer.Resolve<IPinkoConfiguration>();
             WorkerRoleFrame = PinkoContainer.Resolve<IWorkerRoleFrame>();
 
-            PinkoServiceContainer.RegisterCalcEngineExtra(PinkoContainer);
+            pinkoServiceContainer.RegisterCalcEngineExtra(PinkoContainer);
 
             return rtn;
         }
@@ -37,13 +38,13 @@ namespace PinkoCalcEngineWorker
         /// </summary>
         public override void Run()
         {
-            // start listening to Topic messages
-            PinkoApplication.RunInWorkerThread("Initialize PinkoCalcEngineWorker",
-                                               () =>
-                                               WorkerRoleFrame.Run(
-                                                   PinkoConfiguration.PinkoMessageBusToWorkerAllCalcEngineTopic,
-                                                   PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic)
-                );
+            //// start listening to Topic messages
+            //PinkoApplication.RunInWorkerThread("Initialize PinkoCalcEngineWorker",
+            //                                   () =>
+            //                                   WorkerRoleFrame.Run(
+            //                                       PinkoConfiguration.PinkoMessageBusToWorkerAllCalcEngineTopic,
+            //                                       PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineTopic)
+            //    );
 
             // 
             // this role requires listening to queue for new subscriptions. 

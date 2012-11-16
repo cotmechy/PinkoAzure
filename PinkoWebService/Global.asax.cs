@@ -34,11 +34,13 @@ namespace PinkoWebService
                                         .InitializeWebRole();
 
             // This service will be dealing with this message type
-            pinkoContainer.Resolve<IMessageHandlerManager>().AddBusTypeHandler<PinkoMsgCalculateExpression>();
+            pinkoContainer.Resolve<IIncominBusMessageHandlerManager>().AddBusTypeHandler<PinkoMsgCalculateExpression>();
    
             // Register service controllers for this web service
+            PinkoWebRoleContainerManager.Container.RegisterType<PinkoFormProcessorSubscriberController>();
             PinkoWebRoleContainerManager.Container.RegisterType<PinkoFormProcessorController>();
             PinkoWebRoleContainerManager.Container.RegisterType<PinkoDictionaryController>();
+            PinkoWebRoleContainerManager.Container.RegisterType<PinkoClientPingController>();
         }
 
         /// <summary>

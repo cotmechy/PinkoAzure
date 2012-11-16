@@ -14,5 +14,6 @@ namespace PinkoCommon
         public const int Success = 0;
         public const int InvalidFormula = 1000;
         public const int FormulaTypeNotSupported = 1001;
+        public const int ActionNotSupported = 1002;
     }
 }

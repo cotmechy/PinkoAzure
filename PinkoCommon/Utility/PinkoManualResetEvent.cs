@@ -17,7 +17,7 @@ namespace PinkoCommon.Utility
         /// </summary>
         public PinkoManualResetEvent(bool signaled)
         {
-           _nativeEvent = new ManualResetEvent(false);
+            _nativeEvent = new ManualResetEvent(signaled);
         }
 
         /// <summary>
@@ -54,12 +54,17 @@ namespace PinkoCommon.Utility
         /// Wait for ever. Logs possible deadlock.
         /// </summary>
         /// <returns></returns>
-        public bool WaitOne()
+        public long WaitOne()
         {
-            while (!_nativeEvent.WaitOne(DefaultMilliseconds))
-                Trace.TraceWarning("Possible Deadlock. Threshold: {0}", DefaultMilliseconds);
+            var startTimes = TimeoutTimes;
 
-            return true;
+            while (!_nativeEvent.WaitOne(DefaultMilliseconds))
+            {
+                Trace.TraceWarning("Possible Deadlock. Threshold: {0}", DefaultMilliseconds);
+                Interlocked.Increment(ref _timeoutTimes);
+            }
+
+            return TimeoutTimes - startTimes;
         }
 
         /// <summary>
@@ -71,5 +76,14 @@ namespace PinkoCommon.Utility
         /// native event
         /// </summary>
         private readonly ManualResetEvent _nativeEvent;
+
+        /// <summary>
+        /// count of how many time this instance have timedout
+        /// </summary>
+        public long TimeoutTimes
+        {
+            get { return Interlocked.Read(ref _timeoutTimes); }
+        }
+        private long _timeoutTimes;
     }
 }

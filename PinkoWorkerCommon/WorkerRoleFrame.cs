@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading;
 using Microsoft.Practices.Unity;
 using PinkoCommon.Interface;
-using PinkoWorkerCommon.Handler;
 using PinkoWorkerCommon.Interface;
 
 namespace PinkoWorkerCommon
@@ -19,22 +18,22 @@ namespace PinkoWorkerCommon
         /// </summary>
         public void Run(string brodcastTopic, string directTopic)
         {
-            // Register base handlers
-            MessageReceiveHandlers.AddRange(new object[]
-            {
-                PinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register(),
-            });
+            //// Register base handlers
+            //MessageReceiveHandlers.AddRange(new object[]
+            //{
+            //    PinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register(),
+            //});
 
-            PinkoApplication.RunInWorkerThread(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic,
-                () => 
-                PinkoContainer
-                    .Resolve<IBusMessageServer>()
-                    .GetTopic(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic)
-                    .Listen()
-                );
+            //PinkoApplication.RunInWorkerThread(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic,
+            //    () =>
+            //    PinkoContainer
+            //        .Resolve<IBusMessageServer>()
+            //        .GetTopic(PinkoConfiguration.PinkoMessageBusToAllWorkersTopic)
+            //        .Listen()
+            //    );
 
             PinkoApplication.RunInWorkerThread(directTopic,
-                () => 
+                () =>
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
                     .GetTopic(directTopic, _selector)
@@ -42,7 +41,7 @@ namespace PinkoWorkerCommon
                 );
 
             PinkoApplication.RunInWorkerThread(brodcastTopic,
-                () => 
+                () =>
                 PinkoContainer
                     .Resolve<IBusMessageServer>()
                     .GetTopic(brodcastTopic)
@@ -90,10 +89,10 @@ namespace PinkoWorkerCommon
         [Dependency]
         public IPinkoApplication PinkoApplication { get; set; }
 
-        /// <summary>
-        /// IPinkoConfiguration
-        /// </summary>
-        [Dependency]
-        public IPinkoConfiguration PinkoConfiguration { private get; set; }
+        ///// <summary>
+        ///// IPinkoConfiguration
+        ///// </summary>
+        //[Dependency]
+        //public IPinkoConfiguration PinkoConfiguration { private get; set; }
     }
 }

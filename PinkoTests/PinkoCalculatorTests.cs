@@ -5,6 +5,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoCommon;
+using PinkoCommon.ExceptionTypes;
 using PinkoCommon.Extension;
 using PinkoCommon.Interface;
 using PinkoExpressionCommon;
@@ -20,6 +21,48 @@ namespace PinkoTests
     public class PinkoCalculatorTests
     {
         /// <summary>
+        /// Test parallel calculations - Symbol not in dictionary
+        /// </summary>
+        [TestMethod]
+        public void TestCalculatePreparedListMissingSymbolIndictionary()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var expEngine = PinkoExpressionEngineFactory.GetNewEngine();
+            pinkoContainer.RegisterInstance(expEngine);
+            var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[][]>>();
+            var calculator = pinkoContainer.Resolve<PinkoCalculator<double[][]>>();
+            var outboundMessages = pinkoContainer.Resolve<OutbountListener<IBusMessageOutbound>>();
+            var outboundSubscriptions = pinkoContainer.Resolve<OutbountListener<PinkoExceptionDataNotSubscribed>>();
+
+
+            // Load formulas
+            var inputResult = SampleMockData.GetPinkoMsgCalculateExpressionResult(1)[0];
+
+            inputResult.ExpressionFormulas = new PinkoUserExpressionFormula[]
+                {
+                    new PinkoUserExpressionFormula()
+                        {
+                            ExpressionFormula = " RHist(\"Symbol\", \"Invalid\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) ",
+                            ExpressionLabel = " A ",
+                            FormulaId = "fomulaid",
+                            RuntimeId = 1000001
+                        }
+                };
+
+            subscribers.UpdateSubscriber(inputResult, () => expEngine.ParseAndCompile<double[][]>(inputResult.ExpressionFormulas.GetExpression()));
+
+            // Calculate here
+            calculator.Caculate(subscribers);
+
+            // Assure not messages are sent to client. Silently subscribe to data
+            Assert.IsTrue(outboundMessages.OutboundMessages.Count == 0);  
+
+            // Assure subscription was message was triggered
+            Assert.IsTrue(outboundSubscriptions.OutboundMessages.Count == 1);
+        }
+
+
+        /// <summary>
         /// Test parallel calculations - fail
         /// </summary>
         [TestMethod]
@@ -29,14 +72,14 @@ namespace PinkoTests
             var expEngine = pinkoContainer.Resolve<IPinkoExpressionEngine>() as PinkoExpressionEngineMock;
             var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[]>>();
             var calculator = pinkoContainer.Resolve<PinkoCalculator<double[]>>();
-            var outboundMessages = pinkoContainer.Resolve<OutbountListener>();
+            var outboundMessages = pinkoContainer.Resolve<OutbountListener<IBusMessageOutbound>>();
 
             // Set up exception  throw
             expEngine.ExceptionInvokeAction = () => { throw new Exception("Test Invoke Exception"); };
 
             // Load formulas
             var inputResults = SampleMockData.GetPinkoMsgCalculateExpressionResult(10);
-            inputResults.ForEach(x => subscribers.UpdateSubscriber(x, expEngine.ParseAndCompile<double[]>(x.ExpressionFormulas.GetExpression())));
+            inputResults.ForEach(x => subscribers.UpdateSubscriber(x, () => expEngine.ParseAndCompile<double[]>(x.ExpressionFormulas.GetExpression())));
 
             // Calculate here
             calculator.Caculate(subscribers);
@@ -77,11 +120,11 @@ namespace PinkoTests
             pinkoContainer.RegisterInstance(expEngine);
             var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[]>>();
             var calculator = pinkoContainer.Resolve<PinkoCalculator<double[]>>();
-            var outboundMessages = pinkoContainer.Resolve<OutbountListener>();
+            var outboundMessages = pinkoContainer.Resolve<OutbountListener<IBusMessageOutbound>>();
 
             // Load formulas
             var inputResults = SampleMockData.GetPinkoMsgCalculateExpressionResult(10);
-            inputResults.ForEach(x => subscribers.UpdateSubscriber(x, expEngine.ParseAndCompile<double[]>(x.ExpressionFormulas.GetExpression())));
+            inputResults.ForEach(x => subscribers.UpdateSubscriber(x, () => expEngine.ParseAndCompile<double[]>(x.ExpressionFormulas.GetExpression())));
 
             // Calculate here
             calculator.Caculate(subscribers);
@@ -99,17 +142,17 @@ namespace PinkoTests
             Assert.IsTrue(msgOutbound.DataFeedIdentifier.IsEqual(inputResults.First().DataFeedIdentifier));
 
             // Check some real result
-            Assert.IsTrue(msgOutbound.ResultsTupple.Count() == 10);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[0].PointSeries[0].PointValue, 4) == 0.0200);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[1].PointSeries[0].PointValue, 4) == 1.32);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[2].PointSeries[0].PointValue, 4) == 4.62);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[3].PointSeries[0].PointValue, 4) == 9.92);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[4].PointSeries[0].PointValue, 4) == 17.22);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[5].PointSeries[0].PointValue, 4) == 26.52);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[6].PointSeries[0].PointValue, 4) == 37.82);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[7].PointSeries[0].PointValue, 4) == 51.12);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[8].PointSeries[0].PointValue, 4) == 66.42);
-            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupple[9].PointSeries[0].PointValue, 4) == 83.72);
+            Assert.IsTrue(msgOutbound.ResultsTupples.Count() == 10);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[0].PointSeries[0].PointValue, 4) == 0.0200);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[1].PointSeries[0].PointValue, 4) == 1.32);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[2].PointSeries[0].PointValue, 4) == 4.62);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[3].PointSeries[0].PointValue, 4) == 9.92);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[4].PointSeries[0].PointValue, 4) == 17.22);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[5].PointSeries[0].PointValue, 4) == 26.52);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[6].PointSeries[0].PointValue, 4) == 37.82);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[7].PointSeries[0].PointValue, 4) == 51.12);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[8].PointSeries[0].PointValue, 4) == 66.42);
+            Assert.IsTrue(Math.Round(msgOutbound.ResultsTupples[9].PointSeries[0].PointValue, 4) == 83.72);
         }
 
 
@@ -120,7 +163,7 @@ namespace PinkoTests
 
             // Setup collection
             var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[]>>();
-            SampleMockData.GetPinkoMsgCalculateExpressionResult().Take(10).ForEach(x => subscribers.UpdateSubscriber(x, null));
+            SampleMockData.GetPinkoMsgCalculateExpressionResult().Take(10).ForEach(x => subscribers.UpdateSubscriber(x, () => null));
 
             var calculator = pinkoContainer.Resolve<PinkoCalculator<double[]>>();
 

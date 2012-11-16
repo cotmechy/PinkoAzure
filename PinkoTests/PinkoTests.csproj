@@ -93,9 +93,20 @@
     <Compile Include="PinkoExpressionSubscribersTests.cs" />
     <Compile Include="CloneTests.cs" />
     <Compile Include="PinkoCalculatorTests.cs" />
+    <Compile Include="PinkoManualResetEventTests.cs" />
+    <Compile Include="PinkoMutexTests.cs" />
+    <Compile Include="RoleUserSubscriptionHandlerTests.cs" />
+    <Compile Include="RoleCalculateExpressionSnapshotHandlerTests.cs" />
+    <Compile Include="RoleCalculateSubsCalcExpressionHandlerTests.cs" />
+    <Compile Include="PinkoServiceContainerTests.cs" />
+    <Compile Include="PinkoDataFeedIdentifierTests.cs" />
+    <Compile Include="AMessageTests.cs" />
+    <Compile Include="WebRoleBusListenerCalculateExpressionResultHandlerTests.cs" />
     <Compile Include="Utility\OutbountListener.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MsMqServiceBus\PinkoMsMqServiceBus.csproj">
       <Project>{cf00ec33-45e3-4fd3-8a5a-60811785bc52}</Project>

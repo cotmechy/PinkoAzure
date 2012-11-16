@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Diagnostics;
 using Microsoft.Practices.Unity;
+using PinkoCommon.ExceptionTypes;
 using PinkoCommon.Interface;
 using Microsoft.Practices.Unity.Configuration;
 

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,10 +86,17 @@ namespace PinkoCommon
         /// <summary>
         /// Get thread pool schedules. Set to same thread in unit test.
         /// </summary>
-        public IScheduler ThreadPoolScheduler
+        public IScheduler CurrentScheduler
         {
             get { return Scheduler.CurrentThread; }
-            //get { return Scheduler.ThreadPool; }
+        }
+
+        /// <summary>
+        /// Get thread pool schedules. Set to same thread in unit test.
+        /// </summary>
+        public IScheduler ThreadPoolScheduler
+        {
+            get { return Scheduler.ThreadPool; }
         }
 
         /// <summary>
@@ -122,6 +130,19 @@ namespace PinkoCommon
         public string UserName
         {
             get { return Environment.UserName; }
+        }
+
+        /// <summary>
+        /// Get reactive timer to run in threadpool
+        /// </summary>
+        /// <returns></returns>
+        public IDisposable RunActionInTimer(int intervalMs, Action action)
+        {
+            return Observable
+                .Interval(TimeSpan.FromMilliseconds(intervalMs), Scheduler.ThreadPool)
+                .Subscribe(x => action())
+                ;
+            ;
         }
 
         /// <summary>

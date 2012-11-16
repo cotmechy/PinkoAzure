@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
 using PinkoCommon;
+using PinkoCommon.BaseMessageHandlers;
 using PinkoCommon.Interface;
 using PinkoMocks;
-using PinkoWorkerCommon.Handler;
+using PinkoWorkerCommon.RoleHandlers;
 
 namespace PinkoTests
 {
@@ -15,28 +17,37 @@ namespace PinkoTests
     [TestClass]
     public class PinkoPingMessageHandlerTests
     {
+        /// <summary>
+        /// assure routings are registered
+        /// </summary>
+        [TestMethod]
+        public void TestRoutingsExists()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var handler = pinkoContainer.Resolve<RoleBusListenerPinkoPingMessageHandle>().Register();
+
+            Assert.IsTrue(pinkoContainer.Resolve<InboundMessageReactiveListener<PinkoMsgPing>>().Subscribers.Count == 1);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestPinkoPingMessageHandler()
         {
             var pinkoContainer = PinkoContainerMock.GetMockContainer();
-            var pinkoApplication = pinkoContainer.Resolve<IPinkoApplication>();
-            var pinkoPingMessageHandler = pinkoContainer.Resolve<BusListenerPinkoPingMessage>().Register();
+            var outboundMessages = pinkoContainer.Resolve<OutbountListener<IBusMessageOutbound>>();
+
+            pinkoContainer.RegisterInstance(pinkoContainer.Resolve<InboundMessageReactiveListener<PinkoMsgPing>>().Register());
+            var pinkoPingMessageHandler = pinkoContainer.Resolve<RoleBusListenerPinkoPingMessageHandle>().Register();
+
             var pm = new PinkoMsgPing { SenderMachine = "UnitTestClientMachine" };
             var pme = new PinkoServiceMessageEnvelop() { Message = pm, QueueName = "QueueNameRquest", ReplyTo = "QueueNameResponse" };
-            IBusMessageOutbound outboundMsg = null;
 
-            // Listen for outbound traffic
-            pinkoApplication
-                .GetSubscriber<IBusMessageOutbound>()
-                .Subscribe(x => outboundMsg = x);
+            pinkoPingMessageHandler.PinkoMsgPingReactiveListener.HandlerAction(pme, pm);
 
-            // Send mock message
-            pinkoApplication
-                .GetBus<Tuple<IBusMessageInbound, PinkoMsgPing>>()
-                .Publish(new Tuple<IBusMessageInbound, PinkoMsgPing>(pme, pm));
-
-            Assert.IsNotNull(outboundMsg);
-            Assert.IsNotNull(outboundMsg.Message is PinkoMsgPing);
+            Assert.IsTrue(outboundMessages.OutboundMessages.Count == 1);
+            Assert.IsNotNull(outboundMessages.OutboundMessages.First().Message is PinkoMsgPing);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
-<asp:Content ID="aboutTitle" ContentPlaceHolderID="TitleContent" runat="server">About Us</asp:Content>
+<asp:Content ID="aboutTitle" ContentPlaceHolderID="TitleContent" runat="server">Snapshot Sample</asp:Content>
 
 
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -69,7 +69,7 @@
         var vmFormulaResult = kendo.observable({
             FormulaId: "NoId",
             ExpressionLabel: "A",
-            ExpressionFormula: "1.2+1.5",
+            ExpressionFormula: "=RForm(\"time\", \"usa\", \"seconds\", \"local\")",
             ResultValue: "---",
             LastResultTimeStamp: "---",
             ResultType: "---",
@@ -162,7 +162,7 @@
                     data: urlData,
                     success: function (value)
                     {
-                        console.log("Post response: ctrlFormRequestFormula: " + value);
+                        //console.log("Post response: ctrlFormRequestFormula: " + value);
                     },
                     dataType: "jsonp"
                 });
@@ -183,7 +183,7 @@
                 var pinkoPoint = results[0];
                 
                 console.log("from Master ExpressionResponse: " + clientCtx + " :: " + resultType + " :: " + formulaId);
-                vmFormulaResult.set("subscibtionId", subscibtionId);
+                //vmFormulaResult.set("subscibtionId", subscibtionId);
                 vmFormulaResult.set("ResultValue", pinkoPoint.PointValue);
                 vmFormulaResult.set("ResultType", resultType);
                 vmFormulaResult.set("ErrorCode", "");

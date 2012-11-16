@@ -29,7 +29,7 @@ namespace PinkoWorkerCommon
                 .Subscribe(x => _outboundMessageBus.Publish(
                     new PinkoServiceMessageEnvelop(PinkoApplication)
                     {
-                        QueueName = PinkoConfiguration.PinkoMessageBusToAllWebRolesTopic,
+                        QueueName = PinkoConfiguration.PinkoMessageBusToWebRolesAllTopic,
                         Message = new PinkoMsgRoleHeartbeat()
                     }));
 

@@ -36,6 +36,18 @@ namespace PinkoWebRoleCommon.IoC
             //// TODO: To go into web role 
             //pinkoContainer.Resolve<IMessageHandlerManager>().AddHandler<PinkoCalculateExpressionResult>();
 
+            // Start listening to incoming calculation responses
+            pinkoContainer
+                .Resolve<IPinkoApplication>()
+                .RunInWorkerThread("PinkoMessageBusToWebRoleCalcResultTopic",
+                    () =>
+                    pinkoContainer
+                        .Resolve<IBusMessageServer>()
+                        .GetTopic(pinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRoleCalcResultTopic)
+                        .Listen()
+                );
+
+
             return pinkoContainer;
         }
     }

@@ -124,7 +124,7 @@ namespace PinkoAzureService.AzureMessageBus
                         Trace.TraceInformation("Azure MessageBus Received: {0}: {1}", QueueName, receivedMessage.Verbose());
 
                         // Send to listeners
-                        MessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
+                        IncominBusMessageHandlerManager.SendToHandler(new AzureBrokeredMessageEnvelopInbound(PinkoApplication, receivedMessage)
                         {
                             QueueName = QueueName
                         });
@@ -294,7 +294,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <returns></returns>
         public void AddBusTypeHandler<T>()
         {
-            MessageHandlerManager.AddBusTypeHandler<T>();
+            IncominBusMessageHandlerManager.AddBusTypeHandler<T>();
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// <returns></returns>
         public IObservable<Tuple<IBusMessageInbound, T>> GetIncomingSubscriber<T>()
         {
-            return MessageHandlerManager.GetSubscriber<T>();
+            return IncominBusMessageHandlerManager.GetSubscriber<T>();
         }
 
         private long _outboudMessages;
@@ -330,7 +330,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// MessageHandlerManager 
         /// </summary>
         [Dependency]
-        public IMessageHandlerManager MessageHandlerManager { private get; set; }
+        public IIncominBusMessageHandlerManager IncominBusMessageHandlerManager { private get; set; }
 
         /// <summary>
         /// Queue Name
@@ -396,7 +396,7 @@ namespace PinkoAzureService.AzureMessageBus
         /// Get deserializers
         /// </summary>
         /// <returns></returns>
-        static Dictionary<string, Func<BrokeredMessage, object>> GetDeserializer()
+        public static Dictionary<string, Func<BrokeredMessage, object>> GetDeserializer()
         {
             var typeDeser = new Dictionary<string, Func<BrokeredMessage, object>>();
 
@@ -406,7 +406,8 @@ namespace PinkoAzureService.AzureMessageBus
             typeDeser[typeof(PinkoMsgCalculateExpression).ToString()] = x => x.GetBody<PinkoMsgCalculateExpression>();
             typeDeser[typeof(PinkoMsgCalculateExpressionResult).ToString()] = x => x.GetBody<PinkoMsgCalculateExpressionResult>();
             typeDeser[typeof(PinkoMsgClientConnect).ToString()] = x => x.GetBody<PinkoMsgClientConnect>();
-            
+            typeDeser[typeof(PinkoMsgClientTimeout).ToString()] = x => x.GetBody<PinkoMsgClientTimeout>();
+            typeDeser[typeof(PinkoMsgClientPing).ToString()] = x => x.GetBody<PinkoMsgClientPing>();
 
             return typeDeser;
         }

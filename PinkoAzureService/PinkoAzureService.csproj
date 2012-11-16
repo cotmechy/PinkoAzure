@@ -74,6 +74,7 @@
     <Compile Include="AzureMessageBus\AzureBusMessageServer.cs" />
     <Compile Include="AzureMessageBus\AzureCloudConfigurationManager.cs" />
     <Compile Include="AzureMessageBus\AzureQueueClient.cs" />
+    <Compile Include="AzureTableStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

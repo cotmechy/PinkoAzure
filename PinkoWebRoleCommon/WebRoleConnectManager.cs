@@ -20,11 +20,11 @@ namespace PinkoWebRoleCommon
         public IWebRoleConnectManager Initialize()
         {
             // Start listening to incoming topics
-            PinkoApplication.RunInWorkerThread(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToAllWebRolesTopic,
+            PinkoApplication.RunInWorkerThread(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRolesAllTopic,
                     () => // All Worker roles
                     PinkoContainer
                         .Resolve<IBusMessageServer>()
-                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToAllWebRolesTopic)
+                        .GetTopic(PinkoContainer.Resolve<IPinkoConfiguration>().PinkoMessageBusToWebRolesAllTopic)
                         .Listen()
                 );
 
@@ -109,14 +109,14 @@ namespace PinkoWebRoleCommon
         //    config.DependencyResolver = PinkoContainer.Resolve<PinkoWebDependencyResolver>();
         //}
 
-        /// <summary>
-        /// handlers to messages received from the bus. delivered via Rx in memory bus
-        /// </summary>
-        public List<object> BusListenerHandlers
-        {
-            get { return _busListenerHandlers; }
-        }
-        private readonly List<object> _busListenerHandlers = new List<object>();
+        ///// <summary>
+        ///// handlers to messages received from the bus. delivered via Rx in memory bus
+        ///// </summary>
+        //public List<object> BusListenerHandlers
+        //{
+        //    get { return _busListenerHandlers; }
+        //}
+        //private readonly List<object> _busListenerHandlers = new List<object>();
 
 
         /// <summary>

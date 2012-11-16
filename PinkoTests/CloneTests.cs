@@ -19,7 +19,7 @@ namespace PinkoTests
             Assert.IsFalse(src.DataFeedIdentifier.GetHashCode() == clone.DataFeedIdentifier.GetHashCode());
             Assert.IsFalse(src.ExpressionFormulas.GetHashCode() == clone.ExpressionFormulas.GetHashCode());
             Assert.IsTrue(src.ResultType == clone.ResultType);
-            Assert.IsTrue(clone.ResultsTupple.GetHashCode() == PinkoMsgCalculateExpressionResultExtensions.DefaultResultTupple.GetHashCode());
+            Assert.IsTrue(clone.ResultsTupples.GetHashCode() == PinkoMsgCalculateExpressionResultExtensions.DefaultResultTupple.GetHashCode());
         }
 
 
@@ -35,7 +35,7 @@ namespace PinkoTests
         [TestMethod]
         public void TestPinkoFormPoint()
         {
-            var src = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0].ResultsTupple[0].PointSeries;
+            var src = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0].ResultsTupples[0].PointSeries;
             var clone = src.DeepClone();
 
             Assert.AreNotSame(src,clone);
@@ -49,6 +49,17 @@ namespace PinkoTests
 
             Assert.IsFalse(AreSame(src, clone));
         }
+
+
+        //[TestMethod]
+        //public void TestResultsTuppleWrapperEqualSuccess()
+        //{
+        //    ResultsTuppleWrapper[] src1 = SampleMockData.GetResultsTuppleWrapper(10).ToArray();
+        //    ResultsTuppleWrapper[] src2 = SampleMockData.GetResultsTuppleWrapper(10).ToArray();
+
+        //    Assert.AreNotSame(src1, src2);
+        //    Assert.IsTrue(src1.is
+        //}
 
         [TestMethod]
         public void TestPinkoUserExpressionFormula()

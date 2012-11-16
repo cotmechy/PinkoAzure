@@ -83,6 +83,10 @@
     <Compile Include="Providers\PinkoDataAccessLayer.cs" />
     <Compile Include="Providers\PinkoMarketEnvironment.cs" />
     <Compile Include="Providers\PinkoMarketEnvManager.cs" />
+    <Compile Include="RoleHandlers\RoleBusListenerPinkoPingMessageHandle.cs" />
+    <Compile Include="RoleHandlers\RoleCalculateExpressionSnapshotHandler.cs" />
+    <Compile Include="RoleHandlers\RoleCalculateSubsCalcExpressionHandler.cs" />
+    <Compile Include="RoleHandlers\RoleUserSubscriptionHandler.cs" />
     <Compile Include="Utility\PinkoExpressionSubscribers.cs" />
     <Compile Include="Utility\PinkoServiceContainer.cs" />
     <Compile Include="WorkerRoleFrame.cs" />

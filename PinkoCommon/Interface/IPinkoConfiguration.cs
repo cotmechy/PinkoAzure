@@ -30,7 +30,7 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// All subscription managers worker roles
         /// </summary>
-        string PinkoMessageBusToWorkerAllSubscriptionManagerTopic { get; }
+        string PinkoMessageBusToWorkerSubscriptionManagerAllTopic { get; }
 
         /// <summary>
         /// Single subscription managers worker role
@@ -45,12 +45,12 @@ namespace PinkoCommon.Interface
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        string PinkoMessageBusToAllWebRolesTopic { get; }
+        string PinkoMessageBusToWebRolesAllTopic { get; }
 
         /// <summary>
         /// Broadcast to all Calc Engines
         /// </summary>
-        string PinkoMessageBusToWorkerAllCalcEngineTopic { get; }
+        string PinkoMessageBusToWorkerCalcEngineAllTopic { get; }
 
         /// <summary>
         /// Messages to specific Calc engine. the calc engine has  selector
@@ -83,5 +83,25 @@ namespace PinkoCommon.Interface
         /// <param name="name"></param>
         /// <returns></returns>
         string GetSetting(string name);
+
+        /// <summary>
+        /// Set the interval for engine calculation
+        /// </summary>
+        int RunCalcIntervalMs { get; }
+
+        /// <summary>
+        /// Interval to increase realtime logging interval
+        /// </summary>
+        long RealTimeLogIntervalInterval { get; }
+
+        /// <summary>
+        /// Client timeout. 
+        /// </summary>
+        int ClientTimeoutThresholdMs { get; }
+    
+        /// <summary>
+        /// Client timeout cehc intevals
+        /// </summary>
+        int ClientTimeoutThresholdIntervalMs { get; }
     }
 }

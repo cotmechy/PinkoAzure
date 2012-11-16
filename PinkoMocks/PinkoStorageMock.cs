@@ -23,6 +23,14 @@ namespace PinkoMocks
         }
 
         /// <summary>
+        /// Remove Expression
+        /// </summary>
+        public bool RemoveExpression(string bucket, string partition, string rowKey, PinkoMsgCalculateExpression expression)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Mock Storage
         /// </summary>
         public Dictionary<string,PinkoMsgCalculateExpression> MockStorage = new Dictionary<string, PinkoMsgCalculateExpression>();

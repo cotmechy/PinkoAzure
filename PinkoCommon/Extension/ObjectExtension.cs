@@ -22,6 +22,10 @@ namespace PinkoCommon.Extension
         {
             return null == obj;
         }
+        public static bool IsNotNull(this Object obj)
+        {
+            return null != obj;
+        }
 
         /// <summary>
         /// Remove all spaces

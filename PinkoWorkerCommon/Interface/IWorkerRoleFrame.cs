@@ -27,9 +27,9 @@ namespace PinkoWorkerCommon.Interface
         /// </summary>
         void Stop();
 
-        /// <summary>
-        /// Hold handlers
-        /// </summary>
-        List<object> MessageReceiveHandlers { get; }
+        ///// <summary>
+        ///// Hold handlers
+        ///// </summary>
+        //List<object> MessageReceiveHandlers { get; }
     }
 }

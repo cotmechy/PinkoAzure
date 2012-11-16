@@ -57,6 +57,7 @@
     <Compile Include="Extensions\DaoExtensions.cs" />
     <Compile Include="PinkoDaoStatic.cs" />
     <Compile Include="PinkoMessageAction.cs" />
+    <Compile Include="PinkoMessageTypes.cs" />
     <Compile Include="PinkoMsgCalculateExpression.cs" />
     <Compile Include="PinkoMsgCalculateExpressionResult.cs" />
     <Compile Include="PinkoMsgClientConnect.cs" />
@@ -82,6 +83,8 @@
     <Compile Include="PinkoFormulaDictionary.cs">
       <DependentUpon>PinkoEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="PinkoMsgClientPing.cs" />
+    <Compile Include="PinkoMsgClientTimeout.cs" />
     <Compile Include="PinkoMsgPing.cs" />
     <Compile Include="PinkoMsgRoleHeartbeat.cs" />
     <Compile Include="PinkoPoint.cs" />

@@ -19,7 +19,7 @@ namespace PinkoTests.AzureTests
     public class ServiceQueueTests
     {
         /// <summary>
-        /// Test Exception to cover non existing serializer in AzureQueueClient
+        /// Test Exception to cover non existing serialize in AzureQueueClient
         /// </summary>
         [TestMethod]
         public void AzureQueueClientMissingSerilalizer()
@@ -80,7 +80,7 @@ namespace PinkoTests.AzureTests
         /// <summary>
         /// Unreachable Azure server
         /// </summary>
-        [TestMethod]
+//        [TestMethod]
         public void RealAzureNotFound()
         {
             var pinkoContainer = PinkoContainerMock.GetMockContainer();

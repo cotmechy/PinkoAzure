@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PinkDao;
+using PinkoCommon.ExceptionTypes;
 using PinkoCommon.Extension;
 using PinkoCommon.Utility;
 using PinkoExpressionCommon;
@@ -358,10 +359,11 @@ namespace PinkoTests
 
             // Invalid
             complExp = expEngine.ParseAndCompile<double[]>("{ RHist(\"Symbol\", \"Invalid\", \"Price.Bid\", \"Reuters\", \"Hour\", 360) } ");
-            result = expEngine.Invoke(marketEnv, complExp);
-            Assert.IsFalse(dal.IbmSeries.SequenceEqual(result));
-            Assert.IsFalse(dal.MsftSeries.SequenceEqual(result));
-            Assert.IsTrue(dal.InvalidSeries.SequenceEqual(result));
+
+            var ex =
+                TryCatch.RunInTry(() => result = expEngine.Invoke(marketEnv, complExp)) as
+                PinkoExceptionDataNotSubscribed;
+            Assert.IsNotNull(ex);
         }
 
 

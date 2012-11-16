@@ -36,7 +36,7 @@ namespace PinkoTests.PinkoWebRoleTests
             Task.Factory.StartNew(() => webRoleConnect.Initialize());
 
             Tuple<IBusMessageInbound, PinkoMsgRoleHeartbeat> msg = null;
-            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToAllWebRolesTopic);
+            var incomingTopic = messageBus.GetTopic(config.PinkoMessageBusToWebRolesAllTopic);
             incomingTopic.GetIncomingSubscriber<PinkoMsgRoleHeartbeat>().Subscribe(x => msg = x);
 
             // Simulate incoming topic message

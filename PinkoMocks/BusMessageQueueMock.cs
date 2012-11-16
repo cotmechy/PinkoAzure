@@ -44,7 +44,7 @@ namespace PinkoMocks
         {
             OutboudMessages++;
             LastMessageSent = message;
-            MessageHandlerManager.SendToHandler((IBusMessageInbound) message);
+            IncominBusMessageHandlerManager.SendToHandler((IBusMessageInbound) message);
         }
 
         /// <summary>
@@ -74,6 +74,6 @@ namespace PinkoMocks
         public IUnityContainer PinkoContainer { get; set; }
 
         [Dependency]
-        public IMessageHandlerManager MessageHandlerManager { get; set; }
+        public IIncominBusMessageHandlerManager IncominBusMessageHandlerManager { get; set; }
     }
 }

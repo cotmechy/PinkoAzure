@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using PinkDao;
 using PinkoCommon;
+using PinkoCommon.ExceptionTypes;
 using PinkoCommon.Extension;
 using PinkoCommon.Extensions;
 using PinkoCommon.Interface;
@@ -16,10 +18,35 @@ using PinkoWorkerCommon.Utility;
 namespace PinkoWorkerCommon
 {
     /// <summary>
+    /// Generalize calculator
+    /// </summary>
+    public interface IPinkoCalculator
+    {
+        void Caculate(object subscribers);
+    }
+
+
+    /// <summary>
     /// Calculate expression and process results
     /// </summary>
-    public class PinkoCalculator<T> 
+    public class PinkoCalculator<T> : IPinkoCalculator
     {
+        /// <summary>
+        /// Constructor - PinkoCalculator 
+        /// </summary>
+        public PinkoCalculator(IPinkoConfiguration pinkoConfiguration)
+        {
+            _processorCounterConditioner = new CounterConditioner(pinkoConfiguration.RealTimeLogIntervalInterval);
+        }
+
+        /// <summary>
+        /// Calc
+        /// </summary>
+        public void Caculate(object subscribers)
+        {
+            Caculate((PinkoExpressionSubscribers<T>) subscribers);
+        }
+
         /// <summary>
         /// Prepare and calculate dictionary
         /// </summary>
@@ -47,6 +74,14 @@ namespace PinkoWorkerCommon
         /// 
         public void CalculatePreparedList(List<PinkoCalcTrio<T>> calcs)
         {
+            if (calcs.Count == 0)
+            {
+                //Trace.TraceInformation("No subscribed formulas to calculate: {0}", GetType());
+                return;
+            }
+
+            //_processorCounterConditioner.Process(() => Trace.TraceInformation("Running Parallel Calculation for {0} subscribers", calcs.Count));
+
             PinkoApplication.ForEachParallel(calcs, 
                     pinkoCalcTrio =>
                     {
@@ -67,21 +102,26 @@ namespace PinkoWorkerCommon
                         );
 
                         // Exception ? 
+                        if (!ex.IsNull() && ex is PinkoExceptionDataNotSubscribed)
+                        {
+                            // subscription is not available.  GO subscribe, and the retry.
+                            PinkoExceptionDataNotSubscribedBus.Publish(ex as PinkoExceptionDataNotSubscribed);
+                            return;
+                        }
+
+
                         if (ex.IsNull())
                         {
                             // save results
                             var resultsTupple = pinkoCalcTrio.PinkoMsgCalculateExpressionResult.ExpressionFormulas.GetResultsTuple(pinkoCalcTrio.PinkoSubscription.LastResults);
 
-                            //// TODO: If any changes, send deltas to clients
-                            //pinkoCalcTrio
-                            //    .PinkoMsgCalculateExpressionResult
-                            //    .ResultsTupple
-                            //    .Where(x => x.PointSeries.SequenceEqual())
-
+                            //
+                            // TODO: If any changes, send deltas to clients
+                            // 
 
                             // Set latest results
-                            pinkoMsgCalculateExpressionResult.ResultsTupple =
-                                pinkoCalcTrio.PinkoMsgCalculateExpressionResult.ResultsTupple =
+                            pinkoMsgCalculateExpressionResult.ResultsTupples =
+                                pinkoCalcTrio.PinkoMsgCalculateExpressionResult.ResultsTupples =
                                 resultsTupple;
 
                             //var pinkoMsgCalculateExpressionResult = pinkoCalcTrio.PinkoMsgCalculateExpressionResult.DeepClone();
@@ -102,9 +142,13 @@ namespace PinkoWorkerCommon
                         msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWebRoleCalcResultTopic;
                         pinkoMsgCalculateExpressionResult.TimeSequence = PinkoApplication.GetTimeSequence();
 
+                        // Publish to message bus
                         ServerMessageOutboundBus.Publish(msgEnvelop);
                     });
         }
+
+
+
 
         /// <summary>
         /// Set up subscribers to start Async processing
@@ -166,5 +210,15 @@ namespace PinkoWorkerCommon
         [Dependency]
         public IPinkoConfiguration PinkoConfiguration { private get; set; }
 
+        /// <summary>
+        /// PinkoExceptionDataNotSubscribed
+        /// </summary>
+        [Dependency]
+        public IRxMemoryBus<PinkoExceptionDataNotSubscribed> PinkoExceptionDataNotSubscribedBus { private get; set; }
+
+        /// <summary>
+        /// logging counter
+        /// </summary>
+        private CounterConditioner _processorCounterConditioner;
     }
 }

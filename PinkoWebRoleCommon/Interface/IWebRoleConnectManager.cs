@@ -36,9 +36,9 @@ namespace PinkoWebRoleCommon.Interface
         /// </summary>
         string WebRoleId { get; }
 
-        /// <summary>
-        /// handlers to messages received from the bus. delivered via Rx in memory bus
-        /// </summary>
-        List<object> BusListenerHandlers { get; }
+        ///// <summary>
+        ///// handlers to messages received from the bus. delivered via Rx in memory bus
+        ///// </summary>
+        //List<object> BusListenerHandlers { get; }
     }
 }

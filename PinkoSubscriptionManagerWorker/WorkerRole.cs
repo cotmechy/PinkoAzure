@@ -20,14 +20,15 @@ namespace PinkoSubscriptionManagerWorker
             ServicePointManager.DefaultConnectionLimit = 12;
 
             var rtn = base.OnStart();
+            var pinkoServiceContainer = new PinkoServiceContainer();
 
-            PinkoContainer = PinkoServiceContainer.BuildContainer();  // Real Container
+            PinkoContainer = pinkoServiceContainer.BuildContainer();  // Real Container
 
             PinkoApplication = PinkoContainer.Resolve<IPinkoApplication>();
             PinkoConfiguration = PinkoContainer.Resolve<IPinkoConfiguration>();
             WorkerRoleFrame = PinkoContainer.Resolve<IWorkerRoleFrame>();
 
-            PinkoServiceContainer.RegisterSubscriptionManagerWorkerExtra(PinkoContainer);
+            pinkoServiceContainer.RegisterSubscriptionManagerWorkerExtra(PinkoContainer);
 
             return rtn;
         }
@@ -37,12 +38,12 @@ namespace PinkoSubscriptionManagerWorker
         /// </summary>
         public override void Run()
         {
-            PinkoApplication.RunInWorkerThread("Initialize PinkoSubscriptionManagerWorker",
-                                               () =>
-                                               WorkerRoleFrame.Run(
-                                                   PinkoConfiguration.PinkoMessageBusToWorkerAllSubscriptionManagerTopic,
-                                                   PinkoConfiguration.PinkoMessageBusToWorkerSubscriptionManagerTopic)
-                );
+            //PinkoApplication.RunInWorkerThread("Initialize PinkoSubscriptionManagerWorker",
+            //                                   () =>
+            //                                   WorkerRoleFrame.Run(
+            //                                       PinkoConfiguration.PinkoMessageBusToWorkerAllSubscriptionManagerTopic,
+            //                                       PinkoConfiguration.PinkoMessageBusToWorkerSubscriptionManagerTopic)
+            //    );
 
 
             base.Run();

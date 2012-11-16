@@ -19,7 +19,7 @@ namespace PinkoWorkerCommon.Extensions
             if (results is double[][])
                 return expressions.GetTupleResult(results as double[][]);
 
-            return ResultsTuppleWrapperExtensions.ResultsTuppleWrapperDeault;
+            return ResultsTuppleWrapperExtensions.ResultsTuppleWrapperDefault;
         }
 
         /// <summary>

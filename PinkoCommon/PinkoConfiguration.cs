@@ -18,15 +18,15 @@ namespace PinkoCommon
 
             QueueConfiguration[PinkoMessageBusToAllWorkersTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWorkersTopic, true);
 
-            QueueConfiguration[PinkoMessageBusToWorkerAllCalcEngineTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllCalcEngineTopic, true);
+            QueueConfiguration[PinkoMessageBusToWorkerCalcEngineAllTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineAllTopic, true);
             QueueConfiguration[PinkoMessageBusToWorkerCalcEngineTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerCalcEngineTopic, true);
 
-            QueueConfiguration[PinkoMessageBusToAllWebRolesTopic] = new Tuple<string, bool>(PinkoMessageBusToAllWebRolesTopic, true);
+            QueueConfiguration[PinkoMessageBusToWebRolesAllTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRolesAllTopic, true);
             QueueConfiguration[PinkoMessageBusToWebRoleTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleTopic, true);
 
             QueueConfiguration[PinkoMessageBusToWebRoleCalcResultTopic] = new Tuple<string, bool>(PinkoMessageBusToWebRoleCalcResultTopic, true);
 
-            QueueConfiguration[PinkoMessageBusToWorkerAllSubscriptionManagerTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerAllSubscriptionManagerTopic, true);
+            QueueConfiguration[PinkoMessageBusToWorkerSubscriptionManagerAllTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerSubscriptionManagerAllTopic, true);
             QueueConfiguration[PinkoMessageBusToWorkerSubscriptionManagerTopic] = new Tuple<string, bool>(PinkoMessageBusToWorkerSubscriptionManagerTopic, true);
 
             QueueConfiguration[PinkoMessageBusToCalcEngineQueue] = new Tuple<string, bool>(PinkoMessageBusToCalcEngineQueue, false);  // Queue
@@ -67,7 +67,7 @@ namespace PinkoCommon
         /// </summary>
         public int MessageQueueCheckIntervalMs
         {
-            get { return 10000; }
+            get { return 1000; }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace PinkoCommon
         /// <summary>
         /// Broadcast to all web roles
         /// </summary>
-        public string PinkoMessageBusToAllWebRolesTopic
+        public string PinkoMessageBusToWebRolesAllTopic
         {
             get { return "PinkoMessageBusToAllWebRolesTopic"; }
         }
@@ -97,7 +97,7 @@ namespace PinkoCommon
         /// <summary>
         /// All subscription managers worker roles
         /// </summary>
-        public string PinkoMessageBusToWorkerAllSubscriptionManagerTopic
+        public string PinkoMessageBusToWorkerSubscriptionManagerAllTopic
         {
             get { return "PinkoMessageBusToWorkerAllSubscriptionManagerWorker";  } 
         }
@@ -122,7 +122,7 @@ namespace PinkoCommon
         /// <summary>
         /// Main bus for calcEngines
         /// </summary>
-        public string PinkoMessageBusToWorkerAllCalcEngineTopic
+        public string PinkoMessageBusToWorkerCalcEngineAllTopic
         {
             get { return "PinkoMessageBusToWorkerAllCalcEngineTopic"; }
         }
@@ -155,6 +155,41 @@ namespace PinkoCommon
 
             return KeyValues[name];
         }
+
+        /// <summary>
+        /// Set the interval for engine calculation
+        /// </summary>
+        public int RunCalcIntervalMs
+        {
+            get { return 500; }
+        }
+
+        /// <summary>
+        /// Interval to increase realtime logging interval
+        /// </summary>
+        public long RealTimeLogIntervalInterval
+        {
+            get { return 1000; }
+        }
+
+        /// <summary>
+        /// Client timeout. 
+        /// </summary>
+        public int ClientTimeoutThresholdMs
+        {
+            get { return _clientTimeoutThresholdMs; }
+        }
+        public int _clientTimeoutThresholdMs = 15000;
+
+        /// <summary>
+        /// Interval check for timeout connections
+        /// </summary>
+        public int ClientTimeoutThresholdIntervalMs
+        {
+            get { return _clientTimeoutThresholdIntervalMs; } 
+        }
+        public int _clientTimeoutThresholdIntervalMs = 2000;
+
 
         public Dictionary<string, string> KeyValues = new Dictionary<string, string>();
     }

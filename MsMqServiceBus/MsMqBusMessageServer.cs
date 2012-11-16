@@ -47,7 +47,7 @@ namespace PinkoMsMqServiceBus
             // Set listener for outbound messages. 
             // this server will publish into the msmq message queue
             PinkoApplication.GetSubscriber<IBusMessageOutbound>()
-                .ObserveOn(PinkoApplication.ThreadPoolScheduler)
+                .ObserveOn(PinkoApplication.CurrentScheduler)
                 .Do(x => Trace.TraceInformation("(MsMqBusMessageServer) Sending: {0}", x.Verbose()))
                 .Subscribe(x => GetTopic(x.QueueName).Send(x));
 

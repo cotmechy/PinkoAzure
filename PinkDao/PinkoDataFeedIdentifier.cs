@@ -5,16 +5,16 @@
     /// </summary>
     public class PinkoDataFeedIdentifier
     {
-        public string SubscribtionId { get; set; }
-        public string ClientCtx { get; set; }
-        public string ClientId { get; set; }
-        public string SignalRId { get; set; }
-        public string WebRoleId { get; set; }
-        public string MaketEnvId { get; set; }
+        public string SubscribtionId = string.Empty;
+        public string ClientCtx = string.Empty;
+        public string ClientId = string.Empty;
+        public string SignalRId = string.Empty;
+        public string WebRoleId = string.Empty;
+        public string MaketEnvId = string.Empty;
 
         // Previous Ids
-        public string PreviousWebRoleId { get; set; }
-        public string PreviousSignalRId { get; set; }
+        public string PreviousWebRoleId = string.Empty;
+        public string PreviousSignalRId = string.Empty;
     }
 
 
@@ -34,6 +34,12 @@
         /// </returns>
         public static bool IsEqual(this PinkoDataFeedIdentifier dest, PinkoDataFeedIdentifier src)
         {
+            if (dest == null && null == src)
+                return true;
+
+            if (dest == null || null == src)
+                return false;
+
             return dest.ClientId.Equals(src.ClientId)
                    &&
                    dest.MaketEnvId.Equals(src.MaketEnvId)
@@ -53,6 +59,22 @@
         public static PinkoDataFeedIdentifier DeepClone(this PinkoDataFeedIdentifier src)
         {
             return src.CopyTo(new PinkoDataFeedIdentifier());
+        }
+
+        /// <summary>
+        /// Clone partial fields
+        /// </summary>
+        public static PinkoDataFeedIdentifier PartialClone(this PinkoDataFeedIdentifier src, PinkoDataFeedIdentifier srcEx)
+        {
+            var newEx = src.DeepClone();
+
+            newEx.SignalRId = srcEx.SignalRId;
+            newEx.WebRoleId = srcEx.WebRoleId;
+
+            newEx.PreviousWebRoleId = srcEx.PreviousWebRoleId;
+            newEx.PreviousSignalRId = srcEx.PreviousSignalRId;
+
+            return newEx;
         }
 
 

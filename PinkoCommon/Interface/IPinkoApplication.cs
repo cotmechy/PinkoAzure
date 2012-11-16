@@ -59,6 +59,11 @@ namespace PinkoCommon.Interface
         IObservable<T> GetSubscriber<T>();
 
         /// <summary>
+        /// Same thread scheduler. Set to same thread in unit test.
+        /// </summary>
+        IScheduler CurrentScheduler { get; }
+
+        /// <summary>
         /// Get thread pool schedules. Set to same thread in unit test.
         /// </summary>
         IScheduler ThreadPoolScheduler { get; }
@@ -72,5 +77,11 @@ namespace PinkoCommon.Interface
         /// Run parallel
         /// </summary>
         void ForEachParallel<T>(IEnumerable<T> collection, Action<T> action);
+
+        /// <summary>
+        /// Get reactive timer
+        /// </summary>
+        /// <returns></returns>
+        IDisposable RunActionInTimer(int intervalMs, Action action);
     }
 }

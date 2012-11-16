@@ -14,7 +14,7 @@ namespace PinkoCommon
         /// <param name="message">A message to write. </param><filterpriority>2</filterpriority>
         public override void Write(string message)
         {
-            //Debug.Write(string.Format("{1}: {0}", message, Process.GetCurrentProcess().Id), _header());
+            //Debug.WriteLine(string.Format("{1}: {0}", message, _header()));
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace PinkoCommon
         /// <param name="message">A message to write. </param><filterpriority>2</filterpriority>
         public override void WriteLine(string message)
         {
-            //Debug.WriteLine(string.Format("{1}: {0}", message, Process.GetCurrentProcess().Id), _header());
+            //Debug.WriteLine(string.Format("{1}: {0}", message, _header()));
         }
 
         private readonly Func<string> _header = new Func<string>( () => string.Format("{0}: ({1})", DateTime.Now.ToLongTimeString(), Process.GetCurrentProcess().Id )); 

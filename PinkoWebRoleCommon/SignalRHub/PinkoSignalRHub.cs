@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using PinkDao;
 using PinkoCommon;
 using PinkoCommon.Extensions;
@@ -14,7 +16,7 @@ namespace PinkoWebRoleCommon.SignalRHub
     /// SignalR Hub
     /// </summary>
     [HubName("PinkoSingalHub")]
-    public class PinkoSingalHub : Hub
+    public class PinkoSingalHub : Hub, IConnected, IDisconnect
     {
         /// <summary>
         /// Global instance. Factored by SignalR. We need to have a reference to it.
@@ -31,16 +33,16 @@ namespace PinkoWebRoleCommon.SignalRHub
             PinkoSingalHubInitBus(this); // Unity dependencies here because SignalR has control of the instantiation.
         }
 
-        /// <summary>
-        /// subscribe to instrument
-        /// </summary>
-        public void Subscribe(string instrumentName)
-        {
-            Debug.WriteLine("{0}: Subscribe(): instrumentName: {1}", this.Verbose(), instrumentName);
-        }
+        ///// <summary>
+        ///// subscribe to instrument
+        ///// </summary>
+        //public void Subscribe(string instrumentName)
+        //{
+        //    Debug.WriteLine("{0}: Subscribe(): instrumentName: {1}", this.Verbose(), instrumentName);
+        //}
 
         /// <summary>
-        /// Client Connected
+        /// Client Connected - Called from the client javascript page.
         /// </summary>
         public void ClientConnected(string clientId, string oldWebRoleId, string oldSignalRId)
         {
@@ -62,7 +64,7 @@ namespace PinkoWebRoleCommon.SignalRHub
             var msgEnvelop = PinkoApplication.FactorWebEnvelop(clientId, WebRoleConnectManager.WebRoleId, clientIdentifier);
 
             // Broadcast to all Worker roles
-            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToAllWorkersTopic;
+            msgEnvelop.QueueName = PinkoConfiguration.PinkoMessageBusToWorkerCalcEngineAllTopic; //.PinkoMessageBusToWorkerAllSubscriptionManagerTopic;
             ServerMessageBus.Publish(msgEnvelop);
 
             // Send to Web roles
@@ -71,7 +73,7 @@ namespace PinkoWebRoleCommon.SignalRHub
 
 
         /// <summary>
-        /// Send to client related keys
+        /// Send to client - SignalR will stub this method in the browser
         /// </summary>
         public void ReconnectionIdentifiers(string clientId, string signalRId, string webRoleId)
         {
@@ -124,6 +126,37 @@ namespace PinkoWebRoleCommon.SignalRHub
         /// </summary>
         public IPinkoConfiguration PinkoConfiguration { private get; set; }
 
+        /// <summary>
+        /// Called when a new connection is made to the <see cref="T:SignalR.Hubs.IHub"/>.
+        /// </summary>
+        public Task Connect()
+        {
+            Trace.TraceInformation("PinkoSingalHub: SignaR Hub Connected: {0} - {1}", Context.ConnectionId, DateTime.Now.ToString());
+            return Clients.joined(Context.ConnectionId, DateTime.Now.ToString());
+        }
+
+        /// <summary>
+        /// Called when a connection reconencts to the <see cref="T:SignalR.Hubs.IHub"/> after a timeout.
+        /// </summary>
+        /// <param name="groups">The groups the connection are a member of.</param>
+        public Task Reconnect(IEnumerable<string> groups)
+        {
+            Trace.TraceInformation("PinkoSingalHub: SignaR Hub Reconnect: {0} - {1}", Context.ConnectionId, DateTime.Now.ToString());
+            return Clients.rejoined(Context.ConnectionId, DateTime.Now.ToString());
+        }
+
+        /// <summary>
+        /// Called when a connection is disconnected from the <see cref="T:SignalR.Hubs.IHub"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked from the server side which means the only valid property on the <see cref="T:SignalR.Hubs.HubCallerContext"/>
+        ///             is the connection id.
+        /// </remarks>
+        public Task Disconnect()
+        {
+            Trace.TraceInformation("PinkoSingalHub: SignaR Hub Disconnected: {0} - {1}", Context.ConnectionId, DateTime.Now.ToString());
+            return Clients.leave(Context.ConnectionId, DateTime.Now.ToString());
+        }
     }
 
 

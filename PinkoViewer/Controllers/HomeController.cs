@@ -10,7 +10,7 @@ namespace PinkoViewer.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Welcome to ASP.NET MVC!";
+            ViewBag.Message = "Pinko Expression Samples";
 
             return View();
         }
@@ -19,5 +19,16 @@ namespace PinkoViewer.Controllers
         {
             return View();
         }
+
+        public ActionResult SusbcribeSample()
+        {
+            return View();
+        }
+
+        public ActionResult PinkoChartView()
+        {
+            return View();
+        }
+        
     }
 }

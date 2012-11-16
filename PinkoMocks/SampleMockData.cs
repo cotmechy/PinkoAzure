@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
 using PinkDao;
 using PinkDao.Extensions;
 using PinkoCommon;
@@ -17,6 +14,57 @@ namespace PinkoMocks
     /// </summary>
     static public class SampleMockData
     {
+
+        /// <summary>
+        /// PinkoMsgClientPing list
+        /// </summary>
+        static public List<PinkoMsgClientPing> GetPinkoMsgClientPing(int amt = 10)
+        {
+            return
+                GetPinkoMsgCalculateExpression(amt)
+                    .Select(x => new PinkoMsgClientPing { DataFeedIdentifier = x.DataFeedIdentifier.DeepClone() })
+                    .ToList();
+        }
+
+
+        /// <summary>
+        /// PinkoDataFeedIdentifier list
+        /// </summary>
+        static public List<PinkoDataFeedIdentifier> GetPinkoDataFeedIdentifier(int amt = 10)
+        {
+            return
+                GetPinkoMsgCalculateExpression(amt)
+                    .Select(x => x.DataFeedIdentifier)
+                    .ToList();
+
+        }
+
+
+        /// <summary>
+        /// PinkoMsgClientTimeout list
+        /// </summary>
+        static public List<PinkoMsgClientTimeout> GetPinkoMsgClientTimeout(int amt = 10)
+        {
+            return
+                GetPinkoMsgCalculateExpression(amt)
+                    .Select(x => new PinkoMsgClientTimeout { DataFeedIdentifier = x.DataFeedIdentifier.DeepClone() })
+                    .ToList();
+
+        }
+
+        /// <summary>
+        /// PinkoMsgClientConnect list
+        /// </summary>
+        static public List<PinkoMsgClientConnect> GetPinkoMsgClientConnect(int amt = 10)
+        {
+            return
+                GetPinkoMsgCalculateExpression(amt)
+                    .Select(x => new PinkoMsgClientConnect {DataFeedIdentifier = x.DataFeedIdentifier.DeepClone()})
+                    .ToList();
+
+        }
+
+
         /// <summary>
         /// PinkoMsgCalculateExpressionResult list
         /// </summary>
@@ -27,7 +75,7 @@ namespace PinkoMocks
                     .Select(x =>
                         {
                             var result = new PinkoMsgCalculateExpressionResult().FromRequest(x);
-                            result.ResultsTupple = GetResultsTuppleWrapper().ToArray();
+                            result.ResultsTupples = GetResultsTuppleWrapper().ToArray();
 
                             return result;
                         })
@@ -39,10 +87,10 @@ namespace PinkoMocks
         /// get sample PinkoFormPoint
         /// </summary>
         /// <returns></returns>
-        static public List<ResultsTuppleWrapper> GetResultsTuppleWrapper()
+        static public List<ResultsTuppleWrapper> GetResultsTuppleWrapper(int cnt = 50)
         {
             return
-                GetPinkoUserExpressionFormula()
+                GetPinkoUserExpressionFormula(50)
                     .Select(x => new ResultsTuppleWrapper()
                         {
                             OriginalFormula = x,
@@ -86,6 +134,8 @@ namespace PinkoMocks
                                     SignalRId = "SignalRId_" + i,
                                     ClientCtx = "ClientCtx_" + i,
                                     WebRoleId = "WebRoleId_" + i,
+                                    PreviousSignalRId = "PreviousSignalRId_" + i,
+                                    PreviousWebRoleId = "PreviousWebRoleId_" + i,
                                     ClientId = "ClientId_" + i
                                 }
                         });

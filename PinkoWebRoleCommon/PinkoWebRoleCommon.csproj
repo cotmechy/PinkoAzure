@@ -65,12 +65,12 @@
   <ItemGroup>
     <Compile Include="Extensions\IPinkoApplicationExtension.cs" />
     <Compile Include="Extensions\RequestsExtensions.cs" />
-    <Compile Include="Handler\BusListenerCalculateExpressionResult.cs" />
     <Compile Include="Interface\IWebRoleConnectManager.cs" />
     <Compile Include="Interface\IWebRoleSignalRManager.cs" />
     <Compile Include="IoC\PinkoWebDependencyResolver.cs" />
     <Compile Include="IoC\PinkoWebRoleContainerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleHandler\WebRoleBusListenerCalculateExpressionResultHandler.cs" />
     <Compile Include="SignalRHub\PinkoSignalRHub.cs" />
     <Compile Include="WebRoleConnectManager.cs" />
     <Compile Include="WebRoleSignalRManager.cs" />
@@ -94,8 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
-    <Folder Include="MessageHandlers\" />
-    <Folder Include="Utility\" />
+    <Folder Include="Handler\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

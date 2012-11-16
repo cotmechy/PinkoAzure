@@ -18,8 +18,9 @@ namespace PinkoCommon.Extension
 
             var ex = TryCatch.RunInTry(() =>
                 {
-                    //  formulaId::Label::formula; formulaId::Label::formula; formulaId::Label::formula; 
+                    //  formulaId:Label:formula; formulaId:Label:formula; formulaId:Label:formula; 
                     formulas = serialized
+                        .Replace("=", string.Empty)
                         .Split(DelimFormula)
                         .Select(formula => formula.Trim())
                         .Where(formula => !string.IsNullOrEmpty(formula))

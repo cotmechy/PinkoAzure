@@ -8,24 +8,24 @@ using PinkoCommon.Interface;
 
 namespace PinkoTests.Utility
 {
-    /// <summary>
-    /// Unit test class contaner to intercep outbound messages for testing
-    /// </summary>
-    internal class OutbountListener
-    {
-        /// <summary>
-        /// Constructor - OutbountListener 
-        /// </summary>
-        public OutbountListener(IUnityContainer container)
-        {
-            OutboutBus = container.Resolve<IRxMemoryBus<IBusMessageOutbound>>();
+    ///// <summary>
+    ///// Unit test class contaner to intercep outbound messages for testing
+    ///// </summary>
+    //internal class OutbountListener<T>
+    //{
+    //    /// <summary>
+    //    /// Constructor - OutbountListener 
+    //    /// </summary>
+    //    public OutbountListener(IUnityContainer container)
+    //    {
+    //        OutboutBus = container.Resolve<IRxMemoryBus<T>>();
 
-            OutboutBus.Subscriber.Subscribe(x => OutboundMessages.Add(x));
-        }
+    //        OutboutBus.Subscriber.Subscribe(x => OutboundMessages.Add(x));
+    //    }
 
-        public ConcurrentBag<IBusMessageOutbound> OutboundMessages = new ConcurrentBag<IBusMessageOutbound>();  
+    //    public ConcurrentBag<T> OutboundMessages = new ConcurrentBag<T>();
 
-        private readonly IRxMemoryBus<IBusMessageOutbound> OutboutBus = null;
+    //    private readonly IRxMemoryBus<T> OutboutBus;
 
-    }
+    //}
 }

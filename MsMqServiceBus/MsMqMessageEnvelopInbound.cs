@@ -46,6 +46,12 @@ namespace PinkoMsMqServiceBus
             if (msg.Label == typeof(PinkoMsgClientConnect).ToString())
                 inbound = this.FromMsMqWrapper<PinkoMsgClientConnect>(msg);
 
+            if (msg.Label == typeof(PinkoMsgClientTimeout).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgClientTimeout>(msg);
+
+            if (msg.Label == typeof(PinkoMsgClientPing).ToString())
+                inbound = this.FromMsMqWrapper<PinkoMsgClientPing>(msg);
+            
             if (inbound.IsNull())
                 throw new PinkoExceptionMsMqNotFound("Missing MsMq handler in MsMqMessageEnvelopInbound()");
         }

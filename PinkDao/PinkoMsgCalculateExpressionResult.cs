@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.ObjectBuilder2;
@@ -13,7 +14,7 @@ namespace PinkDao
         public PinkoDataFeedIdentifier DataFeedIdentifier = new PinkoDataFeedIdentifier();
         public PinkoUserExpressionFormula[] ExpressionFormulas = new PinkoUserExpressionFormula[] { };
         public int ResultType;
-        public ResultsTuppleWrapper[] ResultsTupple = PinkoMsgCalculateExpressionResultExtensions.DefaultResultTupple;
+        public ResultsTuppleWrapper[] ResultsTupples = PinkoMsgCalculateExpressionResultExtensions.DefaultResultTupple;
         public long TimeSequence;
     }
 
@@ -30,6 +31,17 @@ namespace PinkDao
             return src.CopyTo(new PinkoMsgCalculateExpressionResult());
         }
 
+        /// <summary>
+        /// IsEqual - Checks all values to be the same
+        /// </summary>
+        public static bool IsEqual(this PinkoMsgCalculateExpressionResult src, PinkoMsgCalculateExpressionResult dest)
+        {
+            return src.DataFeedIdentifier.IsEqual(dest.DataFeedIdentifier)
+                   &&
+                   src.ExpressionFormulas.IsEqual(dest.ExpressionFormulas)
+                ;
+        }
+
 
         /// <summary>
         /// Copy all value
@@ -42,7 +54,7 @@ namespace PinkDao
             dest.ExpressionFormulas = src.ExpressionFormulas.DeepClone();
             dest.DataFeedIdentifier = src.DataFeedIdentifier.DeepClone();
             dest.ResultType = src.ResultType;
-            dest.ResultsTupple = src.ResultsTupple.DeepClone();
+            dest.ResultsTupples = src.ResultsTupples.DeepClone();
 
             return dest;
         }
@@ -70,8 +82,10 @@ namespace PinkDao
             return string.Format("PinkoMsgCalculateExpressionResult: ResultType: {1} - {0} - {2}", 
                                         obj.DataFeedIdentifier.Verbose(), 
                                         obj.ResultType,
-                                        obj.ResultsTupple.Verbose()
+                                        obj.ResultsTupples.Verbose()
                                         );
         }
     }
+
+
 }

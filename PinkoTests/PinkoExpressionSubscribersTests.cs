@@ -11,6 +11,81 @@ namespace PinkoTests
     public class PinkoExpressionSubscribersTests
     {
         /// <summary>
+        /// Update partial identifier
+        /// </summary>
+        [TestMethod]
+        public void TestPinkoExpressionSubscribersUpdatePartialIdentifier()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[]>>();
+
+            // 1st one - new
+            var origExp = SampleMockData.GetPinkoMsgCalculateExpressionResult(1)[0];
+            subscribers.UpdateSubscriber(origExp, () => null);
+
+            // Assure it was added
+            Assert.IsTrue(subscribers.Subscribers.Count == 1);
+            Assert.IsTrue(subscribers.Subscribers[origExp.DataFeedIdentifier.SubscribtionId].Subcribers.Count == 1);
+
+            // Create new  one with diff connecting ids
+            var expSecond = SampleMockData.GetPinkoDataFeedIdentifier(2)[1];
+
+            // Assure they are not the same
+            Assert.IsFalse(subscribers.Subscribers[origExp.DataFeedIdentifier.SubscribtionId].Subcribers[0].Item2.DataFeedIdentifier.IsEqual(expSecond));
+            Assert.IsTrue(subscribers.Subscribers[origExp.DataFeedIdentifier.SubscribtionId].Subcribers[0].Item2.DataFeedIdentifier.IsEqual(origExp.DataFeedIdentifier));
+            
+            // Force update to these keys
+            expSecond.SubscribtionId = origExp.DataFeedIdentifier.SubscribtionId;
+            expSecond.ClientCtx = origExp.DataFeedIdentifier.ClientCtx;
+            expSecond.ClientId = origExp.DataFeedIdentifier.ClientId;
+
+            // Update partial
+            subscribers.UpdateIdentifier(expSecond);
+
+            // Assure members did not change
+            Assert.IsTrue(subscribers.Subscribers.Count == 1);
+            Assert.IsTrue(subscribers.Subscribers[origExp.DataFeedIdentifier.SubscribtionId].Subcribers.Count == 1);
+
+            var subscribedIdentifier = subscribers.Subscribers[origExp.DataFeedIdentifier.SubscribtionId].Subcribers[0].Item2.DataFeedIdentifier;
+            
+            // Assure the mixed update happened
+            Assert.IsTrue(subscribedIdentifier.IsEqual(expSecond));
+            Assert.IsFalse(subscribedIdentifier.IsEqual(origExp.DataFeedIdentifier));
+
+            // Assure all have values
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.SubscribtionId));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.ClientCtx));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.ClientId));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.PreviousSignalRId));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.PreviousWebRoleId));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.SignalRId));
+            Assert.IsFalse(string.IsNullOrEmpty(subscribedIdentifier.WebRoleId));
+        }
+
+        /// <summary>
+        /// REmove Identifier subscription
+        /// </summary>
+        [TestMethod]
+        public void TestPinkoExpressionSubscribersRemoveIdentifier()
+        {
+            var pinkoContainer = PinkoContainerMock.GetMockContainer();
+            var subscribers = pinkoContainer.Resolve<PinkoExpressionSubscribers<double[]>>();
+
+            // 1st one - new
+            var exp = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0];
+            subscribers.UpdateSubscriber(exp, () => null);
+
+            Assert.IsTrue(subscribers.Subscribers.Count == 1);
+            Assert.IsTrue(subscribers.Subscribers[exp.DataFeedIdentifier.SubscribtionId].Subcribers.Count == 1);
+
+            // remove identifier
+            subscribers.RemoveIdentifier(SampleMockData.GetPinkoMsgCalculateExpressionResult()[0].DataFeedIdentifier);
+
+            Assert.IsTrue(subscribers.Subscribers.Count == 0);
+        }
+
+
+        /// <summary>
         /// Update
         /// </summary>
         [TestMethod]
@@ -23,24 +98,24 @@ namespace PinkoTests
             var exp = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0];
             exp.DataFeedIdentifier.SubscribtionId = "SubId1";
             exp.DataFeedIdentifier.ClientCtx = "ClientCtx1";
-            subscribers.UpdateSubscriber(exp, null);
+            subscribers.UpdateSubscriber(exp, () => null);
 
             exp = exp = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0];
             exp.DataFeedIdentifier.SubscribtionId = "SubId1";
             exp.DataFeedIdentifier.ClientCtx = "ClientCtx1";
-            subscribers.UpdateSubscriber(exp, null);
+            subscribers.UpdateSubscriber(exp, () => null);
 
             // Add  second one
             exp = exp = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0];
             exp.DataFeedIdentifier.SubscribtionId = "SubId1";
             exp.DataFeedIdentifier.ClientCtx = "ClientCtx2";
-            subscribers.UpdateSubscriber(exp, null);
+            subscribers.UpdateSubscriber(exp, () => null);
 
             // Add  second one
             exp = exp = SampleMockData.GetPinkoMsgCalculateExpressionResult()[0];
             exp.DataFeedIdentifier.SubscribtionId = "SubId3";
             exp.DataFeedIdentifier.ClientCtx = "ClientCtx3";
-            subscribers.UpdateSubscriber(exp, null);
+            subscribers.UpdateSubscriber(exp, () => null);
 
             Assert.IsTrue(subscribers.Subscribers.Count == 2);
             Assert.IsTrue(subscribers.Subscribers["SubId1"].Subcribers.Count == 2);
@@ -78,52 +153,5 @@ namespace PinkoTests
             Assert.IsNull(subscribers.RemoveSubscriber(exp));
             Assert.IsTrue(subscribers.Subscribers.Count == 0);
         }
-
-
-        ///// <summary>
-        ///// Update
-        ///// </summary>
-        //[TestMethod]
-        //public void TestPinkoExpressionSubscribersAdd()
-        //{
-        //    var subscribers = new PinkoExpressionSubscribers<double[]>();
-
-        //    // 1st one - new
-        //    var exp = SampleMockData.GetPinkoSubscription<double[]>()[0];
-        //    exp.PinkoExpression.DataFeedIdentifier.SubscribtionId = "SubId1";
-        //    exp.PinkoExpression.DataFeedIdentifier.ClientCtx = "ClientCtx1";
-
-        //    Assert.IsFalse(subscribers.UpdateSubscriber(exp));
-        //    Assert.IsTrue(subscribers.Subscribers.Count == 1);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId].Count == 1);
-        //    Assert.IsNotNull(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx]);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx].PinkoExpression.DataFeedIdentifier.ClientCtx.Equals(exp.PinkoExpression.DataFeedIdentifier.ClientCtx));
-
-        //    // 2nd one - Update
-        //    exp = SampleMockData.GetPinkoSubscription<double[]>()[0];
-        //    exp.PinkoExpression.DataFeedIdentifier.SubscribtionId = "SubId1";
-        //    exp.PinkoExpression.DataFeedIdentifier.ClientCtx = "ClientCtx1";
-        //    exp.PinkoExpression.ExpressionFormulasStr = "2nd expression";
-
-        //    Assert.IsTrue(subscribers.UpdateSubscriber(exp));
-        //    Assert.IsTrue(subscribers.Subscribers.Count == 1);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId].Count == 1);
-        //    Assert.IsNotNull(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx]);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx].PinkoExpression.DataFeedIdentifier.ClientCtx.Equals(exp.PinkoExpression.DataFeedIdentifier.ClientCtx));
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx].PinkoExpression.ExpressionFormulasStr.Equals(exp.PinkoExpression.ExpressionFormulasStr));
-
-        //    // Add  second one
-        //    exp = SampleMockData.GetPinkoSubscription<double[]>()[0];
-        //    exp.PinkoExpression.DataFeedIdentifier.SubscribtionId = "SubId1";
-        //    exp.PinkoExpression.DataFeedIdentifier.ClientCtx = "ClientCtx2";
-        //    exp.PinkoExpression.ExpressionFormulasStr = "3rd expression";
-
-        //    Assert.IsFalse(subscribers.UpdateSubscriber(exp));
-        //    Assert.IsTrue(subscribers.Subscribers.Count == 1);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId].Count == 2);
-        //    Assert.IsNotNull(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx]);
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx].PinkoExpression.DataFeedIdentifier.ClientCtx.Equals(exp.PinkoExpression.DataFeedIdentifier.ClientCtx));
-        //    Assert.IsTrue(subscribers.Subscribers[exp.PinkoExpression.DataFeedIdentifier.SubscribtionId][exp.PinkoExpression.DataFeedIdentifier.ClientCtx].PinkoExpression.ExpressionFormulasStr.Equals(exp.PinkoExpression.ExpressionFormulasStr));
-        //}
     }
 }

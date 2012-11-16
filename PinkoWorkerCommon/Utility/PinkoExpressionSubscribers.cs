@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using PinkDao;
 using PinkoCommon.Extension;
+using PinkoCommon.Utility;
 using PinkoExpressionCommon;
 
 namespace PinkoWorkerCommon.Utility
@@ -25,6 +26,36 @@ namespace PinkoWorkerCommon.Utility
         /// </summary>
         public T LastResults;
 
+
+        /// <summary>
+        /// Update identifier / change
+        /// </summary>
+        /// <returns>
+        /// True: Updated
+        /// False: Inserted
+        /// </returns>
+        public bool UpdateIdentifier(PinkoDataFeedIdentifier pinkoDataFeedIdentifier)
+        {
+            PinkoSubscription<T> idSubscribtion = null;
+
+            // Add pinko subscription
+            if (Subscribers.TryGetValue(pinkoDataFeedIdentifier.SubscribtionId, out idSubscribtion))
+            {
+                idSubscribtion
+                    .Subcribers
+                    .Where(x => x.Item2.DataFeedIdentifier.ClientCtx.Equals(pinkoDataFeedIdentifier.ClientCtx))
+                    .ForEach(x =>
+                        {
+                            x.Item2.DataFeedIdentifier = x.Item2.DataFeedIdentifier.PartialClone(pinkoDataFeedIdentifier);
+                        });
+
+                return true;
+            }
+
+            return false;
+        }
+
+
         /// <summary>
         /// Add/Insert
         /// </summary>
@@ -34,7 +65,7 @@ namespace PinkoWorkerCommon.Utility
         /// True: Updated
         /// False: Inserted
         /// </returns>
-        public bool UpdateSubscriber(PinkoMsgCalculateExpressionResult subscriber, Func<IPinkoMarketEnvironment, T> compiledExpression)
+        public bool UpdateSubscriber(PinkoMsgCalculateExpressionResult subscriber, Func<Func<IPinkoMarketEnvironment, T>> compiledExpression)
         {
             PinkoSubscription<T> idSubscribtion = null;
 
@@ -42,7 +73,13 @@ namespace PinkoWorkerCommon.Utility
             if (!Subscribers.TryGetValue(subscriber.DataFeedIdentifier.SubscribtionId, out idSubscribtion))
                 Subscribers[subscriber.DataFeedIdentifier.SubscribtionId] = idSubscribtion = new PinkoSubscription<T>();
 
-            idSubscribtion.CompiledExpression = compiledExpression;
+            var exCompile = TryCatch.RunInTry(() => idSubscribtion.CompiledExpression = compiledExpression());
+            if (exCompile.IsNotNull())
+            {
+                // parsing error, then unsubscrbe formula
+                RemoveSubscriber(subscriber);
+                throw exCompile;
+            }
 
             // find client 
             var subs =
@@ -91,6 +128,31 @@ namespace PinkoWorkerCommon.Utility
             }
 
             return expression.IsNull() ? null :  expression.Item2;
+        }
+
+        /// <summary>
+        /// Remove subscribers with identifier
+        /// </summary>
+        /// <returns>Removed PinkoMsgCalculateExpression</returns>
+        public PinkoMsgCalculateExpressionResult RemoveIdentifier(PinkoDataFeedIdentifier identifier)
+        {
+            PinkoSubscription<T> idSubscribtion = null;
+            PinkoCalcTuple<IPinkoMarketEnvironment, PinkoMsgCalculateExpressionResult> expression = null;
+
+            if (Subscribers.TryGetValue(identifier.SubscribtionId, out idSubscribtion))
+            {
+                expression = idSubscribtion
+                                .Subcribers
+                                .FirstOrDefault(x => x.Item2.DataFeedIdentifier.ClientCtx.Equals(identifier.ClientCtx));
+
+                if (!expression.IsNull())
+                    idSubscribtion.Subcribers.Remove(expression);
+
+                if (idSubscribtion.Subcribers.Count == 0)
+                    Subscribers.Remove(identifier.SubscribtionId);
+            }
+
+            return expression.IsNull() ? null : expression.Item2;
         }
 
 

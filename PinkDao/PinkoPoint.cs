@@ -21,14 +21,17 @@ namespace PinkDao
     {
         public static readonly PinkoFormPoint[] PinkoFormPointDeault = new PinkoFormPoint[] {};
 
-        public static readonly PinkoFormPointComparer Comparer = new PinkoFormPointComparer();
+        /// <summary>
+        /// Comparer - used in Linq Sequence
+        /// </summary>
+        public static readonly IEqualityComparer<PinkoFormPoint> Comparer = new PinkoFormPointComparer();
 
         /// <summary>
         /// compare pinko point content
         /// </summary>
         public static bool IsEqual(this PinkoFormPoint src, PinkoFormPoint compareTo)
         {
-            return Comparer.Equals(src, compareTo);
+            return Comparer.Equals(src, compareTo) && src.PointTime == compareTo.PointTime;
         }
 
 

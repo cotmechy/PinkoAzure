@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Threading;
 using System.Threading.Tasks;
@@ -93,6 +94,14 @@ namespace PinkoMocks
             return bus as IRxMemoryBus<T>;
         }
 
+        public IScheduler CurrentScheduler
+        {
+            get { return Scheduler.CurrentThread; }
+        }
+
+        /// <summary>
+        /// Get thread pool schedules. Set to same thread in unit test.
+        /// </summary>
         public IScheduler ThreadPoolScheduler
         {
             get { return Scheduler.CurrentThread; }
@@ -113,6 +122,16 @@ namespace PinkoMocks
         public void ForEachParallel<T>(IEnumerable<T> collection, Action<T> action)
         {
             collection.ForEach(action);
+            //collection.AsParallel().ForAll(action);
+        }
+
+        /// <summary>
+        /// Get reactive timer
+        /// </summary>
+        /// <returns></returns>
+        public IDisposable RunActionInTimer(int intervalMs, Action action)
+        {
+            return null;
         }
 
         public const long TestSequenceValue = 100000009;
