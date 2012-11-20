@@ -124,7 +124,7 @@
     <value>Направи препратка</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Сигурни ли сте че искате да изтриете "{0}"?</value>
+    <value>Сигурни ли сте че искате да изтриете {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Директория с посоченото име не бе открита.</value>
@@ -163,7 +163,7 @@
     <value>Вмъкни списък</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>Избраният файл "{0}" не е валиден. Поддържаните файлови формати са {1}.</value>
+    <value>Избраният файл {0} не е валиден. Поддържаните файлови формати са {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Курсив</value>
@@ -193,7 +193,7 @@
     <value>Премахни отстъп</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>Файл с име "{0}" вече съществува в тази папка. Искате ли да го презапишете?</value>
+    <value>Файл с име {0} вече съществува в тази папка. Искате ли да го презапишете?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Зачертай</value>

@@ -124,7 +124,7 @@
     <value>Hyperlink toevoegen</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Weet u zeker dat u het bestand \"{0}\" wilt verwijderen?</value>
+    <value>Weet u zeker dat u het bestand {0} wilt verwijderen?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Een map met deze naam is niet gevonden.</value>
@@ -163,7 +163,7 @@
     <value>Ongeorderde lijst toevoegen</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>Het geseleteceerde bestand \"{0}\" is niet geldig. De volgende bestandstypen worden ondersteund {1}.</value>
+    <value>Het geseleteceerde bestand {0} is niet geldig. De volgende bestandstypen worden ondersteund {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Cursief</value>
@@ -193,7 +193,7 @@
     <value>Uitsprong</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>Het bestand met naam "{0}" bestaat reeds in deze map. Wilt u het bestand overschrijven?</value>
+    <value>Het bestand met naam {0} bestaat reeds in deze map. Wilt u het bestand overschrijven?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Doorhalen</value>

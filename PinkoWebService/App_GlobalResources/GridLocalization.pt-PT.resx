@@ -136,7 +136,7 @@
     <value>Editar</value>
   </data>
   <data name="NoRecords" xml:space="preserve">
-    <value>No records to display.</value>
+    <value>Sem registos.</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>Filtro</value>
@@ -253,9 +253,15 @@
     <value>Diferente</value>
   </data>
   <data name="FilterStringNotSubstringOf" xml:space="preserve">
-    <value>Does not contain</value>
+    <value>Não contem</value>
   </data>
   <data name="FilterOr" xml:space="preserve">
-    <value>Or</value>
+    <value>Ou</value>
+  </data>
+  <data name="FilterBoolIsFalse" xml:space="preserve">
+    <value>é falso</value>
+  </data>
+  <data name="FilterBoolIsTrue" xml:space="preserve">
+    <value>é verdadeiro</value>
   </data>
 </root>

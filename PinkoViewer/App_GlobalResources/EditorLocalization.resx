@@ -120,11 +120,14 @@
   <data name="Bold" xml:space="preserve">
     <value>Bold</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="CreateLink" xml:space="preserve">
     <value>Insert hyperlink</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Are you sure you want to delete "{0}"?</value>
+    <value>Are you sure you want to delete {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>A directory with this name was not found.</value>
@@ -150,6 +153,9 @@
   <data name="Indent" xml:space="preserve">
     <value>Indent</value>
   </data>
+  <data name="Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
   <data name="InsertHtml" xml:space="preserve">
     <value>Insert HTML</value>
   </data>
@@ -163,7 +169,7 @@
     <value>Insert unordered list</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>The selected file \"{0}\" is not valid. Supported file types are {1}.</value>
+    <value>The selected file {0} is not valid. Supported file types are {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Italic</value>
@@ -180,6 +186,12 @@
   <data name="JustifyRight" xml:space="preserve">
     <value>Align text right</value>
   </data>
+  <data name="OpenInNewWindow" xml:space="preserve">
+    <value>Open link in new window</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>or</value>
+  </data>
   <data name="OrderBy" xml:space="preserve">
     <value>Arrange by:</value>
   </data>
@@ -193,13 +205,16 @@
     <value>Outdent</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>'A file with name "{0}" already exists in the current directory. Do you want to overwrite it?</value>
+    <value>A file with name {0} already exists in the current directory. Do you want to overwrite it?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Strikethrough</value>
   </data>
   <data name="Style" xml:space="preserve">
     <value>Styles</value>
+  </data>
+  <data name="Tooltip" xml:space="preserve">
+    <value>Tooltip</value>
   </data>
   <data name="Underline" xml:space="preserve">
     <value>Underline</value>
@@ -209,5 +224,8 @@
   </data>
   <data name="UploadFile" xml:space="preserve">
     <value>Upload</value>
+  </data>
+  <data name="WebAddress" xml:space="preserve">
+    <value>Web address</value>
   </data>
 </root>

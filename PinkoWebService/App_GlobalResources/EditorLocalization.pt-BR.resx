@@ -124,7 +124,7 @@
     <value>Adicionar Link</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Tem certeza de que deseja remover "{0}"?</value>
+    <value>Tem certeza de que deseja remover {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Um diretório com este nome não foi encontrado.</value>
@@ -157,7 +157,7 @@
     <value>Inserir Lista Aleatória</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>O arquivo selecionado "{0}" não é válido. Os tipos de arquivo suportados são {1}.</value>
+    <value>O arquivo selecionado {0} não é válido. Os tipos de arquivo suportados são {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Itálico</value>
@@ -187,7 +187,7 @@
     <value>Diminuir Recuo</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>Um arquivo de nome "{0}" já existe no diretório atual. Deseja substituí-lo?</value>
+    <value>Um arquivo de nome {0} já existe no diretório atual. Deseja substituí-lo?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Tachado</value>

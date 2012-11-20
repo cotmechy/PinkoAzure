@@ -124,7 +124,7 @@
     <value>Wstaw link</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Czy na pewno chcesz usunąć "{0}"?</value>
+    <value>Czy na pewno chcesz usunąć {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Folder o tej nazwie nie został znaleziony.</value>
@@ -163,7 +163,7 @@
     <value>Wstaw listę wypunktowaną</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>Wybrany plik "{0}" nie jest prawidłowy. Obsługiwane typy plików to: {1}.</value>
+    <value>Wybrany plik {0} nie jest prawidłowy. Obsługiwane typy plików to: {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Kursywa</value>
@@ -193,7 +193,7 @@
     <value>Zmniejsz wcięcie</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>Plik o nazwie "{0}" istnieje już w bieżącym folderze. Czy chcesz go zastąpić?</value>
+    <value>Plik o nazwie {0} istnieje już w bieżącym folderze. Czy chcesz go zastąpić?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Przekreślenie</value>

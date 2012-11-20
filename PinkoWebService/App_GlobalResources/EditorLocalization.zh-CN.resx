@@ -124,7 +124,7 @@
     <value>插入链接</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>确定要删除 “{0}”？</value>
+    <value>确定要删除 {0}？</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>目录没有找到。</value>
@@ -163,7 +163,7 @@
     <value>插入无序列表</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>选择的文件类型 “{0}” 不被支持， 支持的文件类型: {1}。</value>
+    <value>选择的文件类型 {0} 不被支持， 支持的文件类型: {1}。</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>斜体</value>
@@ -193,7 +193,7 @@
     <value>减少缩进</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>当前目录存在一个同名文件 “{0}”， 确定要覆盖吗？</value>
+    <value>当前目录存在一个同名文件 {0}， 确定要覆盖吗？</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>删除线</value>

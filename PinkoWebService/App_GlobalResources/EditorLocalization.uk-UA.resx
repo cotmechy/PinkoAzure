@@ -124,7 +124,7 @@
     <value>Додати посилання</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Are you sure you want to delete "{0}"?</value>
+    <value>Are you sure you want to delete {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>A directory with this name was not found.</value>
@@ -157,7 +157,7 @@
     <value>Маркований список</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>The selected file "{0}" is not valid. Supported file types are {1}.</value>
+    <value>The selected file {0} is not valid. Supported file types are {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Курсив</value>
@@ -187,7 +187,7 @@
     <value>Зменшити відступ</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>A file with name "{0}" already exists in the current directory. Do you want to overwrite it?</value>
+    <value>A file with name {0} already exists in the current directory. Do you want to overwrite it?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Закреслений</value>

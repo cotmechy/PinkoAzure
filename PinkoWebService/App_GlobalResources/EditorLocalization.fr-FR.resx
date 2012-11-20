@@ -124,7 +124,7 @@
     <value>Insérer un lien hypertexte</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Êtes-vous spur de vouloir supprimer "{0}"?</value>
+    <value>Êtes-vous spur de vouloir supprimer {0}?</value>
   </data>
   <data name="DirectoryNotFound" xml:space="preserve">
     <value>Un répertoire avec ce nom n'a pas été trouvé.</value>
@@ -163,7 +163,7 @@
     <value>Liste à puces</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>Le fichier sélectionné "{0}" n'est pas valide. Les types de fichiers supportés sont {1}.</value>
+    <value>Le fichier sélectionné {0} n'est pas valide. Les types de fichiers supportés sont {1}.</value>
   </data>
   <data name="Italic" xml:space="preserve">
     <value>Italique</value>
@@ -193,7 +193,7 @@
     <value>Diminuer le retrait</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
-    <value>Un fichier avec le nom "{0}" existe déjà dans le répertoire courant. Voulez-vous le remplacer?</value>
+    <value>Un fichier avec le nom {0} existe déjà dans le répertoire courant. Voulez-vous le remplacer?</value>
   </data>
   <data name="Strikethrough" xml:space="preserve">
     <value>Barré</value>
